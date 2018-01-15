@@ -1,11 +1,11 @@
 <?php
 /**
- * Markup for WP No External Links Redirect page.
+ * Markup for Mihdan: No External Links Redirect page.
  *
  * @since         4.0.0
- * @package       WP_NoExternalLinks
- * @subpackage    WP_NoExternalLinks/Public/Partials
- * @author        SteamerDevelopment
+ * @package       Mihdan_NoExternalLinks
+ * @subpackage    Mihdan_NoExternalLinks/Public/Partials
+ * @author        mihdan
  */
 ?>
 

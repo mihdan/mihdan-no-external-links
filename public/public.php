@@ -3,12 +3,12 @@
  * Public facing specific functionality.
  *
  * @since         4.0.0
- * @package       WP_NoExternalLinks
- * @subpackage    WP_NoExternalLinks/Public
- * @author        SteamerDevelopment
+ * @package       Mihdan_NoExternalLinks
+ * @subpackage    Mihdan_NoExternalLinks/Public
+ * @author        mihdan
  */
 
-class WP_NoExternalLinks_Public {
+class Mihdan_NoExternalLinks_Public {
 
 	/**
 	 * The ID of this plugin.
@@ -566,7 +566,7 @@ class WP_NoExternalLinks_Public {
 
                 // no table found
                 if ( is_null( $result ) && strpos( $wpdb->last_error, "doesn't exist" ) ) {
-                    $create = WP_NoExternalLinks_Database::migrate( 'external_links_masks' );
+                    $create = Mihdan_NoExternalLinks_Database::migrate( 'external_links_masks' );
 
                     if ( empty( $create ) ) {
                         $this->debug_info(
@@ -796,7 +796,7 @@ class WP_NoExternalLinks_Public {
             $wpdb->last_error
         );
 
-        $create = WP_NoExternalLinks_Database::migrate( 'external_links_logs' );
+        $create = Mihdan_NoExternalLinks_Database::migrate( 'external_links_logs' );
 
         if ( empty( $create ) ) {
             $this->debug_info(

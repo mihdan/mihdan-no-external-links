@@ -1,10 +1,10 @@
 <?php
 /**
- * Markup for WP No External Links Referrer Warning page.
+ * Markup for Mihdan: No External Links Referrer Warning page.
  *
  * @since         4.0.0
- * @package       WP_NoExternalLinks
- * @subpackage    WP_NoExternalLinks/Public/Partials
+ * @package       Mihdan_NoExternalLinks
+ * @subpackage    Mihdan_NoExternalLinks/Public/Partials
  * @author        SteamerDevelopment
  */
 ?>
