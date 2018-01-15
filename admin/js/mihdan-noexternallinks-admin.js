@@ -3,23 +3,23 @@
 
     $(function() {
 
-        var masking_type = $('input[name="wp_noexternallinks_masking_type"]'),
-            redirect_time = $("input#wp_noexternallinks_redirect_time"),
-            mask_links = $('input[name="wp_noexternallinks_mask_links"]'),
+        var masking_type = $('input[name="mihdan_noexternallinks_masking_type"]'),
+            redirect_time = $("input#mihdan_noexternallinks_redirect_time"),
+            mask_links = $('input[name="mihdan_noexternallinks_mask_links"]'),
             mask_links_inputs = $("div.list-tree input"),
-            link_structure = $('input[name="wp_noexternallinks_link_structure"]'),
-            link_structure_default = $('input#wp_noexternallinks_link_structure_default'),
-            link_structure_custom = $('input#wp_noexternallinks_link_structure_custom'),
-            link_separator = $('input[name="wp_noexternallinks_separator"]'),
+            link_structure = $('input[name="mihdan_noexternallinks_link_structure"]'),
+            link_structure_default = $('input#mihdan_noexternallinks_link_structure_default'),
+            link_structure_custom = $('input#mihdan_noexternallinks_link_structure_custom'),
+            link_separator = $('input[name="mihdan_noexternallinks_separator"]'),
             link_separator_display = $('.link-separator'),
-            link_encoding = $('input[name="wp_noexternallinks_link_encoding"]'),
-            link_shortening = $('input[name="wp_noexternallinks_link_shortening"]'),
-            enable_logging = $('input#wp_noexternallinks_logging'),
-            log_duration = $('input#wp_noexternallinks_log_duration'),
-            enable_anonymize_links = $('input#wp_noexternallinks_anonymize_links'),
-            anonymous_link_provider = $('input#wp_noexternallinks_anonymous_link_provider'),
-            bot_targeting = $('input#wp_noexternallinks_bot_targeting'),
-            bots_selector = $('select#wp_noexternallinks_bots_selector');
+            link_encoding = $('input[name="mihdan_noexternallinks_link_encoding"]'),
+            link_shortening = $('input[name="mihdan_noexternallinks_link_shortening"]'),
+            enable_logging = $('input#mihdan_noexternallinks_logging'),
+            log_duration = $('input#mihdan_noexternallinks_log_duration'),
+            enable_anonymize_links = $('input#mihdan_noexternallinks_anonymize_links'),
+            anonymous_link_provider = $('input#mihdan_noexternallinks_anonymous_link_provider'),
+            bot_targeting = $('input#mihdan_noexternallinks_bot_targeting'),
+            bots_selector = $('select#mihdan_noexternallinks_bots_selector');
 
         masking_type.on("change", function() {
             var masking_type_value = $(this).val();
