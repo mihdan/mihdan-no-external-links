@@ -3,16 +3,16 @@
  * Admin log table functionality.
  *
  * @since         4.0.0
- * @package       WP_NoExternalLinks
- * @subpackage    WP_NoExternalLinks/Admin
- * @author        SteamerDevelopment
+ * @package       Mihdan_NoExternalLinks
+ * @subpackage    Mihdan_NoExternalLinks/Admin
+ * @author        mihdan
  */
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
     require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-class WP_NoExternalLinks_Admin_Log_Table extends WP_List_Table {
+class Mihdan_NoExternalLinks_Admin_Log_Table extends WP_List_Table {
 
     /**
      * The ID of this plugin.

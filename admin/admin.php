@@ -3,12 +3,12 @@
  * Admin specific functionality.
  *
  * @since         4.0.0
- * @package       WP_NoExternalLinks
- * @subpackage    WP_NoExternalLinks/Admin
- * @author        SteamerDevelopment
+ * @package       Mihdan_NoExternalLinks
+ * @subpackage    Mihdan_NoExternalLinks/Admin
+ * @author        mihdan
  */
 
-class WP_NoExternalLinks_Admin {
+class Mihdan_NoExternalLinks_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -114,7 +114,7 @@ class WP_NoExternalLinks_Admin {
 
 		wp_enqueue_style(
             $this->plugin_name,
-            plugin_dir_url( __FILE__ ) . 'css/wp-noexternallinks-admin.min.css',
+            plugin_dir_url( __FILE__ ) . 'css/mihdan-noexternallinks-admin.min.css',
             array(),
             $this->version,
             'all'
@@ -131,7 +131,7 @@ class WP_NoExternalLinks_Admin {
 
 		wp_enqueue_script(
             $this->plugin_name,
-            plugin_dir_url( __FILE__ ) . 'js/wp-noexternallinks-admin.min.js',
+            plugin_dir_url( __FILE__ ) . 'js/mihdan-noexternallinks-admin.min.js',
             array( 'jquery' ),
             $this->version,
             false
@@ -215,7 +215,7 @@ class WP_NoExternalLinks_Admin {
 
         add_screen_option( $option, $args );
 
-        $this->masks_table = new WP_NoExternalLinks_Admin_Mask_Table( $this->plugin_name, $this->options_prefix );
+        $this->masks_table = new Mihdan_NoExternalLinks_Admin_Mask_Table( $this->plugin_name, $this->options_prefix );
 
         $this->masks_table->process_bulk_action();
 
@@ -252,7 +252,7 @@ class WP_NoExternalLinks_Admin {
 
         add_screen_option( $option, $args );
 
-        $this->logs_table = new WP_NoExternalLinks_Admin_Log_Table( $this->plugin_name, $this->options_prefix );
+        $this->logs_table = new Mihdan_NoExternalLinks_Admin_Log_Table( $this->plugin_name, $this->options_prefix );
 
         $this->logs_table->process_bulk_action();
 
@@ -1200,7 +1200,7 @@ class WP_NoExternalLinks_Admin {
                 <?php
                     _e(
                         'Adds comment lines like
-                              <code>&#x3C;!--wp-noexternallinks debug: some info--&#x3E;</code> to output.',
+                              <code>&#x3C;!--mihdan-noexternallinks debug: some info--&#x3E;</code> to output.',
                         $this->plugin_name
                     )
                 ?>
@@ -1632,7 +1632,7 @@ class WP_NoExternalLinks_Admin {
 
         $page = isset( $_GET['page'] ) ? $_GET['page'] : null;
 
-        if ( 'wp-noexternallinks-settings' === $page || 'wp-noexternallinks' === $page ) {
+        if ( 'mihdan-noexternallinks-settings' === $page || 'mihdan-noexternallinks' === $page ) {
             if ( $this->options->custom_parser ) {
                 add_action( 'admin_notices', array( $this, 'parser_notice' ) );
             }
