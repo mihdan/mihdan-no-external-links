@@ -7,7 +7,7 @@
  * @since         4.0.0
  * @package       Mihdan_NoExternalLinks
  * @subpackage    Mihdan_NoExternalLinks/Includes
- * @author        SteamerDevelopment
+ * @author        mihdan
  */
 
 class Mihdan_NoExternalLinks_Upgrader {
@@ -70,7 +70,7 @@ class Mihdan_NoExternalLinks_Upgrader {
 
 	    if ( false === $installed_version || version_compare( $installed_version, '4.0.0', '<' ) ) {
 
-            $current_options = get_option( 'wp_noexternallinks' );
+            $current_options = get_option( 'mihdan_noexternallinks' );
 
             if ( false !== $current_options ) {
 
@@ -265,9 +265,9 @@ class Mihdan_NoExternalLinks_Upgrader {
                     }
                 }
 
-                if ( false !== get_option( 'wp_noexternallinks_flush' ) ) {
+                if ( false !== get_option( 'mihdan_noexternallinks_flush' ) ) {
                     update_option(
-                        $this->options_prefix . 'last_cleared_logs', get_option( 'wp_noexternallinks_flush' )
+                        $this->options_prefix . 'last_cleared_logs', get_option( 'mihdan_noexternallinks_flush' )
                     );
                 }
 
@@ -275,7 +275,7 @@ class Mihdan_NoExternalLinks_Upgrader {
                     $wpdb->prefix . 'postmeta',
                     array('meta_value' => 'default'),
                     array(
-                        'meta_key' => 'wp_noextrenallinks_mask_links',
+                        'meta_key' => 'mihdan_noextrenallinks_mask_links',
                         'meta_value' => 0
                     )
                 );
@@ -284,7 +284,7 @@ class Mihdan_NoExternalLinks_Upgrader {
                     $wpdb->prefix . 'postmeta',
                     array('meta_value' => 'disabled'),
                     array(
-                        'meta_key' => 'wp_noextrenallinks_mask_links',
+                        'meta_key' => 'mihdan_noextrenallinks_mask_links',
                         'meta_value' => 2
                     )
                 );
@@ -292,7 +292,7 @@ class Mihdan_NoExternalLinks_Upgrader {
                 $wpdb->update(
                     $wpdb->prefix . 'postmeta',
                     array('meta_key' => 'mask_links'),
-                    array('meta_key' => 'wp_noextrenallinks_mask_links')
+                    array('meta_key' => 'mihdan_noextrenallinks_mask_links')
                 );
 
                 $table_name = $wpdb->prefix . 'links_stats';

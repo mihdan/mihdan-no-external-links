@@ -3,12 +3,12 @@
  * Checks plugin is compatible with WordPress and PHP.
  *
  * @since         4.0.0
- * @package       WP_NoExternalLinks
- * @subpackage    WP_NoExternalLinks/Includes
- * @author        SteamerDevelopment
+ * @package       Mihdan_NoExternalLinks
+ * @subpackage    Mihdan_NoExternalLinks/Includes
+ * @author        mihdan
  */
 
-class WP_NoExternalLinks_Compatibility {
+class Mihdan_NoExternalLinks_Compatibility {
 
     /**
      * The unique identifier of this plugin.

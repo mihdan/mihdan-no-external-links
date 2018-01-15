@@ -11,7 +11,7 @@
  * @since         4.0.0
  * @package       Mihdan_NoExternalLinks
  * @subpackage    Mihdan_NoExternalLinks/Includes
- * @author        SteamerDevelopment
+ * @author        mihdan
  */
 
 class Mihdan_NoExternalLinks {

@@ -7,12 +7,12 @@
  * run function to execute the list of actions and filters.
  *
  * @since         4.0.0
- * @package       WP_NoExternalLinks
- * @subpackage    WP_NoExternalLinks/Includes
- * @author        SteamerDevelopment
+ * @package       Mihdan_NoExternalLinks
+ * @subpackage    Mihdan_NoExternalLinks/Includes
+ * @author        mihdan
  */
 
-class WP_NoExternalLinks_Loader {
+class Mihdan_NoExternalLinks_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

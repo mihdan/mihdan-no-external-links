@@ -5,12 +5,12 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since         4.2.0
- * @package       WP_NoExternalLinks
- * @subpackage    WP_NoExternalLinks/Includes
- * @author        SteamerDevelopment
+ * @package       Mihdan_NoExternalLinks
+ * @subpackage    Mihdan_NoExternalLinks/Includes
+ * @author        mihdan
  */
 
-class WP_NoExternalLinks_Installer {
+class Mihdan_NoExternalLinks_Installer {
 
     /**
      * The ID of this plugin.
@@ -66,7 +66,7 @@ class WP_NoExternalLinks_Installer {
 
         if ( false === $installed_version || version_compare( $installed_version, '4.2.0', '<' ) ) {
 
-            WP_NoExternalLinks_Database::migrate();
+            Mihdan_NoExternalLinks_Database::migrate();
 
             $installed_version = '4.2.0';
             update_option( $this->options_prefix . 'version', $installed_version );

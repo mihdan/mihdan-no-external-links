@@ -6,12 +6,12 @@
  * so that it is ready for translation.
  *
  * @since         4.0.0
- * @package       WP_NoExternalLinks
- * @subpackage    WP_NoExternalLinks/Includes
- * @author        SteamerDevelopment
+ * @package       Mihdan_NoExternalLinks
+ * @subpackage    Mihdan_NoExternalLinks/Includes
+ * @author        mihdan
  */
 
-class WP_NoExternalLinks_i18n {
+class Mihdan_NoExternalLinks_i18n {
 
     /**
      * The ID of this plugin.

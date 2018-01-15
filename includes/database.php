@@ -3,12 +3,12 @@
  * Database specific functionality.
  *
  * @since         4.2.0
- * @package       WP_NoExternalLinks
- * @subpackage    WP_NoExternalLinks/Includes
- * @author        SteamerDevelopment
+ * @package       Mihdan_NoExternalLinks
+ * @subpackage    Mihdan_NoExternalLinks/Includes
+ * @author        mihdan
  */
 
-class WP_NoExternalLinks_Database {
+class Mihdan_NoExternalLinks_Database {
 
     /**
      * Migrates any database changes.
