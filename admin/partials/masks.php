@@ -1,11 +1,11 @@
 <?php
 /**
- * Markup for WP No External Links Masks page.
+ * Markup for Mihdan: No External Links Masks page.
  *
  * @since         4.2.0
- * @package       WP_NoExternalLinks
- * @subpackage    WP_NoExternalLinks/Admin/Partials
- * @author        SteamerDevelopment
+ * @package       Mihdan_NoExternalLinks
+ * @subpackage    Mihdan_NoExternalLinks/Admin/Partials
+ * @author        mihdan
  */
 ?>
 

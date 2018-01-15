@@ -1,11 +1,11 @@
 <?php
 /**
- * Markup for WP No External Links Settings page.
+ * Markup for Mihdan: No External Links Settings page.
  *
  * @since         4.0.0
- * @package       WP_NoExternalLinks
- * @subpackage    WP_NoExternalLinks/Admin/Partials
- * @author        SteamerDevelopment
+ * @package       Mihdan_NoExternalLinks
+ * @subpackage    Mihdan_NoExternalLinks/Admin/Partials
+ * @author        mihdan
  */
 ?>
 
