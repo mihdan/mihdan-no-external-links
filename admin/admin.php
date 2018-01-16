@@ -157,7 +157,7 @@ class Mihdan_NoExternalLinks_Admin {
 
         add_submenu_page(
             $this->plugin_name,
-            __( 'WP No External Links Masks', $this->plugin_name ),
+            __( 'Mihdan: No External Links Masks', $this->plugin_name ),
             __( 'Masks', $this->plugin_name ),
             'manage_options',
             $this->plugin_name,
@@ -166,7 +166,7 @@ class Mihdan_NoExternalLinks_Admin {
 
         add_submenu_page(
             $this->plugin_name,
-            __( 'WP No External Links Logs', $this->plugin_name ),
+            __( 'Mihdan: No External Links Logs', $this->plugin_name ),
             __( 'Logs', $this->plugin_name ),
             'manage_options',
             $this->plugin_name . '-logs',
@@ -175,7 +175,7 @@ class Mihdan_NoExternalLinks_Admin {
 
         add_submenu_page(
             $this->plugin_name,
-            __( 'WP No External Links Settings', $this->plugin_name ),
+            __( 'Mihdan: No External Links Settings', $this->plugin_name ),
             __( 'Settings', $this->plugin_name ),
             'manage_options',
             $this->plugin_name . '-settings',

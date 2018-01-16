@@ -75,7 +75,7 @@ class Mihdan_NoExternalLinks_Compatibility {
             deactivate_plugins( $path );
 
             wp_die(
-                '<p><strong>WP No External Links</strong> ' .
+                '<p><strong>Mihdan: No External Links</strong> ' .
                 __('requires', $this->plugin_name) . ' ' .
                 $flag . ' '. $version . ' ' .
                 __('or greater', $this->plugin_name),

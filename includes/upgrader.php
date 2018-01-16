@@ -337,7 +337,7 @@ class Mihdan_NoExternalLinks_Upgrader {
         <div class="notice notice-warning is-dismissible">
             <p>
                 <?php _e(
-                    'WP No External Links Settings have been imported from an older version of the plugin,
+                    'Mihdan: No External Links Settings have been imported from an older version of the plugin,
                     please double check them!',
                     $this->plugin_name
                 ); ?>
