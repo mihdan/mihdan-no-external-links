@@ -1592,7 +1592,7 @@ class Mihdan_NoExternalLinks_Admin {
 
         if (
             ! isset( $_POST[ 'meta-box-nonce' ] ) ||
-            ! wp_verify_nonce( $_POST[ 'meta-box-nonce' ], basename( __FILE__ ) )
+            ! wp_verify_nonce( sanitize_text_field( $_POST[ 'meta-box-nonce' ] ), basename( __FILE__ ) )
         ) {
             return $post_id;
         }
@@ -1612,7 +1612,7 @@ class Mihdan_NoExternalLinks_Admin {
             $values = array( 'default', 'disabled' );
 
             if ( in_array( $_POST[ 'mask_links' ], $values ) ) {
-                $mask_links = $_POST[ 'mask_links' ];
+                $mask_links = sanitize_text_field( $_POST[ 'mask_links' ] );
             } else {
                 // TODO: Return error message
             }
@@ -1630,7 +1630,7 @@ class Mihdan_NoExternalLinks_Admin {
      */
     public function admin_notices() {
 
-        $page = isset( $_GET['page'] ) ? $_GET['page'] : null;
+        $page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : null;
 
         if ( 'mihdan-noexternallinks-settings' === $page || 'mihdan-noexternallinks' === $page ) {
             if ( $this->options->custom_parser ) {

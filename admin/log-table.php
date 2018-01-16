@@ -73,7 +73,7 @@ class Mihdan_NoExternalLinks_Admin_Log_Table extends WP_List_Table {
         $sql = "SELECT * FROM $table_name";
 
         if ( ! empty( $_REQUEST[ 'orderby' ] ) ) {
-            $order_by = $_REQUEST[ 'orderby' ];
+            $order_by = sanitize_text_field( $_REQUEST[ 'orderby' ] );
 
             if ( 'title' === $_REQUEST[ 'orderby' ] ) {
                 $order_by = 'url';

@@ -13,7 +13,7 @@
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 	<?php settings_errors(); ?>
 
-	<?php $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : ''; ?>
+	<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : ''; ?>
 
 	<h2 class="nav-tab-wrapper">
 		<a href="?page=<?php echo $this->plugin_name; ?>-settings" class="nav-tab<?php echo '' == $active_tab ? ' nav-tab-active' : ''; ?>">

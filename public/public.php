@@ -323,7 +323,7 @@ class Mihdan_NoExternalLinks_Public {
         $p = strpos( $_SERVER[ 'REQUEST_URI' ], '/' . $this->options->separator . '/' );
 
         if ( isset( $_REQUEST[ $this->options->separator ] ) ) {
-            $goto = $_REQUEST[ $this->options->separator ];
+            $goto = sanitize_key( $_REQUEST[ $this->options->separator ] );
         } elseif ( false !== $p ) {
             $goto = substr( $_SERVER[ 'REQUEST_URI' ], $p + strlen( $this->options->separator ) + 2 );
         }
