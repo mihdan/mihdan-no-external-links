@@ -4,7 +4,7 @@ Contributors: mihdan
 Tags: seo, link, links, publisher, post, posts, comments
 Requires at least: 3.5.0
 Tested up to: 4.9.1
-Stable tag: 4.3.1
+Stable tag: 4.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Convert external links into internal links, site wide or post/page specific. Add NoFollow, Click logging, and more...
@@ -19,7 +19,7 @@ Links like "*https://wordpress.org*" will be masked into
 = Warning =
 Mihdan: No External Links may conflict with cache plugins.
 Usually adding the redirect page to the caching plugin exclusions works fine, but there are no guarantees.
-Create a [support topic](https://wordpress.org/support/plugin/wp-noexternallinks) if you need assistance resolving a caching issue.
+Create a [support topic](https://wordpress.org/support/plugin/mihdan-no-external-links) if you need assistance resolving a caching issue.
 **_Please provide as much detail as possible, for example, what version of WordPress & PHP you are using. Which caching plugin you are using. The more information you include the better._**
 
 = Details =
@@ -29,7 +29,7 @@ Mihdan: No External Links is designed for specialists who sell different kinds o
 Just do everything like you would normally, and as long as the plugin is active, external links will be automatically masked.
 
 = Custom Parser =
-We do **not** recommend using this feature! - Future updates may break your custom parser, we would recommend submitting a [feature request](https://wordpress.org/support/plugin/wp-noexternallinks) instead.
+We do **not** recommend using this feature! - Future updates may break your custom parser, we would recommend submitting a [feature request](https://wordpress.org/support/plugin/mihdan-no-external-links) instead.
 Due to a recent update, any existing custom parsers will need to be updated to fit with the new code base. (Please see FAQs below for more details)
 **_Limited support will be provided for any custom parser issues._**
 
@@ -37,11 +37,11 @@ Due to a recent update, any existing custom parsers will need to be updated to f
 The default settings that are used on a fresh install of the plugin are what we recommend.
 
 = Support =
-Need help with anything? Please create a [support topic](https://wordpress.org/support/plugin/wp-noexternallinks).
+Need help with anything? Please create a [support topic](https://wordpress.org/support/plugin/mihdan-no-external-links).
 **_Please provide as much detail as possible, for example, what version of WordPress & PHP you are using. Examples of links that do not work. If you are using a caching plugin, please specify which one. The more information you include the better._**
 
 = Feature Request =
-Want a feature added to this plugin? Create a [support topic](https://wordpress.org/support/plugin/wp-noexternallinks).
+Want a feature added to this plugin? Create a [support topic](https://wordpress.org/support/plugin/mihdan-no-external-links).
 We are always looking to add features to improve our plugin.
 
 = Localization =
@@ -67,11 +67,14 @@ Mihdan: No External Links **does not** make any changes to your database, it jus
 
 == Changelog ==
 
+= 4.3.2 =
+Update README.txt
+
 = 4.3.1 =
 Bump version
 
 = 4.3 =
-Forked from https://wordpress.org/plugins/wp-noexternallinks/
+Forked from https://wordpress.org/plugins/mihdan-no-external-links/
 
 = 4.2.2 =
 Several bug fixes.
@@ -355,10 +358,10 @@ else
     include_once(WP_PLUGIN_DIR . '/mihdan-noexternallinks/mihdan-noexternallinks-parser.php');`
 
 Change:
-`class custom_parser extends wp_noexternallinks_parser`
+`class custom_parser extends mihdan_noexternallinks_parser`
 
 To:
-`class WP_CustomParser extends WP_NoExternalLinks_Public`
+`class WP_CustomParser extends Mihdan_NoExternalLinks_Public`
 
 Change any options references:
 * `$this->options['no302']` to `$this->options->masking_type == 'javascript'`
