@@ -17,16 +17,16 @@
 
 	<h2 class="nav-tab-wrapper">
 		<a href="?page=<?php echo $this->plugin_name; ?>-settings" class="nav-tab<?php echo '' == $active_tab ? ' nav-tab-active' : ''; ?>">
-			General
+			<?php _e( 'General', $this->plugin_name ); ?>
 		</a>
 		<a href="?page=<?php echo $this->plugin_name; ?>-settings&tab=links" class="nav-tab<?php echo 'links' == $active_tab ? ' nav-tab-active' : ''; ?>">
-			Links
+			<?php _e( 'Links', $this->plugin_name ); ?>
 		</a>
 		<a href="?page=<?php echo $this->plugin_name; ?>-settings&tab=include_exclude" class="nav-tab<?php echo 'include_exclude' == $active_tab ? ' nav-tab-active' : ''; ?>">
-			Include / Exclude
+			<?php _e( 'Include', $this->plugin_name ); ?> / <?php _e( 'Exclude', $this->plugin_name ); ?>
 		</a>
 		<a href="?page=<?php echo $this->plugin_name; ?>-settings&tab=advanced" class="nav-tab<?php echo 'advanced' == $active_tab ? ' nav-tab-active' : ''; ?>">
-			Advanced
+			<?php _e( 'Advanced', $this->plugin_name ); ?>
 		</a>
 	</h2>
 
