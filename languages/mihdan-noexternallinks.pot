@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 
 #. URI of the plugin
-msgid "https://wordpress.org/plugins/mihdan-noexternallinks/"
+msgid "https://wordpress.org/plugins/mihdan-no-external-links/"
 msgstr ""
 
 #. Author of the plugin

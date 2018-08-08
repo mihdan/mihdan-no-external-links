@@ -100,8 +100,8 @@ class Mihdan_NoExternalLinks {
 	 */
 	public function __construct() {
 
-        $this->plugin_name = 'mihdan-noexternallinks';
-		$this->version = '4.2.2';
+        $this->plugin_name = 'mihdan-no-external-links';
+		$this->version = '4.3.3';
         $this->options_prefix = 'mihdan_noexternallinks_';
 
         $upload_dir = wp_upload_dir();

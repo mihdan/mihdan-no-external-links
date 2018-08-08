@@ -1691,7 +1691,7 @@ class Mihdan_NoExternalLinks_Admin {
      */
     function output_buffer_notice() {
         ?>
-        <div class="notice notice-warning">
+        <div class="notice notice-warning is-dismissible">
             <p>
                 <?php _e(
                     '<strong>Output Buffering</strong> is disabled, <em>Mask All Links</em> will not work. Contact your server administrator to get this feature enabled.',
@@ -1703,3 +1703,5 @@ class Mihdan_NoExternalLinks_Admin {
     }
 
 }
+
+// eof;
