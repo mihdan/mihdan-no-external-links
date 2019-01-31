@@ -3,8 +3,8 @@ Author: mihdan
 Contributors: mihdan
 Tags: seo, link, links, publisher, post, posts, comments
 Requires at least: 3.5.0
-Tested up to: 4.9.1
-Stable tag: 4.3.6
+Tested up to: 5.1
+Stable tag: 4.3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Convert external links into internal links, site wide or post/page specific. Add NoFollow, Click logging, and more...
@@ -66,6 +66,9 @@ Mihdan: No External Links **does not** make any changes to your database, it jus
 4. [Optional] Configure Mihdan: No External Links settings.
 
 == Changelog ==
+
+= 4.3.7 (2019-01-31) =
+Fix bug with cyr2lat plugin: remove `sanitize_title` from menu items
 
 = 4.3.6 (2018-12-07) =
 Add assets for plugin

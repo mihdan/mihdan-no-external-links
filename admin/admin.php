@@ -1366,6 +1366,22 @@ class Mihdan_NoExternalLinks_Admin {
         <?php
     }
 
+	/**
+	 * Render the masking type settings section.
+	 *
+	 * @since  4.2.0
+	 */
+	public function link_shortening_yourls_cb() {
+		?>
+		<code>http://destyy.com/q15Xzx</code> &nbsp;
+		<?php _e( 'API Key', $this->plugin_name ) ?>
+		<input type="text"
+		       name="<?php echo $this->options_prefix . 'yourls_api_key' ?>"
+		       id="<?php echo $this->options_prefix . 'yourls_api_key' ?>"
+		       value="<?php echo $this->options->yourls_api_key ?>" />
+		<?php
+	}
+
     /**
      * Render the masking type settings section.
      *
