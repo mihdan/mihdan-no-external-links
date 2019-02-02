@@ -319,6 +319,8 @@ class Mihdan_NoExternalLinks {
             'bitly_api_key' => 'R_31d62b0aa55e4c0abe306693624ff73a',
             'linkshrink_api_key' => 'Ssk',
             'shortest_api_key' => '57bfc99a0c2ce713061730b696750659',
+            'yourls_domain' => '',
+            'yourls_signature' => '',
             'logging' => true,
             'log_duration' => 0,
             'remove_all_links' => false,
@@ -383,6 +385,8 @@ class Mihdan_NoExternalLinks {
                 case 'bitly_api_key':
                 case 'linkshrink_api_key':
                 case 'shortest_api_key':
+                case 'yourls_domain':
+                case 'yourls_signature':
                     if ( false !== $option && '' !== $option ) {
                         $options[ $key ] = ( string ) $option;
                     }

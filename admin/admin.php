@@ -688,6 +688,20 @@ class Mihdan_NoExternalLinks_Admin {
             array( 'label_for' => $this->options_prefix . 'link_shortening_shortest' )
         );
 
+	    add_settings_field(
+		    $this->options_prefix . 'link_shortening_yourls',
+		    '<input type="radio"
+                         name="' . $this->options_prefix . 'link_shortening"
+                         id="' . $this->options_prefix . 'link_shortening_yourls"
+                         value="yourls"
+                         ' . checked($this->options->link_shortening, 'yourls', false) . ' /> ' .
+		    __( 'Yourls', $this->plugin_name ),
+		    array( $this, 'link_shortening_yourls_cb' ),
+		    $this->plugin_name . '-settings-links',
+		    $this->options_prefix . 'settings_link_shortening_section',
+		    array( 'label_for' => $this->options_prefix . 'link_shortening_yourls' )
+	    );
+
         register_setting(
             $this->plugin_name . '-settings-links',
             $this->options_prefix . 'link_shortening'
@@ -722,6 +736,16 @@ class Mihdan_NoExternalLinks_Admin {
             $this->plugin_name . '-settings-links',
             $this->options_prefix . 'shortest_api_key'
         );
+
+	    register_setting(
+		    $this->plugin_name . '-settings-links',
+		    $this->options_prefix . 'yourls_signature'
+	    );
+
+	    register_setting(
+		    $this->plugin_name . '-settings-links',
+		    $this->options_prefix . 'yourls_domain'
+	    );
 
         add_settings_field(
             $this->options_prefix . 'javascript',
@@ -1373,12 +1397,17 @@ class Mihdan_NoExternalLinks_Admin {
 	 */
 	public function link_shortening_yourls_cb() {
 		?>
-		<code>http://destyy.com/q15Xzx</code> &nbsp;
-		<?php _e( 'API Key', $this->plugin_name ) ?>
+		<?php _e( 'Domain', $this->plugin_name ) ?>
 		<input type="text"
-		       name="<?php echo $this->options_prefix . 'yourls_api_key' ?>"
-		       id="<?php echo $this->options_prefix . 'yourls_api_key' ?>"
-		       value="<?php echo $this->options->yourls_api_key ?>" />
+		       name="<?php echo $this->options_prefix . 'yourls_domain' ?>"
+		       id="<?php echo $this->options_prefix . 'yourls_domain' ?>"
+		       value="<?php echo $this->options->yourls_domain ?>" />
+		<br>
+		<?php _e( 'Signature', $this->plugin_name ) ?>
+		<input type="text"
+		       name="<?php echo $this->options_prefix . 'yourls_signature' ?>"
+		       id="<?php echo $this->options_prefix . 'yourls_signature' ?>"
+		       value="<?php echo $this->options->yourls_signature ?>" />
 		<?php
 	}
 
