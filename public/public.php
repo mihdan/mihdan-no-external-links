@@ -743,37 +743,37 @@ class Mihdan_NoExternalLinks_Public {
 	        case 'yourls':
 		        $shortener = 'yourls';
 
-		        $sql = "SELECT mask FROM $table_name WHERE LOWER(url) = LOWER(%s) AND LOWER(short_url) = 'shortest' LIMIT 1";
+		        $sql = "SELECT mask FROM $table_name WHERE LOWER(url) = LOWER(%s) AND LOWER(short_url) = 'yourls' LIMIT 1";
 		        $result = $wpdb->get_var( $wpdb->prepare( $sql, $url ) );
 
 		        if ( $result ) {
 			        return $result;
 		        }
 
-		        $api_url = 'https://' . $this->options->yourls_domain . '/';
-		        $post_data = array(
+		        $host = 'https://' . $this->options->yourls_domain . '/yourls-api.php';
+		        $query = array(
 		        	'action' => 'shorturl',
 		        	'format' => 'json',
 		        	'signature' => $this->options->yourls_signature,
 		        	'url' => $long_url,
 		        );
-		        $response = wp_remote_post(
-		        	$api_url,
+		        $query = http_build_query( $query );
+
+		        $response = wp_remote_get(
+			        $host . '?'. $query,
 			        array(
 		        	    'timeout' => 2,
-				        'body'    => $post_data,
 		            )
 		        );
 
-		        // TODO: разобрать дальше
-		        $short_url = urldecode( $long_url );
+		        $json = wp_remote_retrieve_body( $response );
 
-//		        print_r($response);die;
-//		        if ( $response['body'] ) {
-//			        $data = json_decode( $response['body'] );
-//			        print_r($data);die;
-//			        //$short_url = $data->shortenedUrl;
-//		        }
+		        if ( $json ) {
+		        	$json = json_decode( $json );
+			        $short_url = $json->shorturl;
+		        } else {
+			        $short_url = $long_url;
+		        }
 
 		        break;
         }
