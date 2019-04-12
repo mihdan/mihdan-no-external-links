@@ -14,10 +14,10 @@
 
     <form method="post">
 		<?php
-//		if ( $this->logs_table ) {
+		if ( $this->logs_table ) {
 			$this->logs_table->prepare_items();
 			$this->logs_table->display();
-//		}
+		}
 		?>
     </form>
 </div>
