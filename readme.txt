@@ -4,7 +4,7 @@ Contributors: mihdan
 Tags: seo, link, links, publisher, post, posts, comments
 Requires at least: 3.5.0
 Tested up to: 5.1
-Stable tag: 4.3.8
+Stable tag: 4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Convert external links into internal links, site wide or post/page specific. Add NoFollow, Click logging, and more...
@@ -67,32 +67,37 @@ Mihdan: No External Links **does not** make any changes to your database, it jus
 
 == Changelog ==
 
+= 4.4 (2019-04-12) =
+* RegEx pattern to DomDocument
+* WPCS
+* Fix bug on log page
+
 = 4.3.8 (2019-02-02) =
-Built-in support for yourls link shortening
+* Built-in support for yourls link shortening
 
 = 4.3.7 (2019-01-31) =
-Fix bug with cyr2lat plugin: remove `sanitize_title` from menu items
+* Fix bug with cyr2lat plugin: remove `sanitize_title` from menu items
 
 = 4.3.6 (2018-12-07) =
-Add assets for plugin
+* Add assets for plugin
 
 = 4.3.5 (2018-08-09) =
-Fix bug with `Mihdan_NoExternalLinks_Admin_Log_Table`
+* Fix bug with `Mihdan_NoExternalLinks_Admin_Log_Table`
 
 = 4.3.4 (2018-08-08) =
-Added new lines to the translation
+* Added new lines to the translation
 
 = 4.3.3 (2018-08-08) =
-Change text domain from `mihdan-noexternallinks` to `mihdan-no-external-links`
+* Change text domain from `mihdan-noexternallinks` to `mihdan-no-external-links`
 
 = 4.3.2 =
-Update README.txt
+* Update README.txt
 
 = 4.3.1 =
-Bump version
+* Bump version
 
 = 4.3 =
-Forked from https://wordpress.org/plugins/mihdan-no-external-links/
+* Forked from https://wordpress.org/plugins/wp-noexternallinks/
 
 = 4.2.2 =
 Several bug fixes.

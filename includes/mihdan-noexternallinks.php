@@ -545,12 +545,12 @@ class Mihdan_NoExternalLinks {
         $this->loader->add_action( 'load-toplevel_page_' . $this->get_plugin_name(), $this->admin, 'mask_page_screen_options' );
 
         $this->loader->add_filter( 'set-screen-option', $this->admin, 'log_page_set_screen_options', NULL, 3 );
-        //$this->loader->add_action( 'load-external-links_page_' . $this->get_plugin_name() . '-logs', $this->admin, 'log_page_screen_options' );
 
 		$hook_name = vsprintf( 'load-%s_page_%s-logs', array(
-			sanitize_file_name( __( 'External Links', $this->plugin_name ) ),
+			strtolower( sanitize_file_name( __( 'External Links', $this->plugin_name ) ) ),
 			$this->get_plugin_name()
 		) );
+
         $this->loader->add_action( $hook_name, $this->admin, 'log_page_screen_options' );
 
         $this->loader->add_action( 'add_meta_boxes', $this->admin, 'add_custom_meta_box' );
