@@ -64,11 +64,11 @@ class Mihdan_NoExternalLinks_Installer {
 
         $installed_version = get_option( $this->options_prefix . 'version' );
 
-        if ( false === $installed_version || version_compare( $installed_version, '4.2.0', '<' ) ) {
+        if ( false === $installed_version || version_compare( $installed_version, '4.2.1', '<' ) ) {
 
             Mihdan_NoExternalLinks_Database::migrate();
 
-            $installed_version = '4.2.0';
+            $installed_version = '4.5.1';
             update_option( $this->options_prefix . 'version', $installed_version );
 
         }

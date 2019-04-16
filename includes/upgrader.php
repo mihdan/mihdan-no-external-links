@@ -333,7 +333,7 @@ class Mihdan_NoExternalLinks_Upgrader {
 			$installed_version = '4.5.1';
 			update_option( $this->options_prefix . 'version', $installed_version );
 
-        }
+		}
 
 	}
 
