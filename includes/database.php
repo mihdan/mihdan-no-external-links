@@ -30,8 +30,8 @@ class Mihdan_NoExternalLinks_Database {
             $new_table_name = $wpdb->prefix . 'external_links_logs';
             $sql[] = "CREATE TABLE $new_table_name (
                    id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-                   url varchar(2083) NOT NULL,
-                   referring_url varchar(2083),
+                   url varchar(190000) NOT NULL,
+                   referring_url varchar(190000),
                    user_agent varchar(255),
                    ip_address varchar(255),
                    restricted varchar(255),
@@ -44,9 +44,9 @@ class Mihdan_NoExternalLinks_Database {
             $new_table_name = $wpdb->prefix . 'external_links_masks';
             $sql[] = "CREATE TABLE $new_table_name (
                    id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-                   url varchar(2083) NOT NULL,
+                   url varchar(190000) NOT NULL,
                    mask varchar(255) NOT NULL,
-                   short_url varchar(2083) NOT NULL,
+                   short_url varchar(190000) NOT NULL,
                    PRIMARY KEY  (id)
                ) $charset_collate;";
         }
