@@ -10,7 +10,7 @@
  * Plugin Name:       Mihdan: No External Links
  * Plugin URI:        https://wordpress.org/plugins/mihdan-no-external-links/
  * Description:       Convert external links into internal links, site wide or post/page specific. Add NoFollow, Click logging, and more...
- * Version:           4.5
+ * Version:           4.5.1
  * Author:            Mikhail Kobzarev
  * Author URI:        https://www.kobzarev.com/
  * License:           GPL-2.0+
@@ -26,12 +26,15 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 define( 'MIHDAN_NO_EXTERNAL_LINKS_FILE', __FILE__ );
+define( 'MIHDAN_NO_EXTERNAL_LINKS_DIR', __DIR__ );
+define( 'MIHDAN_NO_EXTERNAL_LINKS_VERSION', '4.5.1' );
+define( 'MIHDAN_NO_EXTERNAL_LINKS_SLUG', 'mihdan-no-external-links' );
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/mihdan-noexternallinks.php';
+require MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/mihdan-noexternallinks.php';
 
 /**
  * Begins execution of the plugin.

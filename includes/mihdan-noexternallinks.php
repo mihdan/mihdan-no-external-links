@@ -101,7 +101,7 @@ class Mihdan_NoExternalLinks {
 	public function __construct() {
 
         $this->plugin_name = 'mihdan-no-external-links';
-		$this->version = '4.3.3';
+		$this->version = MIHDAN_NO_EXTERNAL_LINKS_VERSION;
         $this->options_prefix = 'mihdan_noexternallinks_';
 
         $upload_dir = wp_upload_dir();
@@ -139,54 +139,59 @@ class Mihdan_NoExternalLinks {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/loader.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/loader.php';
 
         /**
          * The class responsible for defining internationalization functionality
          * of the plugin.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/i18n.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/i18n.php';
 
         /**
          * The class responsible for checking compatibility.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/compatibility.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/compatibility.php';
 
         /**
          * The class responsible for database tables.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/database.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/database.php';
 
         /**
          * The class responsible for installing the plugin.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/installer.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/installer.php';
 
         /**
          * The class responsible for upgrading the plugin.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/upgrader.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/upgrader.php';
+
+		/**
+		 * Site Health Tests.
+		 */
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/site-health.php';
 
         /**
          * The class responsible for defining all actions that occur in the admin area.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/admin.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/admin.php';
 
         /**
          * The class responsible for the masks table.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/mask-table.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/mask-table.php';
 
         /**
          * The class responsible for the logs table.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/log-table.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/log-table.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/public.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/public/public.php';
 
         /**
          * The class responsible for custom functionality.
@@ -556,6 +561,7 @@ class Mihdan_NoExternalLinks {
         $this->loader->add_action( 'add_meta_boxes', $this->admin, 'add_custom_meta_box' );
         $this->loader->add_action( 'save_post', $this->admin, 'save_custom_meta_box' );
 
+        $this->loader->add_action( 'init', $this->admin, 'site_health' );
 	}
 
 	/**

@@ -8,6 +8,8 @@
  * @author        mihdan
  */
 
+use Mihdan\No_External_Links\Site_Health;
+
 class Mihdan_NoExternalLinks_Admin {
 
 	/**
@@ -83,6 +85,14 @@ class Mihdan_NoExternalLinks_Admin {
     public $logs_table;
 
 	/**
+	 * The class that add Site Health tests.
+	 *
+	 * @since 4.5.1
+	 * @var Site_Health
+	 */
+    public $site_health;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    4.0.0
@@ -103,6 +113,13 @@ class Mihdan_NoExternalLinks_Admin {
         $this->permalink_equals = get_option( 'permalink_structure' ) ? '/' : '=';
 
         $this->admin_notices();
+	}
+
+	/**
+	 * @since 4.5.1
+	 */
+	public function site_health() {
+		$this->site_health = new Site_Health( $this->plugin_name );
 	}
 
 	/**
