@@ -8,11 +8,13 @@
  * @author        SteamerDevelopment
  */
 ?>
-
+<!doctype html>
 <html>
     <head>
         <title><?php _e( 'Redirecting...', $this->plugin_name ); ?></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	    <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta name="robots" content="noindex,nofollow"/>
         <meta http-equiv="refresh" content="5; url=<?php echo get_home_url(); ?>"/>
     </head>
@@ -31,7 +33,5 @@
         </div>
     </body>
 </html>
-
 <?php
-
 die();
