@@ -1275,7 +1275,7 @@ class Mihdan_NoExternalLinks_Admin {
         <input type="text"
                name="<?php echo $this->options_prefix . 'separator' ?>"
                id="<?php echo $this->options_prefix . 'separator' ?>"
-               value="<?php echo 'goto' === $this->options->separator ? '' : $this->options->separator ?>" />
+               value="<?php echo 'goto' === $this->options->separator ? 'goto' : $this->options->separator ?>" />
         <code><?php echo $this->permalink_equals ?>https://example.com</code>
         <?php
     }
@@ -1694,7 +1694,7 @@ class Mihdan_NoExternalLinks_Admin {
 
         $page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : null;
 
-        if ( 'mihdan-noexternallinks-settings' === $page || 'mihdan-noexternallinks' === $page ) {
+        if ( 'mihdan-no-external-links-settings' === $page || 'mihdan-no-external-links' === $page ) {
             if ( $this->options->custom_parser ) {
                 add_action( 'admin_notices', array( $this, 'parser_notice' ) );
             }
