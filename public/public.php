@@ -318,6 +318,7 @@ class Mihdan_NoExternalLinks_Public {
      * @since    4.0.0
      */
     public function check_redirect() {
+	    global $wp_query;
 
         $goto = '';
         $p = strpos( $_SERVER[ 'REQUEST_URI' ], '/' . $this->options->separator . '/' );
@@ -330,7 +331,7 @@ class Mihdan_NoExternalLinks_Public {
 
         $goto = strip_tags( $goto );
 
-        if ( $goto ) {
+        if ( ! empty( $goto ) ) {
             $this->redirect( $goto );
         }
 
@@ -344,17 +345,28 @@ class Mihdan_NoExternalLinks_Public {
      */
     public function redirect( $url ) {
 
-        global $wp_rewrite, $hyper_cache_stop;
+        global $wp_query, $wp_rewrite, $hyper_cache_stop;
 
-        // disable Hyper Cache plugin (http://www.satollo.net/plugins/hyper-cache) from caching this page
+        // Disable Hyper Cache plugin (http://www.satollo.net/plugins/hyper-cache) from caching this page.
         $hyper_cache_stop = true;
 
-        // disable WP Super Cache caching
+        // Disable WP Super Cache, WP Rocket caching.
         if ( ! defined( 'DONOTCACHEPAGE' ) ) {
             define( 'DONOTCACHEPAGE', 1 );
         }
 
-        // checking for spammer attack, redirect should happen from your own website
+	    // Disable WP Rocket optimize.
+	    if ( ! defined( 'DONOTROCKETOPTIMIZE' ) ) {
+		    define( 'DONOTROCKETOPTIMIZE', true );
+	    }
+
+	    // Prevent 404.
+	    if ( $wp_query->is_404 ) {
+		    $wp_query->is_404 = false;
+		    header( 'HTTP/1.1 200 OK', true );
+	    }
+
+        // Checking for spammer attack, redirect should happen from your own website.
         if ( $this->options->check_referrer ) {
             if ( stripos( wp_get_referer(), $this->data->site ) !== 0 ) {
                 $this->show_referrer_warning();
@@ -369,7 +381,8 @@ class Mihdan_NoExternalLinks_Public {
             $url = urldecode( $url );
         }
 
-        $url = str_ireplace( '&#038;', '&', $url );
+	    // Restore &#038; and &amp; to &.
+		$url = html_entity_decode( $url, ENT_HTML5 | ENT_QUOTES, get_option( 'blog_charset' ) );
 
         if ( $this->options->anonymize_links ) {
             $url = $this->options->anonymous_link_provider . $url;
@@ -854,6 +867,8 @@ class Mihdan_NoExternalLinks_Public {
      * Renders the referrer warning page.
      */
     public function show_referrer_warning() {
+	    header( 'Content-type: text/html; charset="utf-8"', true );
+	    header( 'Refresh: ' . $this->options->redirect_time . '; url=' . get_home_url() );
 
         include_once 'partials/referrer-warning.php';
 
@@ -868,6 +883,7 @@ class Mihdan_NoExternalLinks_Public {
     public function show_redirect_page( $url ) {
 
         header( 'Content-type: text/html; charset="utf-8"', true );
+	    header( 'Refresh: ' . $this->options->redirect_time . '; url=' . $url );
 
         if ( '302' === $this->options->masking_type && $url ) {
             @header( 'Location: ' . $url );
