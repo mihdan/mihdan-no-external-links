@@ -1,0 +1,24 @@
+# A set of files and directories you probably don't want in your WordPress.org distribution
+
+# Files
+.DS_Store
+.coveralls.yml
+.distignore
+.editorconfig
+.gitignore
+.travis.yml
+CHANGELOG.md
+composer.json
+composer.lock
+Makefile
+phpcs.xml
+Thumbs.db
+README.md
+
+# Directories
+.git
+.idea
+.make
+src
+tests
+assets
