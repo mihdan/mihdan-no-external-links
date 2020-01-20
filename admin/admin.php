@@ -1350,7 +1350,7 @@ class Mihdan_NoExternalLinks_Admin {
         ?>
 	    <table>
 		    <tr>
-			    <td><?php _e( 'API Key', $this->plugin_name ) ?></td>
+			    <td width="100"><?php _e( 'API Key', $this->plugin_name ) ?></td>
 			    <td>
 				    <input type="text"
 				           name="<?php echo $this->options_prefix . 'adfly_api_key' ?>"
@@ -1400,18 +1400,27 @@ class Mihdan_NoExternalLinks_Admin {
      */
     public function link_shortening_bitly_cb() {
         ?>
-        <code>http://bit.ly/2w2V71G</code> &nbsp;
-        <?php _e( 'Login', $this->plugin_name ) ?>
-        <input type="text"
-               name="<?php echo $this->options_prefix . 'bitly_login' ?>"
-               id="<?php echo $this->options_prefix . 'bitly_login' ?>"
-               value="<?php echo $this->options->bitly_login ?>" />
-        &nbsp;
-        <?php _e( 'API Key', $this->plugin_name ) ?>
-        <input type="text"
-               name="<?php echo $this->options_prefix . 'bitly_api_key' ?>"
-               id="<?php echo $this->options_prefix . 'bitly_api_key' ?>"
-               value="<?php echo $this->options->bitly_api_key ?>" />
+	    <table>
+		    <tr>
+			    <td width="100"><?php _e( 'Login', $this->plugin_name ) ?></td>
+			    <td>
+				    <input type="text"
+				           name="<?php echo $this->options_prefix . 'bitly_login' ?>"
+				           id="<?php echo $this->options_prefix . 'bitly_login' ?>"
+				           value="<?php echo $this->options->bitly_login ?>" />
+			    </td>
+		    </tr>
+		    <tr>
+			    <td><?php _e( 'API Key', $this->plugin_name ) ?></td>
+			    <td>
+				    <input type="text"
+				           name="<?php echo $this->options_prefix . 'bitly_api_key' ?>"
+				           id="<?php echo $this->options_prefix . 'bitly_api_key' ?>"
+				           value="<?php echo $this->options->bitly_api_key ?>" />
+			    </td>
+		    </tr>
+	    </table>
+        <code>http://bit.ly/2w2V71G</code>
         <?php
     }
 
@@ -1422,12 +1431,18 @@ class Mihdan_NoExternalLinks_Admin {
      */
     public function link_shortening_linkshrink_cb() {
         ?>
-        <code>http://linkshrink.net/721lH9</code> &nbsp;
-        <?php _e( 'API Key', $this->plugin_name ) ?>
-        <input type="text"
-               name="<?php echo $this->options_prefix . 'linkshrink_api_key' ?>"
-               id="<?php echo $this->options_prefix . 'linkshrink_api_key' ?>"
-               value="<?php echo $this->options->linkshrink_api_key ?>" />
+	    <table>
+		    <tr>
+			    <td width="100"><?php _e( 'API Key', $this->plugin_name ) ?></td>
+			    <td>
+				    <input type="text"
+				           name="<?php echo $this->options_prefix . 'linkshrink_api_key' ?>"
+				           id="<?php echo $this->options_prefix . 'linkshrink_api_key' ?>"
+				           value="<?php echo $this->options->linkshrink_api_key ?>" />
+			    </td>
+		    </tr>
+	    </table>
+        <code>http://linkshrink.net/721lH9</code>
         <?php
     }
 
@@ -1438,12 +1453,18 @@ class Mihdan_NoExternalLinks_Admin {
      */
     public function link_shortening_shortest_cb() {
         ?>
-        <code>http://destyy.com/q15Xzx</code> &nbsp;
-        <?php _e( 'API Key', $this->plugin_name ) ?>
-        <input type="text"
-               name="<?php echo $this->options_prefix . 'shortest_api_key' ?>"
-               id="<?php echo $this->options_prefix . 'shortest_api_key' ?>"
-               value="<?php echo $this->options->shortest_api_key ?>" />
+	    <table>
+		    <tr>
+			    <td width="100"><?php _e( 'API Key', $this->plugin_name ) ?></td>
+			    <td>
+				    <input type="text"
+				           name="<?php echo $this->options_prefix . 'shortest_api_key' ?>"
+				           id="<?php echo $this->options_prefix . 'shortest_api_key' ?>"
+				           value="<?php echo $this->options->shortest_api_key ?>" />
+			    </td>
+		    </tr>
+	    </table>
+        <code>http://destyy.com/q15Xzx</code>
         <?php
     }
 
@@ -1456,7 +1477,7 @@ class Mihdan_NoExternalLinks_Admin {
 		?>
 		<table>
 			<tr>
-				<td><?php _e( 'Domain', $this->plugin_name ) ?></td>
+				<td width="100"><?php _e( 'Domain', $this->plugin_name ) ?></td>
 				<td>
 					<input type="text"
 					       name="<?php echo $this->options_prefix . 'yourls_domain' ?>"
