@@ -284,7 +284,7 @@ class Mihdan_NoExternalLinks {
      */
     private function set_options() {
 
-        $output_buffer = ob_get_level() > 0 ? true : false;
+        $output_buffer = ( boolean ) ini_get( 'output_buffering' );
         $masking_default = $output_buffer ? false : true;
 
         $encryption = false;

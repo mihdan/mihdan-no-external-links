@@ -889,7 +889,7 @@ class Mihdan_NoExternalLinks_Admin {
                        name="<?php echo $this->options_prefix . 'mask_links' ?>"
                        value="all"
                        <?php checked( $this->options->mask_links, 'all' ); ?>
-                       <?php disabled( ob_get_level(), 0 ); ?> />
+                       <?php disabled( ( boolean ) ini_get( 'output_buffering' ), false ); ?> />
                 <?php _e( 'Mask All Links', $this->plugin_name ); ?>
                 &nbsp;
                 <strong><small><em>(<?php _e( 'Recommended', $this->plugin_name ); ?>)</em></small></strong>
@@ -1773,7 +1773,7 @@ class Mihdan_NoExternalLinks_Admin {
                 add_action( 'admin_notices', array( $this, 'mcrypt_deprecation_notice' ) );
             }
 
-            if ( false === $this->options->output_buffer ) {
+            if ( false === ( boolean ) ini_get( 'output_buffering' ) ) {
                 add_action( 'admin_notices', array( $this, 'output_buffer_notice' ) );
             }
         }
