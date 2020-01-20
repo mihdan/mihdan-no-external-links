@@ -507,7 +507,7 @@ class Mihdan_NoExternalLinks_Public {
         }
 
         $table_name = $wpdb->prefix . 'external_links_masks';
-        $sql = "SELECT mask FROM $table_name";
+        $sql = "SELECT mask FROM $table_name LIMIT 10000";
         $result = $wpdb->get_col( $sql );
 
         $site = str_replace( array( 'http://', 'https://' ), '', $this->data->site );
@@ -521,7 +521,9 @@ class Mihdan_NoExternalLinks_Public {
             'skype',
             'tel',
             '/',
-            '#'
+            '#',
+            'https://wordpress.org/',
+            'https://codex.wordpress.org/',
         );
 
         if ( '' !== $this->options->exclusion_list ) {
@@ -676,6 +678,9 @@ class Mihdan_NoExternalLinks_Public {
         $table_name = $wpdb->prefix . 'external_links_masks';
         $long_url = urlencode( $url );
 
+	    // Restore original URL.
+	    $url = html_entity_decode( $url, ENT_HTML5 | ENT_QUOTES, get_option( 'blog_charset' ) );
+
         switch ( $this->options->link_shortening ) {
             case 'adfly':
                 $shortener = 'adfly';
@@ -687,11 +692,23 @@ class Mihdan_NoExternalLinks_Public {
                     return $result;
                 }
 
-                $api_url = 'http://api.adf.ly/api.php?key=' . $this->options->adfly_api_key . '&uid=' . $this->options->adfly_user_id . '&advert_type=int&domain=adf.ly&url=' . $long_url;
-                $response = wp_remote_get( $api_url, array( 'timeout' => 2 ) );
+                $api_url = 'http://api.adf.ly/v1/shorten';
+                $query = [
+	                'timeout' => 2,
+	                'body' => [
+	                	'domain'      => $this->options->adfly_domain,
+	                	'advert_type' => $this->options->adfly_advert_type,
+	                	'url'         => urldecode( $long_url ),
+	                	'_api_key'    => $this->options->adfly_api_key,
+	                	'_user_id'    => $this->options->adfly_user_id,
+	                ],
+                ];
+                $response = wp_remote_post( $api_url, $query );
+                $json = wp_remote_retrieve_body( $response );
 
-                if ( $response['body'] ) {
-                    $short_url = $response['body'];
+                if ( $json ) {
+                	$json = json_decode( $json );
+	                $short_url = $json->data[0]->short_url;
                 }
 
                 break;
@@ -805,7 +822,6 @@ class Mihdan_NoExternalLinks_Public {
         }
 
         return $url;
-
     }
 
     /**

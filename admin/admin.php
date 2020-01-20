@@ -734,6 +734,16 @@ class Mihdan_NoExternalLinks_Admin {
             $this->options_prefix . 'adfly_user_id'
         );
 
+	    register_setting(
+		    $this->plugin_name . '-settings-links',
+		    $this->options_prefix . 'adfly_domain'
+	    );
+
+	    register_setting(
+		    $this->plugin_name . '-settings-links',
+		    $this->options_prefix . 'adfly_advert_type'
+	    );
+
         register_setting(
             $this->plugin_name . '-settings-links',
             $this->options_prefix . 'bitly_login'
@@ -1338,18 +1348,48 @@ class Mihdan_NoExternalLinks_Admin {
      */
     public function link_shortening_adfly_cb() {
         ?>
-        <code>http://adf.ly/1npeZF</code> &nbsp;
-        <?php _e( 'API Key', $this->plugin_name ) ?>
-        <input type="text"
-               name="<?php echo $this->options_prefix . 'adfly_api_key' ?>"
-               id="<?php echo $this->options_prefix . 'adfly_api_key' ?>"
-               value="<?php echo $this->options->adfly_api_key ?>" />
-        &nbsp;
-        <?php _e( 'User ID', $this->plugin_name ) ?>
-        <input type="text"
-               name="<?php echo $this->options_prefix . 'adfly_user_id' ?>"
-               id="<?php echo $this->options_prefix . 'adfly_user_id' ?>"
-               value="<?php echo $this->options->adfly_user_id ?>" />
+	    <table>
+		    <tr>
+			    <td><?php _e( 'API Key', $this->plugin_name ) ?></td>
+			    <td>
+				    <input type="text"
+				           name="<?php echo $this->options_prefix . 'adfly_api_key' ?>"
+				           id="<?php echo $this->options_prefix . 'adfly_api_key' ?>"
+				           value="<?php echo $this->options->adfly_api_key ?>" />
+			    </td>
+		    </tr>
+		    <tr>
+			    <td><?php _e( 'User ID', $this->plugin_name ) ?></td>
+			    <td>
+				    <input type="text"
+				           name="<?php echo $this->options_prefix . 'adfly_user_id' ?>"
+				           id="<?php echo $this->options_prefix . 'adfly_user_id' ?>"
+				           value="<?php echo $this->options->adfly_user_id ?>" />
+			    </td>
+		    </tr>
+		    <tr>
+			    <td><?php _e( 'Domain', $this->plugin_name ) ?></td>
+			    <td>
+				    <select name="<?php echo $this->options_prefix . 'adfly_domain' ?>" id="<?php echo $this->options_prefix . 'adfly_domain' ?>">
+					    <option value="adf.ly" <?php selected( $this->options->adfly_domain, 'adf.ly' ); ?>><?php _e( 'adf.ly', $this->plugin_name ) ?></option>
+					    <option value="q.gs" <?php selected( $this->options->adfly_domain, 'q.gs' ); ?>><?php _e( 'q.gs', $this->plugin_name ) ?></option>
+					    <option value="j.gs" <?php selected( $this->options->adfly_domain, 'j.gs' ); ?>><?php _e( 'j.gs', $this->plugin_name ) ?></option>
+					    <option value="random" <?php selected( $this->options->adfly_domain, 'random' ); ?>><?php _e( 'random', $this->plugin_name ) ?></option>
+				    </select>
+			    </td>
+		    </tr>
+		    <tr>
+			    <td><?php _e( 'Advert Type', $this->plugin_name ) ?></td>
+			    <td>
+				    <select name="<?php echo $this->options_prefix . 'adfly_advert_type' ?>" id="<?php echo $this->options_prefix . 'adfly_advert_type' ?>">
+					    <option value="2" <?php selected( $this->options->adfly_advert_type, '2' ); ?>><?php _e( 'No advertising', $this->plugin_name ) ?></option>
+					    <option value="3" <?php selected( $this->options->adfly_advert_type, '3' ); ?>><?php _e( 'Framed banner', $this->plugin_name ) ?></option>
+					    <option value="1" <?php selected( $this->options->adfly_advert_type, '1' ); ?>><?php _e( 'Interstitial advertising', $this->plugin_name ) ?></option>
+				    </select>
+			    </td>
+		    </tr>
+	    </table>
+        <code>http://adf.ly/1npeZF</code>
         <?php
     }
 

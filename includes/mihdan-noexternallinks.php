@@ -299,54 +299,56 @@ class Mihdan_NoExternalLinks {
         }
 
         // Default Options
-        $options = array(
-            'masking_type' => '302',
-            'redirect_time' => 3,
-            'mask_links' => $output_buffer ? 'all' : 'specific',
-            'mask_posts_pages' => $masking_default,
-            'mask_comments' => $masking_default,
-            'mask_comment_author' => $masking_default,
-            'mask_rss' => $masking_default,
-            'mask_rss_comments' => $masking_default,
-            'nofollow' => true,
-            'target_blank' => true,
-            'noindex_tag' => false,
-            'noindex_comment' => false,
-            'link_structure' => 'default',
-            'separator' => 'goto',
-            'link_encoding' => 'none',
-            'encryption' => $encryption,
-            'encryption_key' => $encryption_key,
-            'link_shortening' => 'none',
-            'adfly_api_key' => 'a722c6594441a443bafa644a820a8d3f',
-            'adfly_user_id' => '17681319',
-            'bitly_login' => 'steamerdev',
-            'bitly_api_key' => 'R_31d62b0aa55e4c0abe306693624ff73a',
-            'linkshrink_api_key' => 'Ssk',
-            'shortest_api_key' => '57bfc99a0c2ce713061730b696750659',
-            'yourls_domain' => '',
-            'yourls_signature' => '',
-            'logging' => true,
-            'log_duration' => 0,
-            'remove_all_links' => false,
-            'links_to_text' => false,
-            'debug_mode' => false,
-            'anonymize_links' => false,
-            'anonymous_link_provider' => 'https://href.li/?',
-            'bot_targeting' => 'all',
-            'bots_selector' => '',
-            'check_referrer' => true,
-            'inclusion_list' => '',
-            'exclusion_list' => '',
-            'skip_auth' => false,
-            'skip_follow' => false,
-            'redirect_message' => __(
-                'You will be redirected in 3 seconds. If your browser does not automatically redirect you, please <a href="%linkurl%">click here</a>.',
-                $this->plugin_name
-            ),
-            'custom_parser' => false,
-            'output_buffer' => $output_buffer
-        );
+	    $options = array(
+		    'masking_type'            => '302',
+		    'redirect_time'           => 3,
+		    'mask_links'              => $output_buffer ? 'all' : 'specific',
+		    'mask_posts_pages'        => $masking_default,
+		    'mask_comments'           => $masking_default,
+		    'mask_comment_author'     => $masking_default,
+		    'mask_rss'                => $masking_default,
+		    'mask_rss_comments'       => $masking_default,
+		    'nofollow'                => true,
+		    'target_blank'            => true,
+		    'noindex_tag'             => false,
+		    'noindex_comment'         => false,
+		    'link_structure'          => 'default',
+		    'separator'               => 'goto',
+		    'link_encoding'           => 'none',
+		    'encryption'              => $encryption,
+		    'encryption_key'          => $encryption_key,
+		    'link_shortening'         => 'none',
+		    'adfly_api_key'           => 'a722c6594441a443bafa644a820a8d3f',
+		    'adfly_user_id'           => '17681319',
+		    'adfly_advert_type'       => 2,
+		    'adfly_domain'            => 'adf.ly',
+		    'bitly_login'             => 'steamerdev',
+		    'bitly_api_key'           => 'R_31d62b0aa55e4c0abe306693624ff73a',
+		    'linkshrink_api_key'      => 'Ssk',
+		    'shortest_api_key'        => '57bfc99a0c2ce713061730b696750659',
+		    'yourls_domain'           => '',
+		    'yourls_signature'        => '',
+		    'logging'                 => true,
+		    'log_duration'            => 0,
+		    'remove_all_links'        => false,
+		    'links_to_text'           => false,
+		    'debug_mode'              => false,
+		    'anonymize_links'         => false,
+		    'anonymous_link_provider' => 'https://href.li/?',
+		    'bot_targeting'           => 'all',
+		    'bots_selector'           => '',
+		    'check_referrer'          => true,
+		    'inclusion_list'          => '',
+		    'exclusion_list'          => '',
+		    'skip_auth'               => false,
+		    'skip_follow'             => false,
+		    'redirect_message'        => __(
+			    'You will be redirected in 3 seconds. If your browser does not automatically redirect you, please <a href="%linkurl%">click here</a>.',
+			    $this->plugin_name
+		    ),
+		    'custom_parser'           => false,
+		    'output_buffer'           => $output_buffer
+	    );
 
         $this->options = $this->validate_options( $options );
 
@@ -386,12 +388,14 @@ class Mihdan_NoExternalLinks {
                     continue 2;
                 case 'adfly_api_key':
                 case 'adfly_user_id':
+                case 'adfly_domain':
+                case 'adfly_advert_type':
                 case 'bitly_login':
                 case 'bitly_api_key':
                 case 'linkshrink_api_key':
                 case 'shortest_api_key':
                 case 'yourls_domain':
-                case 'yourls_signature':
+                case 'yourls_signature': //var_dump($key);var_dump($option);
                     if ( false !== $option && '' !== $option ) {
                         $options[ $key ] = ( string ) $option;
                     }
