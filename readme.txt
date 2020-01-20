@@ -69,6 +69,16 @@ Mihdan: No External Links **does not** make any changes to your database, it jus
 
 = 4.5.1 (19.01.2020) =
 * Added output buffering test for Site Health
+* Added domain & advert type fields for adf.ly
+* Added domain *.wordpress.org to exclude list
+* Fixed bug with output buffer notice
+* Fixed bug with &#038; and &amp; in URL
+* Fixed bug with adf.ly support
+* Updated referrer-warning.php template
+* Updated referrer.php template
+* Updated yourls support
+* Updated layout for links settings page
+* Prevented error 404 on redirect page
 
 = 4.5 (2019-04-16) =
 * Removed possible SQL injection in admin panel scripts
