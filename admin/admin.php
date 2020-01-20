@@ -1454,17 +1454,26 @@ class Mihdan_NoExternalLinks_Admin {
 	 */
 	public function link_shortening_yourls_cb() {
 		?>
-		<?php _e( 'Domain', $this->plugin_name ) ?>
-		<input type="text"
-		       name="<?php echo $this->options_prefix . 'yourls_domain' ?>"
-		       id="<?php echo $this->options_prefix . 'yourls_domain' ?>"
-		       value="<?php echo $this->options->yourls_domain ?>" />
-		<br>
-		<?php _e( 'Signature', $this->plugin_name ) ?>
-		<input type="text"
-		       name="<?php echo $this->options_prefix . 'yourls_signature' ?>"
-		       id="<?php echo $this->options_prefix . 'yourls_signature' ?>"
-		       value="<?php echo $this->options->yourls_signature ?>" />
+		<table>
+			<tr>
+				<td><?php _e( 'Domain', $this->plugin_name ) ?></td>
+				<td>
+					<input type="text"
+					       name="<?php echo $this->options_prefix . 'yourls_domain' ?>"
+					       id="<?php echo $this->options_prefix . 'yourls_domain' ?>"
+					       value="<?php echo $this->options->yourls_domain ?>" />
+				</td>
+			</tr>
+			<tr>
+				<td><?php _e( 'Signature', $this->plugin_name ) ?></td>
+				<td>
+					<input type="text"
+					       name="<?php echo $this->options_prefix . 'yourls_signature' ?>"
+					       id="<?php echo $this->options_prefix . 'yourls_signature' ?>"
+					       value="<?php echo $this->options->yourls_signature ?>" />
+				</td>
+			</tr>
+		</table>
 		<?php
 	}
 
