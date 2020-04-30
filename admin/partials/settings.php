@@ -16,16 +16,16 @@
 	<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : ''; ?>
 
 	<h2 class="nav-tab-wrapper">
-		<a href="?page=<?php echo $this->plugin_name; ?>-settings" class="nav-tab<?php echo '' == $active_tab ? ' nav-tab-active' : ''; ?>">
+		<a href="?page=<?php echo $this->plugin_name; ?>" class="nav-tab<?php echo '' == $active_tab ? ' nav-tab-active' : ''; ?>">
 			<?php _e( 'General', $this->plugin_name ); ?>
 		</a>
-		<a href="?page=<?php echo $this->plugin_name; ?>-settings&tab=links" class="nav-tab<?php echo 'links' == $active_tab ? ' nav-tab-active' : ''; ?>">
+		<a href="?page=<?php echo $this->plugin_name; ?>&tab=links" class="nav-tab<?php echo 'links' == $active_tab ? ' nav-tab-active' : ''; ?>">
 			<?php _e( 'Links', $this->plugin_name ); ?>
 		</a>
-		<a href="?page=<?php echo $this->plugin_name; ?>-settings&tab=include_exclude" class="nav-tab<?php echo 'include_exclude' == $active_tab ? ' nav-tab-active' : ''; ?>">
+		<a href="?page=<?php echo $this->plugin_name; ?>&tab=include_exclude" class="nav-tab<?php echo 'include_exclude' == $active_tab ? ' nav-tab-active' : ''; ?>">
 			<?php _e( 'Include', $this->plugin_name ); ?> / <?php _e( 'Exclude', $this->plugin_name ); ?>
 		</a>
-		<a href="?page=<?php echo $this->plugin_name; ?>-settings&tab=advanced" class="nav-tab<?php echo 'advanced' == $active_tab ? ' nav-tab-active' : ''; ?>">
+		<a href="?page=<?php echo $this->plugin_name; ?>&tab=advanced" class="nav-tab<?php echo 'advanced' == $active_tab ? ' nav-tab-active' : ''; ?>">
 			<?php _e( 'Advanced', $this->plugin_name ); ?>
 		</a>
 	</h2>
