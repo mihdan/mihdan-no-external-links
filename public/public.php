@@ -137,6 +137,10 @@ class Mihdan_NoExternalLinks_Public {
 
         global $post;
 
+        if ( ! $post instanceof WP_Post ) {
+        	return $content;
+        }
+
         $this->debug_info( 'Checking post for meta.' );
 
         $content = $this->data->before . $content . $this->data->after;
