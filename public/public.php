@@ -897,16 +897,17 @@ class Mihdan_NoExternalLinks_Public {
      * @param    string    $url
      */
     public function show_redirect_page( $url ) {
+    	$url           = trim( $url );
+    	$redirect_time = absint( $this->options->redirect_time );
+    	$masking_type  = trim( $this->options->masking_type );
 
-        header( 'Content-type: text/html; charset="utf-8"', true );
-	    header( 'Refresh: ' . $this->options->redirect_time . '; url=' . $url );
+    	header( 'Content-type: text/html; charset="utf-8"', true );
+    	header( 'Refresh: ' . $redirect_time . '; url=' . $url );
 
-        if ( '302' === $this->options->masking_type && $url ) {
-            @header( 'Location: ' . $url );
-        }
-
-        include_once 'partials/redirect.php';
-
+    	if ( '302' === $masking_type && $url ) {
+    		@header( 'Location: ' . $url );
+    	}
+    	include_once 'partials/redirect.php';
     }
 
     /**
