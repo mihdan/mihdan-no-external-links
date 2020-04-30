@@ -3,8 +3,8 @@ Author: mihdan
 Contributors: mihdan
 Tags: seo, link, links, publisher, post, posts, comments
 Requires at least: 3.5.0
-Tested up to: 5.3
-Stable tag: 4.5.1
+Tested up to: 5.4
+Stable tag: 4.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Convert external links into internal links, site wide or post/page specific. Add NoFollow, Click logging, and more...
@@ -66,6 +66,10 @@ Mihdan: No External Links **does not** make any changes to your database, it jus
 4. [Optional] Configure Mihdan: No External Links settings.
 
 == Changelog ==
+
+= 4.5.2 (30.04.2020) =
+* Added support for WordPress 5.4
+* Fixed bug with headers
 
 = 4.5.1 (19.01.2020) =
 * Added output buffering test for Site Health
