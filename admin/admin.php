@@ -168,16 +168,25 @@ class Mihdan_NoExternalLinks_Admin {
             __( 'External Links', $this->plugin_name ),
             'manage_options',
             $this->plugin_name,
-            array( $this, 'display_masks_page' ),
+            array( $this, 'display_settings_page' ),
             'dashicons-admin-links'
         );
+
+	    add_submenu_page(
+		    $this->plugin_name,
+		    __( 'Mihdan: No External Links Settings', $this->plugin_name ),
+		    __( 'Settings', $this->plugin_name ),
+		    'manage_options',
+		    $this->plugin_name,
+		    array( $this, 'display_settings_page' )
+	    );
 
         add_submenu_page(
             $this->plugin_name,
             __( 'Mihdan: No External Links Masks', $this->plugin_name ),
             __( 'Masks', $this->plugin_name ),
             'manage_options',
-            $this->plugin_name,
+            $this->plugin_name . '-masks',
             array( $this, 'display_masks_page' )
         );
 
@@ -189,16 +198,6 @@ class Mihdan_NoExternalLinks_Admin {
             $this->plugin_name . '-logs',
             array( $this, 'display_log_page' )
         );
-
-        add_submenu_page(
-            $this->plugin_name,
-            __( 'Mihdan: No External Links Settings', $this->plugin_name ),
-            __( 'Settings', $this->plugin_name ),
-            'manage_options',
-            $this->plugin_name . '-settings',
-            array( $this, 'display_settings_page' )
-        );
-
     }
 
     /**
@@ -281,9 +280,7 @@ class Mihdan_NoExternalLinks_Admin {
      * @since  4.2.0
      */
     public function display_masks_page() {
-
         include_once 'partials/masks.php';
-
     }
 
     /**
