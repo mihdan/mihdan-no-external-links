@@ -137,6 +137,10 @@ class Mihdan_NoExternalLinks_Public {
 
         global $post;
 
+        if ( ! $post instanceof WP_Post ) {
+        	return $content;
+        }
+
         $this->debug_info( 'Checking post for meta.' );
 
         $content = $this->data->before . $content . $this->data->after;
@@ -318,6 +322,7 @@ class Mihdan_NoExternalLinks_Public {
      * @since    4.0.0
      */
     public function check_redirect() {
+	    global $wp_query;
 
         $goto = '';
         $p = strpos( $_SERVER[ 'REQUEST_URI' ], '/' . $this->options->separator . '/' );
@@ -330,7 +335,7 @@ class Mihdan_NoExternalLinks_Public {
 
         $goto = strip_tags( $goto );
 
-        if ( $goto ) {
+        if ( ! empty( $goto ) ) {
             $this->redirect( $goto );
         }
 
@@ -344,17 +349,28 @@ class Mihdan_NoExternalLinks_Public {
      */
     public function redirect( $url ) {
 
-        global $wp_rewrite, $hyper_cache_stop;
+        global $wp_query, $wp_rewrite, $hyper_cache_stop;
 
-        // disable Hyper Cache plugin (http://www.satollo.net/plugins/hyper-cache) from caching this page
+        // Disable Hyper Cache plugin (http://www.satollo.net/plugins/hyper-cache) from caching this page.
         $hyper_cache_stop = true;
 
-        // disable WP Super Cache caching
+        // Disable WP Super Cache, WP Rocket caching.
         if ( ! defined( 'DONOTCACHEPAGE' ) ) {
             define( 'DONOTCACHEPAGE', 1 );
         }
 
-        // checking for spammer attack, redirect should happen from your own website
+	    // Disable WP Rocket optimize.
+	    if ( ! defined( 'DONOTROCKETOPTIMIZE' ) ) {
+		    define( 'DONOTROCKETOPTIMIZE', true );
+	    }
+
+	    // Prevent 404.
+	    if ( $wp_query->is_404 ) {
+		    $wp_query->is_404 = false;
+		    header( 'HTTP/1.1 200 OK', true );
+	    }
+
+        // Checking for spammer attack, redirect should happen from your own website.
         if ( $this->options->check_referrer ) {
             if ( stripos( wp_get_referer(), $this->data->site ) !== 0 ) {
                 $this->show_referrer_warning();
@@ -369,7 +385,8 @@ class Mihdan_NoExternalLinks_Public {
             $url = urldecode( $url );
         }
 
-        $url = str_ireplace( '&#038;', '&', $url );
+	    // Restore &#038; and &amp; to &.
+		$url = html_entity_decode( $url, ENT_HTML5 | ENT_QUOTES, get_option( 'blog_charset' ) );
 
         if ( $this->options->anonymize_links ) {
             $url = $this->options->anonymous_link_provider . $url;
@@ -494,7 +511,7 @@ class Mihdan_NoExternalLinks_Public {
         }
 
         $table_name = $wpdb->prefix . 'external_links_masks';
-        $sql = "SELECT mask FROM $table_name";
+        $sql = "SELECT mask FROM $table_name LIMIT 10000";
         $result = $wpdb->get_col( $sql );
 
         $site = str_replace( array( 'http://', 'https://' ), '', $this->data->site );
@@ -508,7 +525,9 @@ class Mihdan_NoExternalLinks_Public {
             'skype',
             'tel',
             '/',
-            '#'
+            '#',
+            'https://wordpress.org/',
+            'https://codex.wordpress.org/',
         );
 
         if ( '' !== $this->options->exclusion_list ) {
@@ -663,6 +682,9 @@ class Mihdan_NoExternalLinks_Public {
         $table_name = $wpdb->prefix . 'external_links_masks';
         $long_url = urlencode( $url );
 
+	    // Restore original URL.
+	    $url = html_entity_decode( $url, ENT_HTML5 | ENT_QUOTES, get_option( 'blog_charset' ) );
+
         switch ( $this->options->link_shortening ) {
             case 'adfly':
                 $shortener = 'adfly';
@@ -674,11 +696,23 @@ class Mihdan_NoExternalLinks_Public {
                     return $result;
                 }
 
-                $api_url = 'http://api.adf.ly/api.php?key=' . $this->options->adfly_api_key . '&uid=' . $this->options->adfly_user_id . '&advert_type=int&domain=adf.ly&url=' . $long_url;
-                $response = wp_remote_get( $api_url, array( 'timeout' => 2 ) );
+                $api_url = 'http://api.adf.ly/v1/shorten';
+                $query = [
+	                'timeout' => 2,
+	                'body' => [
+	                	'domain'      => $this->options->adfly_domain,
+	                	'advert_type' => $this->options->adfly_advert_type,
+	                	'url'         => urldecode( $long_url ),
+	                	'_api_key'    => $this->options->adfly_api_key,
+	                	'_user_id'    => $this->options->adfly_user_id,
+	                ],
+                ];
+                $response = wp_remote_post( $api_url, $query );
+                $json = wp_remote_retrieve_body( $response );
 
-                if ( $response['body'] ) {
-                    $short_url = $response['body'];
+                if ( $json ) {
+                	$json = json_decode( $json );
+	                $short_url = $json->data[0]->short_url;
                 }
 
                 break;
@@ -792,7 +826,6 @@ class Mihdan_NoExternalLinks_Public {
         }
 
         return $url;
-
     }
 
     /**
@@ -854,6 +887,8 @@ class Mihdan_NoExternalLinks_Public {
      * Renders the referrer warning page.
      */
     public function show_referrer_warning() {
+	    header( 'Content-type: text/html; charset="utf-8"', true );
+	    header( 'Refresh: ' . $this->options->redirect_time . '; url=' . get_home_url() );
 
         include_once 'partials/referrer-warning.php';
 
@@ -866,15 +901,17 @@ class Mihdan_NoExternalLinks_Public {
      * @param    string    $url
      */
     public function show_redirect_page( $url ) {
+    	$url           = trim( $url );
+    	$redirect_time = absint( $this->options->redirect_time );
+    	$masking_type  = trim( $this->options->masking_type );
 
-        header( 'Content-type: text/html; charset="utf-8"', true );
+    	header( 'Content-type: text/html; charset="utf-8"', true );
+    	header( 'Refresh: ' . $redirect_time . '; url=' . $url );
 
-        if ( '302' === $this->options->masking_type && $url ) {
-            @header( 'Location: ' . $url );
-        }
-
-        include_once 'partials/redirect.php';
-
+    	if ( '302' === $masking_type && $url ) {
+    		@header( 'Location: ' . $url );
+    	}
+    	include_once 'partials/redirect.php';
     }
 
     /**

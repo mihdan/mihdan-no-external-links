@@ -8,6 +8,8 @@
  * @author        mihdan
  */
 
+use Mihdan\No_External_Links\Site_Health;
+
 class Mihdan_NoExternalLinks_Admin {
 
 	/**
@@ -83,6 +85,14 @@ class Mihdan_NoExternalLinks_Admin {
     public $logs_table;
 
 	/**
+	 * The class that add Site Health tests.
+	 *
+	 * @since 4.5.1
+	 * @var Site_Health
+	 */
+    public $site_health;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    4.0.0
@@ -103,6 +113,13 @@ class Mihdan_NoExternalLinks_Admin {
         $this->permalink_equals = get_option( 'permalink_structure' ) ? '/' : '=';
 
         $this->admin_notices();
+	}
+
+	/**
+	 * @since 4.5.1
+	 */
+	public function site_health() {
+		$this->site_health = new Site_Health( $this->plugin_name );
 	}
 
 	/**
@@ -151,16 +168,25 @@ class Mihdan_NoExternalLinks_Admin {
             __( 'External Links', $this->plugin_name ),
             'manage_options',
             $this->plugin_name,
-            array( $this, 'display_masks_page' ),
+            array( $this, 'display_settings_page' ),
             'dashicons-admin-links'
         );
+
+	    add_submenu_page(
+		    $this->plugin_name,
+		    __( 'Mihdan: No External Links Settings', $this->plugin_name ),
+		    __( 'Settings', $this->plugin_name ),
+		    'manage_options',
+		    $this->plugin_name,
+		    array( $this, 'display_settings_page' )
+	    );
 
         add_submenu_page(
             $this->plugin_name,
             __( 'Mihdan: No External Links Masks', $this->plugin_name ),
             __( 'Masks', $this->plugin_name ),
             'manage_options',
-            $this->plugin_name,
+            $this->plugin_name . '-masks',
             array( $this, 'display_masks_page' )
         );
 
@@ -172,16 +198,6 @@ class Mihdan_NoExternalLinks_Admin {
             $this->plugin_name . '-logs',
             array( $this, 'display_log_page' )
         );
-
-        add_submenu_page(
-            $this->plugin_name,
-            __( 'Mihdan: No External Links Settings', $this->plugin_name ),
-            __( 'Settings', $this->plugin_name ),
-            'manage_options',
-            $this->plugin_name . '-settings',
-            array( $this, 'display_settings_page' )
-        );
-
     }
 
     /**
@@ -264,9 +280,7 @@ class Mihdan_NoExternalLinks_Admin {
      * @since  4.2.0
      */
     public function display_masks_page() {
-
         include_once 'partials/masks.php';
-
     }
 
     /**
@@ -717,6 +731,16 @@ class Mihdan_NoExternalLinks_Admin {
             $this->options_prefix . 'adfly_user_id'
         );
 
+	    register_setting(
+		    $this->plugin_name . '-settings-links',
+		    $this->options_prefix . 'adfly_domain'
+	    );
+
+	    register_setting(
+		    $this->plugin_name . '-settings-links',
+		    $this->options_prefix . 'adfly_advert_type'
+	    );
+
         register_setting(
             $this->plugin_name . '-settings-links',
             $this->options_prefix . 'bitly_login'
@@ -862,7 +886,7 @@ class Mihdan_NoExternalLinks_Admin {
                        name="<?php echo $this->options_prefix . 'mask_links' ?>"
                        value="all"
                        <?php checked( $this->options->mask_links, 'all' ); ?>
-                       <?php disabled( ob_get_level(), 0 ); ?> />
+                       <?php disabled( ( boolean ) ini_get( 'output_buffering' ), false ); ?> />
                 <?php _e( 'Mask All Links', $this->plugin_name ); ?>
                 &nbsp;
                 <strong><small><em>(<?php _e( 'Recommended', $this->plugin_name ); ?>)</em></small></strong>
@@ -1258,7 +1282,7 @@ class Mihdan_NoExternalLinks_Admin {
         <input type="text"
                name="<?php echo $this->options_prefix . 'separator' ?>"
                id="<?php echo $this->options_prefix . 'separator' ?>"
-               value="<?php echo 'goto' === $this->options->separator ? '' : $this->options->separator ?>" />
+               value="<?php echo 'goto' === $this->options->separator ? 'goto' : $this->options->separator ?>" />
         <code><?php echo $this->permalink_equals ?>https://example.com</code>
         <?php
     }
@@ -1321,18 +1345,48 @@ class Mihdan_NoExternalLinks_Admin {
      */
     public function link_shortening_adfly_cb() {
         ?>
-        <code>http://adf.ly/1npeZF</code> &nbsp;
-        <?php _e( 'API Key', $this->plugin_name ) ?>
-        <input type="text"
-               name="<?php echo $this->options_prefix . 'adfly_api_key' ?>"
-               id="<?php echo $this->options_prefix . 'adfly_api_key' ?>"
-               value="<?php echo $this->options->adfly_api_key ?>" />
-        &nbsp;
-        <?php _e( 'User ID', $this->plugin_name ) ?>
-        <input type="text"
-               name="<?php echo $this->options_prefix . 'adfly_user_id' ?>"
-               id="<?php echo $this->options_prefix . 'adfly_user_id' ?>"
-               value="<?php echo $this->options->adfly_user_id ?>" />
+	    <table>
+		    <tr>
+			    <td width="100"><?php _e( 'API Key', $this->plugin_name ) ?></td>
+			    <td>
+				    <input type="text"
+				           name="<?php echo $this->options_prefix . 'adfly_api_key' ?>"
+				           id="<?php echo $this->options_prefix . 'adfly_api_key' ?>"
+				           value="<?php echo $this->options->adfly_api_key ?>" />
+			    </td>
+		    </tr>
+		    <tr>
+			    <td><?php _e( 'User ID', $this->plugin_name ) ?></td>
+			    <td>
+				    <input type="text"
+				           name="<?php echo $this->options_prefix . 'adfly_user_id' ?>"
+				           id="<?php echo $this->options_prefix . 'adfly_user_id' ?>"
+				           value="<?php echo $this->options->adfly_user_id ?>" />
+			    </td>
+		    </tr>
+		    <tr>
+			    <td><?php _e( 'Domain', $this->plugin_name ) ?></td>
+			    <td>
+				    <select name="<?php echo $this->options_prefix . 'adfly_domain' ?>" id="<?php echo $this->options_prefix . 'adfly_domain' ?>">
+					    <option value="adf.ly" <?php selected( $this->options->adfly_domain, 'adf.ly' ); ?>><?php _e( 'adf.ly', $this->plugin_name ) ?></option>
+					    <option value="q.gs" <?php selected( $this->options->adfly_domain, 'q.gs' ); ?>><?php _e( 'q.gs', $this->plugin_name ) ?></option>
+					    <option value="j.gs" <?php selected( $this->options->adfly_domain, 'j.gs' ); ?>><?php _e( 'j.gs', $this->plugin_name ) ?></option>
+					    <option value="random" <?php selected( $this->options->adfly_domain, 'random' ); ?>><?php _e( 'random', $this->plugin_name ) ?></option>
+				    </select>
+			    </td>
+		    </tr>
+		    <tr>
+			    <td><?php _e( 'Advert Type', $this->plugin_name ) ?></td>
+			    <td>
+				    <select name="<?php echo $this->options_prefix . 'adfly_advert_type' ?>" id="<?php echo $this->options_prefix . 'adfly_advert_type' ?>">
+					    <option value="2" <?php selected( $this->options->adfly_advert_type, '2' ); ?>><?php _e( 'No advertising', $this->plugin_name ) ?></option>
+					    <option value="3" <?php selected( $this->options->adfly_advert_type, '3' ); ?>><?php _e( 'Framed banner', $this->plugin_name ) ?></option>
+					    <option value="1" <?php selected( $this->options->adfly_advert_type, '1' ); ?>><?php _e( 'Interstitial advertising', $this->plugin_name ) ?></option>
+				    </select>
+			    </td>
+		    </tr>
+	    </table>
+        <code>http://adf.ly/1npeZF</code>
         <?php
     }
 
@@ -1343,18 +1397,27 @@ class Mihdan_NoExternalLinks_Admin {
      */
     public function link_shortening_bitly_cb() {
         ?>
-        <code>http://bit.ly/2w2V71G</code> &nbsp;
-        <?php _e( 'Login', $this->plugin_name ) ?>
-        <input type="text"
-               name="<?php echo $this->options_prefix . 'bitly_login' ?>"
-               id="<?php echo $this->options_prefix . 'bitly_login' ?>"
-               value="<?php echo $this->options->bitly_login ?>" />
-        &nbsp;
-        <?php _e( 'API Key', $this->plugin_name ) ?>
-        <input type="text"
-               name="<?php echo $this->options_prefix . 'bitly_api_key' ?>"
-               id="<?php echo $this->options_prefix . 'bitly_api_key' ?>"
-               value="<?php echo $this->options->bitly_api_key ?>" />
+	    <table>
+		    <tr>
+			    <td width="100"><?php _e( 'Login', $this->plugin_name ) ?></td>
+			    <td>
+				    <input type="text"
+				           name="<?php echo $this->options_prefix . 'bitly_login' ?>"
+				           id="<?php echo $this->options_prefix . 'bitly_login' ?>"
+				           value="<?php echo $this->options->bitly_login ?>" />
+			    </td>
+		    </tr>
+		    <tr>
+			    <td><?php _e( 'API Key', $this->plugin_name ) ?></td>
+			    <td>
+				    <input type="text"
+				           name="<?php echo $this->options_prefix . 'bitly_api_key' ?>"
+				           id="<?php echo $this->options_prefix . 'bitly_api_key' ?>"
+				           value="<?php echo $this->options->bitly_api_key ?>" />
+			    </td>
+		    </tr>
+	    </table>
+        <code>http://bit.ly/2w2V71G</code>
         <?php
     }
 
@@ -1365,12 +1428,18 @@ class Mihdan_NoExternalLinks_Admin {
      */
     public function link_shortening_linkshrink_cb() {
         ?>
-        <code>http://linkshrink.net/721lH9</code> &nbsp;
-        <?php _e( 'API Key', $this->plugin_name ) ?>
-        <input type="text"
-               name="<?php echo $this->options_prefix . 'linkshrink_api_key' ?>"
-               id="<?php echo $this->options_prefix . 'linkshrink_api_key' ?>"
-               value="<?php echo $this->options->linkshrink_api_key ?>" />
+	    <table>
+		    <tr>
+			    <td width="100"><?php _e( 'API Key', $this->plugin_name ) ?></td>
+			    <td>
+				    <input type="text"
+				           name="<?php echo $this->options_prefix . 'linkshrink_api_key' ?>"
+				           id="<?php echo $this->options_prefix . 'linkshrink_api_key' ?>"
+				           value="<?php echo $this->options->linkshrink_api_key ?>" />
+			    </td>
+		    </tr>
+	    </table>
+        <code>http://linkshrink.net/721lH9</code>
         <?php
     }
 
@@ -1381,12 +1450,18 @@ class Mihdan_NoExternalLinks_Admin {
      */
     public function link_shortening_shortest_cb() {
         ?>
-        <code>http://destyy.com/q15Xzx</code> &nbsp;
-        <?php _e( 'API Key', $this->plugin_name ) ?>
-        <input type="text"
-               name="<?php echo $this->options_prefix . 'shortest_api_key' ?>"
-               id="<?php echo $this->options_prefix . 'shortest_api_key' ?>"
-               value="<?php echo $this->options->shortest_api_key ?>" />
+	    <table>
+		    <tr>
+			    <td width="100"><?php _e( 'API Key', $this->plugin_name ) ?></td>
+			    <td>
+				    <input type="text"
+				           name="<?php echo $this->options_prefix . 'shortest_api_key' ?>"
+				           id="<?php echo $this->options_prefix . 'shortest_api_key' ?>"
+				           value="<?php echo $this->options->shortest_api_key ?>" />
+			    </td>
+		    </tr>
+	    </table>
+        <code>http://destyy.com/q15Xzx</code>
         <?php
     }
 
@@ -1397,17 +1472,26 @@ class Mihdan_NoExternalLinks_Admin {
 	 */
 	public function link_shortening_yourls_cb() {
 		?>
-		<?php _e( 'Domain', $this->plugin_name ) ?>
-		<input type="text"
-		       name="<?php echo $this->options_prefix . 'yourls_domain' ?>"
-		       id="<?php echo $this->options_prefix . 'yourls_domain' ?>"
-		       value="<?php echo $this->options->yourls_domain ?>" />
-		<br>
-		<?php _e( 'Signature', $this->plugin_name ) ?>
-		<input type="text"
-		       name="<?php echo $this->options_prefix . 'yourls_signature' ?>"
-		       id="<?php echo $this->options_prefix . 'yourls_signature' ?>"
-		       value="<?php echo $this->options->yourls_signature ?>" />
+		<table>
+			<tr>
+				<td width="100"><?php _e( 'Domain', $this->plugin_name ) ?></td>
+				<td>
+					<input type="text"
+					       name="<?php echo $this->options_prefix . 'yourls_domain' ?>"
+					       id="<?php echo $this->options_prefix . 'yourls_domain' ?>"
+					       value="<?php echo $this->options->yourls_domain ?>" />
+				</td>
+			</tr>
+			<tr>
+				<td><?php _e( 'Signature', $this->plugin_name ) ?></td>
+				<td>
+					<input type="text"
+					       name="<?php echo $this->options_prefix . 'yourls_signature' ?>"
+					       id="<?php echo $this->options_prefix . 'yourls_signature' ?>"
+					       value="<?php echo $this->options->yourls_signature ?>" />
+				</td>
+			</tr>
+		</table>
 		<?php
 	}
 
@@ -1677,7 +1761,7 @@ class Mihdan_NoExternalLinks_Admin {
 
         $page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : null;
 
-        if ( 'mihdan-noexternallinks-settings' === $page || 'mihdan-noexternallinks' === $page ) {
+        if ( 'mihdan-no-external-links-settings' === $page || 'mihdan-no-external-links' === $page ) {
             if ( $this->options->custom_parser ) {
                 add_action( 'admin_notices', array( $this, 'parser_notice' ) );
             }
@@ -1686,7 +1770,7 @@ class Mihdan_NoExternalLinks_Admin {
                 add_action( 'admin_notices', array( $this, 'mcrypt_deprecation_notice' ) );
             }
 
-            if ( false === $this->options->output_buffer ) {
+            if ( false === ( boolean ) ini_get( 'output_buffering' ) ) {
                 add_action( 'admin_notices', array( $this, 'output_buffer_notice' ) );
             }
         }

@@ -101,7 +101,7 @@ class Mihdan_NoExternalLinks {
 	public function __construct() {
 
         $this->plugin_name = 'mihdan-no-external-links';
-		$this->version = '4.3.3';
+		$this->version = MIHDAN_NO_EXTERNAL_LINKS_VERSION;
         $this->options_prefix = 'mihdan_noexternallinks_';
 
         $upload_dir = wp_upload_dir();
@@ -139,54 +139,59 @@ class Mihdan_NoExternalLinks {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/loader.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/loader.php';
 
         /**
          * The class responsible for defining internationalization functionality
          * of the plugin.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/i18n.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/i18n.php';
 
         /**
          * The class responsible for checking compatibility.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/compatibility.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/compatibility.php';
 
         /**
          * The class responsible for database tables.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/database.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/database.php';
 
         /**
          * The class responsible for installing the plugin.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/installer.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/installer.php';
 
         /**
          * The class responsible for upgrading the plugin.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/upgrader.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/upgrader.php';
+
+		/**
+		 * Site Health Tests.
+		 */
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/site-health.php';
 
         /**
          * The class responsible for defining all actions that occur in the admin area.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/admin.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/admin.php';
 
         /**
          * The class responsible for the masks table.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/mask-table.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/mask-table.php';
 
         /**
          * The class responsible for the logs table.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/log-table.php';
+        require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/log-table.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/public.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/public/public.php';
 
         /**
          * The class responsible for custom functionality.
@@ -279,7 +284,7 @@ class Mihdan_NoExternalLinks {
      */
     private function set_options() {
 
-        $output_buffer = ob_get_level() > 0 ? true : false;
+        $output_buffer = ( boolean ) ini_get( 'output_buffering' );
         $masking_default = $output_buffer ? false : true;
 
         $encryption = false;
@@ -294,54 +299,56 @@ class Mihdan_NoExternalLinks {
         }
 
         // Default Options
-        $options = array(
-            'masking_type' => '302',
-            'redirect_time' => 3,
-            'mask_links' => $output_buffer ? 'all' : 'specific',
-            'mask_posts_pages' => $masking_default,
-            'mask_comments' => $masking_default,
-            'mask_comment_author' => $masking_default,
-            'mask_rss' => $masking_default,
-            'mask_rss_comments' => $masking_default,
-            'nofollow' => true,
-            'target_blank' => true,
-            'noindex_tag' => false,
-            'noindex_comment' => false,
-            'link_structure' => 'default',
-            'separator' => 'goto',
-            'link_encoding' => 'none',
-            'encryption' => $encryption,
-            'encryption_key' => $encryption_key,
-            'link_shortening' => 'none',
-            'adfly_api_key' => 'a722c6594441a443bafa644a820a8d3f',
-            'adfly_user_id' => '17681319',
-            'bitly_login' => 'steamerdev',
-            'bitly_api_key' => 'R_31d62b0aa55e4c0abe306693624ff73a',
-            'linkshrink_api_key' => 'Ssk',
-            'shortest_api_key' => '57bfc99a0c2ce713061730b696750659',
-            'yourls_domain' => '',
-            'yourls_signature' => '',
-            'logging' => true,
-            'log_duration' => 0,
-            'remove_all_links' => false,
-            'links_to_text' => false,
-            'debug_mode' => false,
-            'anonymize_links' => false,
-            'anonymous_link_provider' => 'https://href.li/?',
-            'bot_targeting' => 'all',
-            'bots_selector' => '',
-            'check_referrer' => true,
-            'inclusion_list' => '',
-            'exclusion_list' => '',
-            'skip_auth' => false,
-            'skip_follow' => false,
-            'redirect_message' => __(
-                'You will be redirected in 3 seconds. If your browser does not automatically redirect you, please <a href="%linkurl%">click here</a>.',
-                $this->plugin_name
-            ),
-            'custom_parser' => false,
-            'output_buffer' => $output_buffer
-        );
+	    $options = array(
+		    'masking_type'            => '302',
+		    'redirect_time'           => 3,
+		    'mask_links'              => $output_buffer ? 'all' : 'specific',
+		    'mask_posts_pages'        => $masking_default,
+		    'mask_comments'           => $masking_default,
+		    'mask_comment_author'     => $masking_default,
+		    'mask_rss'                => $masking_default,
+		    'mask_rss_comments'       => $masking_default,
+		    'nofollow'                => true,
+		    'target_blank'            => true,
+		    'noindex_tag'             => false,
+		    'noindex_comment'         => false,
+		    'link_structure'          => 'default',
+		    'separator'               => 'goto',
+		    'link_encoding'           => 'none',
+		    'encryption'              => $encryption,
+		    'encryption_key'          => $encryption_key,
+		    'link_shortening'         => 'none',
+		    'adfly_api_key'           => 'a722c6594441a443bafa644a820a8d3f',
+		    'adfly_user_id'           => '17681319',
+		    'adfly_advert_type'       => 2,
+		    'adfly_domain'            => 'adf.ly',
+		    'bitly_login'             => 'steamerdev',
+		    'bitly_api_key'           => 'R_31d62b0aa55e4c0abe306693624ff73a',
+		    'linkshrink_api_key'      => 'Ssk',
+		    'shortest_api_key'        => '57bfc99a0c2ce713061730b696750659',
+		    'yourls_domain'           => '',
+		    'yourls_signature'        => '',
+		    'logging'                 => true,
+		    'log_duration'            => 0,
+		    'remove_all_links'        => false,
+		    'links_to_text'           => false,
+		    'debug_mode'              => false,
+		    'anonymize_links'         => false,
+		    'anonymous_link_provider' => 'https://href.li/?',
+		    'bot_targeting'           => 'all',
+		    'bots_selector'           => '',
+		    'check_referrer'          => true,
+		    'inclusion_list'          => '',
+		    'exclusion_list'          => '',
+		    'skip_auth'               => false,
+		    'skip_follow'             => false,
+		    'redirect_message'        => __(
+			    'You will be redirected in 3 seconds. If your browser does not automatically redirect you, please <a href="%linkurl%">click here</a>.',
+			    $this->plugin_name
+		    ),
+		    'custom_parser'           => false,
+		    'output_buffer'           => $output_buffer
+	    );
 
         $this->options = $this->validate_options( $options );
 
@@ -381,12 +388,14 @@ class Mihdan_NoExternalLinks {
                     continue 2;
                 case 'adfly_api_key':
                 case 'adfly_user_id':
+                case 'adfly_domain':
+                case 'adfly_advert_type':
                 case 'bitly_login':
                 case 'bitly_api_key':
                 case 'linkshrink_api_key':
                 case 'shortest_api_key':
                 case 'yourls_domain':
-                case 'yourls_signature':
+                case 'yourls_signature': //var_dump($key);var_dump($option);
                     if ( false !== $option && '' !== $option ) {
                         $options[ $key ] = ( string ) $option;
                     }
@@ -542,7 +551,13 @@ class Mihdan_NoExternalLinks {
         $this->loader->add_action( 'admin_init', $this->admin, 'register_setting' );
 
         $this->loader->add_filter( 'set-screen-option', $this->admin, 'mask_page_set_screen_options', NULL, 3 );
-        $this->loader->add_action( 'load-toplevel_page_' . $this->get_plugin_name(), $this->admin, 'mask_page_screen_options' );
+		$hook_name = vsprintf( 'load-%s_page_%s-masks', array(
+			strtolower( sanitize_file_name( __( 'External Links', $this->plugin_name ) ) ),
+			$this->get_plugin_name()
+		) );
+
+		$this->loader->add_action( $hook_name, $this->admin, 'mask_page_screen_options' );
+        //$this->loader->add_action( 'load-toplevel_page_' . $this->get_plugin_name(), $this->admin, 'mask_page_screen_options' );
 
         $this->loader->add_filter( 'set-screen-option', $this->admin, 'log_page_set_screen_options', NULL, 3 );
 
@@ -556,6 +571,7 @@ class Mihdan_NoExternalLinks {
         $this->loader->add_action( 'add_meta_boxes', $this->admin, 'add_custom_meta_box' );
         $this->loader->add_action( 'save_post', $this->admin, 'save_custom_meta_box' );
 
+        $this->loader->add_action( 'init', $this->admin, 'site_health' );
 	}
 
 	/**
