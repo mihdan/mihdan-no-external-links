@@ -844,9 +844,25 @@ class Mihdan_NoExternalLinks_Admin {
             <label>
                 <input type="radio"
                        name="<?php echo $this->options_prefix . 'masking_type' ?>"
+                       value="301"
+                       <?php checked( $this->options->masking_type, '301' ); ?> />
+                <?php _e( '301 (Moved Permanently)', $this->plugin_name ); ?>
+            </label>
+            <br>
+            <label>
+                <input type="radio"
+                       name="<?php echo $this->options_prefix . 'masking_type' ?>"
                        value="302"
-                       <?php checked( $this->options->masking_type, '302' ); ?> />
-                <?php _e( '302 Redirect', $this->plugin_name ); ?>
+			        <?php checked( $this->options->masking_type, '302' ); ?> />
+		        <?php _e( '302 (Found/Temporary Redirect)', $this->plugin_name ); ?>
+            </label>
+            <br>
+            <label>
+                <input type="radio"
+                       name="<?php echo $this->options_prefix . 'masking_type' ?>"
+                       value="307"
+			        <?php checked( $this->options->masking_type, '307' ); ?> />
+		        <?php _e( '307 (Temporary Redirect)', $this->plugin_name ); ?>
             </label>
             <br>
             <label>

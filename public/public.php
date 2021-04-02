@@ -906,12 +906,29 @@ class Mihdan_NoExternalLinks_Public {
     	$masking_type  = trim( $this->options->masking_type );
 
     	header( 'Content-type: text/html; charset="utf-8"', true );
-    	header( 'Refresh: ' . $redirect_time . '; url=' . $url );
 
-    	if ( '302' === $masking_type && $url ) {
-    		@header( 'Location: ' . $url );
-    	}
-    	include_once 'partials/redirect.php';
+	    if ( $url ) {
+		    if ( '301' === $masking_type ) {
+			    @header( 'Location: ' . $url, true, 301 );
+			    die;
+		    }
+
+		    if ( '302' === $masking_type ) {
+			    @header( 'Location: ' . $url, true, 302 );
+			    die;
+		    }
+
+		    if ( '307' === $masking_type ) {
+			    @header( 'Location: ' . $url, true, 307 );
+			    die;
+		    }
+
+		    if ( 'javascript' === $masking_type ) {
+			    header( 'Refresh: ' . $redirect_time . '; url=' . $url );
+		    }
+
+		    include_once 'partials/redirect.php';
+	    }
     }
 
     /**
