@@ -3,8 +3,8 @@ Author: mihdan
 Contributors: mihdan
 Tags: seo, link, links, publisher, post, posts, comments
 Requires at least: 3.5.0
-Tested up to: 5.5
-Stable tag: 4.5.2
+Tested up to: 5.7
+Stable tag: 4.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Convert external links into internal links, site wide or post/page specific. Add NoFollow, Click logging, and more...
@@ -66,6 +66,11 @@ Mihdan: No External Links **does not** make any changes to your database, it jus
 4. [Optional] Configure Mihdan: No External Links settings.
 
 == Changelog ==
+
+= 4.6.0 (02.04.2021) =
+* Added support for WordPress 5.7
+* Added support for HTTP status codes (301, 302, 307)
+* Added script for auto deploy to wp.org
 
 = 4.5.2 (30.04.2020) =
 * Added support for WordPress 5.4
