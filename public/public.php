@@ -78,8 +78,12 @@ class Mihdan_NoExternalLinks_Public {
 		$this->version = $version;
         $this->options = $options;
 
+        $this->setup_hooks();
         $this->initiate();
+	}
 
+	public function setup_hooks() {
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
     /**
@@ -293,6 +297,10 @@ class Mihdan_NoExternalLinks_Public {
 
             $url = trim( $this->data->site, '/' ) . '/' . $separator . $url;
         }
+
+	    if ( $this->options->seo_hide ) {
+		    return sprintf( '<span class="waslinkname" data-link="%s"%s>%s</span>', esc_attr( base64_encode( $url ) ), $blank, esc_html( $anchor_text ) );
+	    }
 
         if ( $this->options->remove_all_links ) {
             return '<span class="waslinkname">' . $anchor_text . '</span>';
@@ -969,4 +977,21 @@ class Mihdan_NoExternalLinks_Public {
 
     }
 
+    public function enqueue_scripts() {
+	    if ( $this->options->seo_hide ) {
+	    	wp_enqueue_style(
+			    MIHDAN_NO_EXTERNAL_LINKS_SLUG . '-seo-hide',
+			    MIHDAN_NO_EXTERNAL_LINKS_URL . '/public/css/seo-hide.css',
+			    array(),
+			    MIHDAN_NO_EXTERNAL_LINKS_VERSION
+		    );
+		    wp_enqueue_script(
+			    MIHDAN_NO_EXTERNAL_LINKS_SLUG . '-seo-hide',
+			    MIHDAN_NO_EXTERNAL_LINKS_URL . '/public/js/seo-hide.js',
+			    array(),
+			    MIHDAN_NO_EXTERNAL_LINKS_VERSION,
+			    true
+		    );
+	    }
+    }
 }

@@ -441,6 +441,11 @@ class Mihdan_NoExternalLinks_Admin {
             $this->options_prefix . 'noindex_comment'
         );
 
+	    register_setting(
+		    $this->plugin_name . '-settings',
+		    $this->options_prefix . 'seo_hide'
+	    );
+
         add_settings_field(
             $this->options_prefix . 'logging',
             __( 'Logging', $this->plugin_name ),
@@ -1051,6 +1056,28 @@ class Mihdan_NoExternalLinks_Admin {
                         $this->plugin_name
                     );
                 ?>
+            </p>
+            <br>
+            <label>
+                <input type="checkbox"
+                       name="<?php echo $this->options_prefix . 'seo_hide' ?>"
+                       id="<?php echo $this->options_prefix . 'seo_hide' ?>"
+                       value="1"
+			        <?php checked( $this->options->seo_hide ); ?> />
+		        <?php
+		        _e(
+			        'SEO hide',
+			        $this->plugin_name
+		        );
+		        ?>
+            </label>
+            <p class="description" id="<?php echo $this->options_prefix . 'seo_hide' ?>_description">
+		        <?php
+		        _e(
+			        'Hiding links using SEO hide method.',
+			        $this->plugin_name
+		        );
+		        ?>
             </p>
         </fieldset>
         <?php

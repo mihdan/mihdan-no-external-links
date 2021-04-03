@@ -312,6 +312,7 @@ class Mihdan_NoExternalLinks {
 		    'target_blank'            => true,
 		    'noindex_tag'             => false,
 		    'noindex_comment'         => false,
+		    'seo_hide'                => false,
 		    'link_structure'          => 'default',
 		    'separator'               => 'goto',
 		    'link_encoding'           => 'none',
