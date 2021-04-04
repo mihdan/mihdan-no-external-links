@@ -551,6 +551,9 @@ class Mihdan_NoExternalLinks {
         $this->loader->add_action( 'admin_menu', $this->admin, 'add_admin_pages' );
         $this->loader->add_action( 'admin_init', $this->admin, 'register_setting' );
 
+		$this->loader->add_filter( 'install_plugins_nonmenu_tabs', $this->admin, 'install_plugins_nonmenu_tabs' );
+		$this->loader->add_filter( 'install_plugins_table_api_args_' . MIHDAN_NO_EXTERNAL_LINKS_SLUG, $this->admin, 'install_plugins_table_api_args' );
+
         $this->loader->add_filter( 'set-screen-option', $this->admin, 'mask_page_set_screen_options', NULL, 3 );
 		$hook_name = vsprintf( 'load-%s_page_%s-masks', array(
 			strtolower( sanitize_file_name( __( 'External Links', $this->plugin_name ) ) ),

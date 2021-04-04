@@ -154,6 +154,28 @@ class Mihdan_NoExternalLinks_Admin {
             false
         );
 
+		wp_enqueue_script( 'plugin_install' );
+		wp_enqueue_script( 'updates' );
+		add_thickbox();
+
+	}
+
+	public function install_plugins_nonmenu_tabs( $tabs ) {
+
+		$tabs[] = MIHDAN_NO_EXTERNAL_LINKS_SLUG;
+
+		return $tabs;
+	}
+
+	public function install_plugins_table_api_args( $args ) {
+		global $paged;
+
+		return array(
+			'page'     => $paged,
+			'per_page' => 100,
+			'locale'   => get_user_locale(),
+			'author'   => 'mihdan',
+		);
 	}
 
     /**
@@ -289,9 +311,7 @@ class Mihdan_NoExternalLinks_Admin {
      * @since  4.0.0
      */
     public function display_log_page() {
-
         include_once 'partials/logs.php';
-
     }
 
     /**
@@ -300,9 +320,7 @@ class Mihdan_NoExternalLinks_Admin {
      * @since  4.0.0
      */
     public function display_settings_page() {
-
         include_once 'partials/settings.php';
-
     }
 
     /**
@@ -828,6 +846,12 @@ class Mihdan_NoExternalLinks_Admin {
             $this->options_prefix . 'skip_follow'
         );
 
+	    add_settings_section(
+		    $this->options_prefix . 'settings_plugins_section',
+		    '',
+		    array( $this, 'plugins_cb' ),
+		    $this->plugin_name . '-settings-plugins'
+	    );
     }
 
     /**
@@ -1621,6 +1645,36 @@ class Mihdan_NoExternalLinks_Admin {
             ) ?>
         </p>
         <?php
+    }
+
+	/**
+	 * Callback for plugins page.
+     *
+     * @return void
+	 */
+    public function plugins_cb() {
+	    $transient = MIHDAN_NO_EXTERNAL_LINKS_SLUG . '-plugins';
+	    $cached    = get_transient( $transient );
+
+	    if ( false !== $cached ) {
+		    echo $cached;
+		    return;
+	    }
+
+	    ob_start();
+	    require_once ABSPATH . 'wp-admin/includes/class-wp-plugin-install-list-table.php';
+	    $_POST['tab'] = MIHDAN_NO_EXTERNAL_LINKS_SLUG;
+	    $table = new WP_Plugin_Install_List_Table();
+	    $table->prepare_items();
+
+
+	    $table->display();
+
+	    $content = ob_get_clean();
+	    set_transient( $transient, $content, 1 * DAY_IN_SECONDS );
+
+	    echo $content;
+	    return;
     }
 
     /**
