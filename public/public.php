@@ -299,7 +299,7 @@ class Mihdan_NoExternalLinks_Public {
         }
 
 	    if ( $this->options->seo_hide ) {
-		    return sprintf( '<span class="waslinkname" data-link="%s"%s>%s</span>', esc_attr( base64_encode( $url ) ), $blank, esc_html( $anchor_text ) );
+		    return sprintf( '<span class="waslinkname" data-link="%s"%s>%s</span>', esc_attr( base64_encode( $url ) ), $blank, $anchor_text );
 	    }
 
         if ( $this->options->remove_all_links ) {
