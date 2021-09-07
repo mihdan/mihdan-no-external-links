@@ -4,7 +4,7 @@ Contributors: mihdan
 Tags: seo, link, links, publisher, post, posts, comments
 Requires at least: 3.5.0
 Tested up to: 5.7
-Stable tag: 4.7.2
+Stable tag: 4.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Convert external links into internal links, site wide or post/page specific. Add NoFollow, Click logging, and more...
@@ -66,6 +66,9 @@ Mihdan: No External Links **does not** make any changes to your database, it jus
 4. [Optional] Configure Mihdan: No External Links settings.
 
 == Changelog ==
+
+= 4.7.3 (07.09.2021) =
+* Check if `wp_referer()` exists to work properly with `rel="noreferrer"` links
 
 = 4.7.2 (05.04.2021) =
 * Added a new settings page with all the author's plugins
