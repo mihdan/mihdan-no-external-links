@@ -380,7 +380,8 @@ class Mihdan_NoExternalLinks_Public {
 
         // Checking for spammer attack, redirect should happen from your own website.
         if ( $this->options->check_referrer ) {
-            if ( stripos( wp_get_referer(), $this->data->site ) !== 0 ) {
+			$referer = wp_get_referer();
+            if ( $referer && stripos( $referer, $this->data->site ) !== 0 ) {
                 $this->show_referrer_warning();
             }
         }
