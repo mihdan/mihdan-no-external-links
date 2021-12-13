@@ -372,6 +372,13 @@ class Mihdan_NoExternalLinks_Admin {
             $this->plugin_name . '-settings-include-exclude'
         );
 
+	    add_settings_section(
+		    $this->options_prefix . 'settings_seo_hide_section',
+		    '',
+		    array( $this, 'seo_hide_cb' ),
+		    $this->plugin_name . '-settings-seo-hide'
+	    );
+
         add_settings_field(
             $this->options_prefix . 'masking_type',
             __( 'Masking Type', $this->plugin_name ),
@@ -459,9 +466,42 @@ class Mihdan_NoExternalLinks_Admin {
             $this->options_prefix . 'noindex_comment'
         );
 
+	    add_settings_field(
+		    $this->options_prefix . 'seo_hide',
+		    __( 'SEO hide', $this->plugin_name ),
+		    array( $this, 'checkbox_cb' ),
+		    $this->plugin_name . '-settings-seo-hide',
+		    $this->options_prefix . 'settings_seo_hide_section',
+		    array(
+                'name'        => $this->options_prefix . 'seo_hide',
+                'id'          => $this->options_prefix . 'seo_hide',
+                'value'       => $this->options->seo_hide,
+                'title'       => __( 'Enable', $this->plugin_name ),
+            )
+	    );
+
 	    register_setting(
-		    $this->plugin_name . '-settings',
+		    $this->plugin_name . '-settings-seo-hide',
 		    $this->options_prefix . 'seo_hide'
+	    );
+
+	    add_settings_field(
+		    $this->options_prefix . 'seo_hide_list',
+		    __( 'Include', $this->plugin_name ),
+		    array( $this, 'textarea_cb' ),
+		    $this->plugin_name . '-settings-seo-hide',
+		    $this->options_prefix . 'settings_seo_hide_section',
+		    array(
+			    'name'        => $this->options_prefix . 'seo_hide_list',
+			    'id'          => $this->options_prefix . 'seo_hide_list',
+			    'value'       => $this->options->seo_hide_list,
+			    'title'       => __( 'Enter URLs you wish to be masked. One URL per line. All other URLs will be ignored.', $this->plugin_name ),
+		    )
+	    );
+
+	    register_setting(
+		    $this->plugin_name . '-settings-seo-hide',
+		    $this->options_prefix . 'seo_hide_list'
 	    );
 
         add_settings_field(
@@ -1081,31 +1121,51 @@ class Mihdan_NoExternalLinks_Admin {
                     );
                 ?>
             </p>
-            <br>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'seo_hide' ?>"
-                       id="<?php echo $this->options_prefix . 'seo_hide' ?>"
-                       value="1"
-			        <?php checked( $this->options->seo_hide ); ?> />
-		        <?php
-		        _e(
-			        'SEO hide',
-			        $this->plugin_name
-		        );
-		        ?>
-            </label>
-            <p class="description" id="<?php echo $this->options_prefix . 'seo_hide' ?>_description">
-		        <?php
-		        _e(
-			        'Hiding links using SEO hide method.',
-			        $this->plugin_name
-		        );
-		        ?>
-            </p>
         </fieldset>
         <?php
     }
+
+    public function checkbox_cb( $data ) {
+        ?>
+        <label>
+            <input type="checkbox"
+                   name="<?php echo esc_attr( $data['name'] ); ?>"
+                   id="<?php echo esc_attr( $data['id'] ); ?>"
+                   value="1"
+			    <?php checked( $data['value'] ); ?> />
+	        <?php echo esc_html($data['title'] ); ?>
+        </label>
+        <?php if ( ! empty( $data['description'] ) ) : ?>
+            <p class="description">
+                <?php echo esc_html($data['description'] ); ?>
+            </p>
+        <?php endif; ?>
+        <?php
+    }
+
+	public function textarea_cb( $data ) {
+		?>
+        <fieldset>
+	        <?php if ( ! empty( $data['title'] ) ) : ?>
+                <label for="<?php echo esc_attr( $data['id'] ); ?>">
+			        <?php echo esc_html($data['title'] ); ?>
+                </label>
+                <br>
+	        <?php endif; ?>
+            <textarea
+                    name="<?php echo esc_attr( $data['name'] ); ?>"
+                    id="<?php echo esc_attr( $data['id'] ); ?>"
+                    cols="50"
+                    class="large-text"
+                    rows="10"><?php echo esc_textarea( $data['value'] ); ?></textarea>
+            <?php if ( ! empty( $data['description'] ) ) : ?>
+                <p class="description">
+                    <?php echo esc_html($data['description'] ); ?>
+                </p>
+            <?php endif; ?>
+        </fieldset>
+		<?php
+	}
 
     /**
      * Render the masking type settings section.
@@ -1744,6 +1804,17 @@ class Mihdan_NoExternalLinks_Admin {
                 <?php _e( 'May conflict with caching plugins.', $this->plugin_name ); ?>
             </p>
         </fieldset>
+        <?php
+    }
+
+	/**
+	 * Render the SEO hide settings section.
+	 *
+	 * @since  4.7.4
+	 */
+    public function seo_hide_cb() {
+        ?>
+        <p>Hiding links using SEO hide method.</p>
         <?php
     }
 

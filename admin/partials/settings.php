@@ -22,6 +22,9 @@
 		<a href="?page=<?php echo $this->plugin_name; ?>&tab=links" class="nav-tab<?php echo 'links' === $active_tab ? ' nav-tab-active' : ''; ?>">
 			<?php _e( 'Links', $this->plugin_name ); ?>
 		</a>
+        <a href="?page=<?php echo $this->plugin_name; ?>&tab=seo_hide" class="nav-tab<?php echo 'seo_hide' === $active_tab ? ' nav-tab-active' : ''; ?>">
+			<?php _e( 'SEO hide', $this->plugin_name ); ?>
+        </a>
 		<a href="?page=<?php echo $this->plugin_name; ?>&tab=include_exclude" class="nav-tab<?php echo 'include_exclude' === $active_tab ? ' nav-tab-active' : ''; ?>">
 			<?php _e( 'Include', $this->plugin_name ); ?> / <?php _e( 'Exclude', $this->plugin_name ); ?>
 		</a>
@@ -41,6 +44,10 @@
         } elseif ( 'include_exclude' === $active_tab ) {
             settings_fields( $this->plugin_name . '-settings-include-exclude' );
             do_settings_sections( $this->plugin_name . '-settings-include-exclude' );
+	        submit_button();
+        } elseif ( 'seo_hide' === $active_tab ) {
+            settings_fields( $this->plugin_name . '-settings-seo-hide' );
+            do_settings_sections( $this->plugin_name . '-settings-seo-hide' );
 	        submit_button();
         } elseif ( 'advanced' === $active_tab ) {
             settings_fields( $this->plugin_name . '-settings-advanced' );
