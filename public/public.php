@@ -278,6 +278,14 @@ class Mihdan_NoExternalLinks_Public {
         $blank = $this->options->target_blank ? ' target="_blank"' : '';
         $nofollow = $this->options->nofollow ? ' rel="nofollow"' : '';
 
+	    if ( $this->options->seo_hide ) {
+		    $seo_hide_list = $this->textarea_to_array( $this->options->seo_hide_list );
+
+		    if ( $seo_hide_list && in_array( $this->get_domain_from_url( $url ), $seo_hide_list, true ) ) {
+			    return sprintf( '<span class="waslinkname" data-link="%s"%s>%s</span>', esc_attr( base64_encode( $url ) ), $blank, $anchor_text );
+		    }
+	    }
+
         if ( 'none' !== $this->options->link_shortening ) {
             $url = $this->shorten_link( $url );
 
@@ -297,10 +305,6 @@ class Mihdan_NoExternalLinks_Public {
 
             $url = trim( $this->data->site, '/' ) . '/' . $separator . $url;
         }
-
-	    if ( $this->options->seo_hide ) {
-		    return sprintf( '<span class="waslinkname" data-link="%s"%s>%s</span>', esc_attr( base64_encode( $url ) ), $blank, $anchor_text );
-	    }
 
         if ( $this->options->remove_all_links ) {
             return '<span class="waslinkname">' . $anchor_text . '</span>';
@@ -323,6 +327,31 @@ class Mihdan_NoExternalLinks_Public {
         return $anchor;
 
     }
+
+	/**
+	 * Convert textarea value to PHP array.
+	 *
+	 * @param string $field Textarea value.
+	 *
+	 * @return array
+	 */
+	private function textarea_to_array( $field ) {
+		return (array) array_map(
+			'trim',
+			explode( PHP_EOL, trim( $field ) )
+		);
+	}
+
+	/**
+	 * Get domain name from absolute URL.
+	 *
+	 * @param string $url Given URL.
+	 *
+	 * @return string
+	 */
+	private function get_domain_from_url( $url ) {
+		return parse_url( $url, PHP_URL_HOST );
+	}
 
     /**
      * Checks if current page is a redirect page.

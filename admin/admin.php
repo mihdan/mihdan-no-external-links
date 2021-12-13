@@ -495,7 +495,7 @@ class Mihdan_NoExternalLinks_Admin {
 			    'name'        => $this->options_prefix . 'seo_hide_list',
 			    'id'          => $this->options_prefix . 'seo_hide_list',
 			    'value'       => $this->options->seo_hide_list,
-			    'title'       => __( 'Enter URLs you wish to be masked. One URL per line. All other URLs will be ignored.', $this->plugin_name ),
+			    'title'       => __( 'Enter domains you wish to be masked. One domain per line. All other domain will be ignored.', $this->plugin_name ),
 		    )
 	    );
 
