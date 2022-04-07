@@ -69,6 +69,7 @@ Mihdan: No External Links **does not** make any changes to your database, it jus
 
 = 4.8.0 (07.04.2022) =
 * Added a link to plugin settings on all plugins page
+* Fixed security issues
 
 = 4.7.4 (13.12.2022) =
 * Fixed a bug with SEO hide

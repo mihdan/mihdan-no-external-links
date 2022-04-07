@@ -630,7 +630,10 @@ class Mihdan_NoExternalLinks_Admin {
 
         register_setting(
             $this->plugin_name . '-settings-links',
-            $this->options_prefix . 'separator'
+            $this->options_prefix . 'separator',
+            [
+                    'sanitize_callback' => 'sanitize_text_field',
+            ]
         );
 
         add_settings_field(
@@ -786,52 +789,82 @@ class Mihdan_NoExternalLinks_Admin {
 
         register_setting(
             $this->plugin_name . '-settings-links',
-            $this->options_prefix . 'adfly_api_key'
+            $this->options_prefix . 'adfly_api_key',
+	        [
+		        'sanitize_callback' => 'sanitize_text_field',
+	        ]
         );
 
         register_setting(
             $this->plugin_name . '-settings-links',
-            $this->options_prefix . 'adfly_user_id'
+            $this->options_prefix . 'adfly_user_id',
+	        [
+		        'sanitize_callback' => 'sanitize_text_field',
+	        ]
         );
 
 	    register_setting(
 		    $this->plugin_name . '-settings-links',
-		    $this->options_prefix . 'adfly_domain'
+		    $this->options_prefix . 'adfly_domain',
+		    [
+			    'sanitize_callback' => 'sanitize_text_field',
+		    ]
 	    );
 
 	    register_setting(
 		    $this->plugin_name . '-settings-links',
-		    $this->options_prefix . 'adfly_advert_type'
+		    $this->options_prefix . 'adfly_advert_type',
+		    [
+			    'sanitize_callback' => 'sanitize_text_field',
+		    ]
 	    );
 
         register_setting(
             $this->plugin_name . '-settings-links',
-            $this->options_prefix . 'bitly_login'
+            $this->options_prefix . 'bitly_login',
+	        [
+		        'sanitize_callback' => 'sanitize_text_field',
+	        ]
         );
 
         register_setting(
             $this->plugin_name . '-settings-links',
-            $this->options_prefix . 'bitly_api_key'
+            $this->options_prefix . 'bitly_api_key',
+	        [
+		        'sanitize_callback' => 'sanitize_text_field',
+	        ]
         );
 
         register_setting(
             $this->plugin_name . '-settings-links',
-            $this->options_prefix . 'linkshrink_api_key'
+            $this->options_prefix . 'linkshrink_api_key',
+	        [
+		        'sanitize_callback' => 'sanitize_text_field',
+	        ]
         );
 
         register_setting(
             $this->plugin_name . '-settings-links',
-            $this->options_prefix . 'shortest_api_key'
+            $this->options_prefix . 'shortest_api_key',
+	        [
+		        'sanitize_callback' => 'sanitize_text_field',
+	        ]
         );
 
 	    register_setting(
 		    $this->plugin_name . '-settings-links',
-		    $this->options_prefix . 'yourls_signature'
+		    $this->options_prefix . 'yourls_signature',
+		    [
+			    'sanitize_callback' => 'sanitize_text_field',
+		    ]
 	    );
 
 	    register_setting(
 		    $this->plugin_name . '-settings-links',
-		    $this->options_prefix . 'yourls_domain'
+		    $this->options_prefix . 'yourls_domain',
+		    [
+			    'sanitize_callback' => 'sanitize_text_field',
+		    ]
 	    );
 
         add_settings_field(
