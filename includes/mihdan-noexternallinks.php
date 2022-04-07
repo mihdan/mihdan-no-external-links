@@ -313,6 +313,7 @@ class Mihdan_NoExternalLinks {
 		    'noindex_tag'             => false,
 		    'noindex_comment'         => false,
 		    'seo_hide'                => false,
+		    'seo_hide_list'           => '',
 		    'link_structure'          => 'default',
 		    'separator'               => 'goto',
 		    'link_encoding'           => 'none',
@@ -379,6 +380,7 @@ class Mihdan_NoExternalLinks {
                 case 'link_shortening':
                 case 'anonymous_link_provider':
                 case 'inclusion_list':
+                case 'seo_hide_list':
                 case 'exclusion_list':
                 case 'bot_targeting':
                 case 'redirect_message':
