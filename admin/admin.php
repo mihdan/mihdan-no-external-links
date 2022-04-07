@@ -1928,6 +1928,25 @@ class Mihdan_NoExternalLinks_Admin {
         <?php
     }
 
+	/**
+	 * Add plugin action links
+	 *
+	 * @param array  $actions Default actions.
+	 * @param string $plugin_file Plugin file.
+	 *
+	 * @return array
+	 */
+    public function add_settings_link( $actions, $plugin_file ) {
+	    if ( MIHDAN_NO_EXTERNAL_LINKS_BASENAME === $plugin_file ) {
+		    $actions[] = sprintf(
+			    '<a href="%s">%s</a>',
+			    admin_url( 'admin.php?page=' . MIHDAN_NO_EXTERNAL_LINKS_SLUG ),
+			    esc_html__( 'Settings', 'mihdan-no-external-links' )
+		    );
+	    }
+
+	    return $actions;
+    }
 }
 
 // eof;

@@ -576,6 +576,7 @@ class Mihdan_NoExternalLinks {
         $this->loader->add_action( 'save_post', $this->admin, 'save_custom_meta_box' );
 
         $this->loader->add_action( 'init', $this->admin, 'site_health' );
+		$this->loader->add_filter( 'plugin_action_links', $this->admin, 'add_settings_link', 10, 2 );
 	}
 
 	/**
