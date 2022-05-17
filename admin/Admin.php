@@ -8,7 +8,10 @@
  * @author        mihdan
  */
 
-namespace Mihdan\No_External_Links;
+namespace Mihdan\No_External_Links\Admin;
+
+use const Mihdan\No_External_Links\MIHDAN_NO_EXTERNAL_LINKS_SLUG;
+use WP_Plugin_Install_List_Table;
 
 /**
  * Class Admin.
@@ -31,7 +34,7 @@ class Admin {
 	 * @access   private
 	 * @var      string $version The current version of this plugin.
 	 */
-	private $version;
+	private string $version;
 
 	/**
 	 * The options of this plugin.
@@ -98,9 +101,9 @@ class Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version The version of this plugin.
-	 * @param object $options The current options of this plugin.
+	 * @param string $plugin_name    The name of this plugin.
+	 * @param string $version        The version of this plugin.
+	 * @param object $options        The current options of this plugin.
 	 * @param string $options_prefix The options prefix of this plugin.
 	 *
 	 * @since    4.0.0
@@ -123,7 +126,7 @@ class Admin {
 	 * @since 4.5.1
 	 */
 	public function site_health() {
-		$this->site_health = new Site_Health( $this->plugin_name );
+		$this->site_health = new SiteHealth( $this->plugin_name );
 	}
 
 	/**
@@ -230,8 +233,8 @@ class Admin {
 	 * Set screen options for the masks page.
 	 *
 	 * @param bool|int $status
-	 * @param string $option The option name.
-	 * @param bool|int $value The number of rows to use.
+	 * @param string   $option The option name.
+	 * @param bool|int $value  The number of rows to use.
 	 *
 	 * @return    int
 	 * @since     4.2.0
@@ -253,12 +256,12 @@ class Admin {
 		$args   = array(
 			'label'   => 'Number of items per page:',
 			'default' => 20,
-			'option'  => 'masks_per_page'
+			'option'  => 'masks_per_page',
 		);
 
 		add_screen_option( $option, $args );
 
-		$this->masks_table = new Mihdan_NoExternalLinks_Admin_Mask_Table( $this->plugin_name, $this->options_prefix );
+		$this->masks_table = new MaskTable( $this->plugin_name, $this->options_prefix );
 
 		$this->masks_table->process_bulk_action();
 
@@ -268,8 +271,8 @@ class Admin {
 	 * Set screen options for the logs page.
 	 *
 	 * @param bool|int $status
-	 * @param string $option The option name.
-	 * @param bool|int $value The number of rows to use.
+	 * @param string   $option The option name.
+	 * @param bool|int $value  The number of rows to use.
 	 *
 	 * @return    int
 	 * @since     4.0.0
@@ -291,12 +294,12 @@ class Admin {
 		$args   = array(
 			'label'   => 'Number of items per page:',
 			'default' => 20,
-			'option'  => 'logs_per_page'
+			'option'  => 'logs_per_page',
 		);
 
 		add_screen_option( $option, $args );
 
-		$this->logs_table = new Mihdan_NoExternalLinks_Admin_Log_Table( $this->plugin_name, $this->options_prefix );
+		$this->logs_table = new LogTable( $this->plugin_name, $this->options_prefix );
 
 		$this->logs_table->process_bulk_action();
 
@@ -940,60 +943,66 @@ class Admin {
 	 */
 	public function masking_type_cb() {
 		?>
-        <fieldset>
-            <label>
-                <input type="radio"
-                       name="<?php echo $this->options_prefix . 'masking_type' ?>"
-                       value="no"
-					<?php checked( $this->options->masking_type, 'no' ); ?> />
-				<?php _e( 'No Redirect', $this->plugin_name ); ?>
-            </label>
-            <br>
-            <label>
-                <input type="radio"
-                       name="<?php echo $this->options_prefix . 'masking_type' ?>"
-                       value="301"
-					<?php checked( $this->options->masking_type, '301' ); ?> />
-				<?php _e( '301 (Moved Permanently)', $this->plugin_name ); ?>
-            </label>
-            <br>
-            <label>
-                <input type="radio"
-                       name="<?php echo $this->options_prefix . 'masking_type' ?>"
-                       value="302"
-					<?php checked( $this->options->masking_type, '302' ); ?> />
-				<?php _e( '302 (Found/Temporary Redirect)', $this->plugin_name ); ?>
-            </label>
-            <br>
-            <label>
-                <input type="radio"
-                       name="<?php echo $this->options_prefix . 'masking_type' ?>"
-                       value="307"
+		<fieldset>
+			<label>
+				<input
+					type="radio"
+					name="<?php echo esc_attr( $this->options_prefix . 'masking_type' ); ?>"
+					value="no"
+					<?php checked( $this->options->masking_type, 'no' ); ?>
+				/>
+				<?php esc_html_e( 'No Redirect', $this->plugin_name ); ?>
+			</label>
+			<br>
+			<label>
+				<input
+					type="radio"
+					name="<?php echo esc_attr( $this->options_prefix . 'masking_type' ); ?>"
+					value="301"
+					<?php checked( $this->options->masking_type, '301' ); ?>
+				/>
+				<?php esc_html_e( '301 (Moved Permanently)', $this->plugin_name ); ?>
+			</label>
+			<br>
+			<label>
+				<input
+					type="radio"
+					name="<?php echo esc_attr( $this->options_prefix . 'masking_type' ); ?>"
+					value="302"
+					<?php checked( $this->options->masking_type, '302' ); ?>
+				/>
+				<?php esc_html_e( '302 (Found/Temporary Redirect)', $this->plugin_name ); ?>
+			</label>
+			<br>
+			<label>
+				<input type="radio"
+					   name="<?php echo esc_attr( $this->options_prefix . 'masking_type' ); ?>"
+					   value="307"
 					<?php checked( $this->options->masking_type, '307' ); ?> />
-				<?php _e( '307 (Temporary Redirect)', $this->plugin_name ); ?>
-            </label>
-            <br>
-            <label>
-                <input type="radio"
-                       name="<?php echo $this->options_prefix . 'masking_type' ?>"
-                       value="javascript"
+				<?php esc_html_e( '307 (Temporary Redirect)', $this->plugin_name ); ?>
+			</label>
+			<br>
+			<label>
+				<input type="radio"
+					   name="<?php echo esc_attr( $this->options_prefix . 'masking_type' ); ?>"
+					   value="javascript"
 					<?php checked( $this->options->masking_type, 'javascript' ); ?> />
-				<?php _e( 'Javascript Redirect', $this->plugin_name ); ?>
-            </label>
-            <ul>
-                <li>
-					<?php _e( 'Redirect after', $this->plugin_name ); ?>
-                    <input type="text"
-                           name="<?php echo $this->options_prefix . 'redirect_time' ?>"
-                           id="<?php echo $this->options_prefix . 'redirect_time' ?>"
-                           size="3"
-                           maxlength="4"
-                           value="<?php echo $this->options->redirect_time ? $this->options->redirect_time : 3 ?>"
-						<?php echo 'javascript' == $this->options->masking_type ? '' : 'readonly' ?> />
-					<?php _e( 'seconds', $this->plugin_name ); ?>
-                </li>
-            </ul>
-        </fieldset>
+				<?php esc_html_e( 'Javascript Redirect', $this->plugin_name ); ?>
+			</label>
+			<ul>
+				<li>
+					<?php esc_html_e( 'Redirect after', $this->plugin_name ); ?>
+					<input type="text"
+						   name="<?php echo esc_attr( $this->options_prefix . 'redirect_time' ); ?>"
+						   id="<?php echo esc_attr( $this->options_prefix . 'redirect_time' ); ?>"
+						   size="3"
+						   maxlength="4"
+						   value="<?php echo $this->options->redirect_time ? absint( $this->options->redirect_time ) : 3 ?>"
+						<?php echo 'javascript' === $this->options->masking_type ? '' : 'readonly' ?> />
+					<?php esc_html_e( 'seconds', $this->plugin_name ); ?>
+				</li>
+			</ul>
+		</fieldset>
 		<?php
 	}
 
@@ -1004,89 +1013,89 @@ class Admin {
 	 */
 	public function mask_cb() {
 		?>
-        <fieldset>
-            <label>
-                <input type="radio"
-                       name="<?php echo $this->options_prefix . 'mask_links' ?>"
-                       value="all"
+		<fieldset>
+			<label>
+				<input type="radio"
+					   name="<?php echo $this->options_prefix . 'mask_links' ?>"
+					   value="all"
 					<?php checked( $this->options->mask_links, 'all' ); ?>
 					<?php disabled( ( boolean ) ini_get( 'output_buffering' ), false ); ?> />
-				<?php _e( 'Mask All Links', $this->plugin_name ); ?>
-                &nbsp;
-                <strong><small><em>(<?php _e( 'Recommended', $this->plugin_name ); ?>)</em></small></strong>
-            </label>
-            <br>
-            <label>
-                <input type="radio"
-                       name="<?php echo $this->options_prefix . 'mask_links' ?>"
-                       value="specific"
+				<?php esc_html_e( 'Mask All Links', $this->plugin_name ); ?>
+				&nbsp;
+				<strong><small><em>(<?php esc_html_e( 'Recommended', $this->plugin_name ); ?>)</em></small></strong>
+			</label>
+			<br>
+			<label>
+				<input type="radio"
+					   name="<?php echo $this->options_prefix . 'mask_links' ?>"
+					   value="specific"
 					<?php checked( $this->options->mask_links, 'specific' ); ?> />
-				<?php _e( 'Mask Specific Links (select below)', $this->plugin_name ); ?>
-            </label>
-            <div class="list-tree">
-                <ul>
-                    <li>
-                        <label>
-                            <input type="checkbox"
-                                   name="<?php echo $this->options_prefix . 'mask_posts_pages' ?>"
-                                   id="<?php echo $this->options_prefix . 'mask_posts_pages' ?>"
-                                   value="1"
+				<?php esc_html_e( 'Mask Specific Links (select below)', $this->plugin_name ); ?>
+			</label>
+			<div class="list-tree">
+				<ul>
+					<li>
+						<label>
+							<input type="checkbox"
+								   name="<?php echo $this->options_prefix . 'mask_posts_pages' ?>"
+								   id="<?php echo $this->options_prefix . 'mask_posts_pages' ?>"
+								   value="1"
 								<?php checked( $this->options->mask_posts_pages ); ?>
 								<?php checked( $this->options->mask_links, 'all' ); ?>
 								<?php disabled( $this->options->mask_links, 'all' ); ?> />
-							<?php _e( 'Mask links in posts and pages', $this->plugin_name ); ?>
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <input type="checkbox"
-                                   name="<?php echo $this->options_prefix . 'mask_comments' ?>"
-                                   id="<?php echo $this->options_prefix . 'mask_comments' ?>"
-                                   value="1"
+							<?php esc_html_e( 'Mask links in posts and pages', $this->plugin_name ); ?>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="checkbox"
+								   name="<?php echo $this->options_prefix . 'mask_comments' ?>"
+								   id="<?php echo $this->options_prefix . 'mask_comments' ?>"
+								   value="1"
 								<?php checked( $this->options->mask_comments ); ?>
 								<?php checked( $this->options->mask_links, 'all' ); ?>
 								<?php disabled( $this->options->mask_links, 'all' ); ?> />
-							<?php _e( 'Mask links in comments', $this->plugin_name ); ?>
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <input type="checkbox"
-                                   name="<?php echo $this->options_prefix . 'mask_comment_author' ?>"
-                                   id="<?php echo $this->options_prefix . 'mask_comment_author' ?>"
-                                   value="1"
+							<?php esc_html_e( 'Mask links in comments', $this->plugin_name ); ?>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="checkbox"
+								   name="<?php echo $this->options_prefix . 'mask_comment_author' ?>"
+								   id="<?php echo $this->options_prefix . 'mask_comment_author' ?>"
+								   value="1"
 								<?php checked( $this->options->mask_comment_author ); ?>
 								<?php checked( $this->options->mask_links, 'all' ); ?>
 								<?php disabled( $this->options->mask_links, 'all' ); ?> />
-							<?php _e( 'Mask comment authors\'s homepage link', $this->plugin_name ); ?>
-                        </label>
-                    </li>
-                </ul>
-            </div>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'mask_rss' ?>"
-                       id="<?php echo $this->options_prefix . 'mask_rss' ?>"
-                       value="1"
+							<?php esc_html_e( 'Mask comment authors\'s homepage link', $this->plugin_name ); ?>
+						</label>
+					</li>
+				</ul>
+			</div>
+			<label>
+				<input type="checkbox"
+					   name="<?php echo $this->options_prefix . 'mask_rss' ?>"
+					   id="<?php echo $this->options_prefix . 'mask_rss' ?>"
+					   value="1"
 					<?php checked( $this->options->mask_rss ); ?> />
-				<?php _e( 'Mask links in your RSS post content', $this->plugin_name ); ?>
-            </label>
-            <p class="description" id="<?php echo $this->options_prefix . 'noindex_tag' ?>_description">
-				<?php _e( 'May result in invalid RSS if used with some masking options.', $this->plugin_name ); ?>
-            </p>
-            <br>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'mask_rss_comments' ?>"
-                       id="<?php echo $this->options_prefix . 'mask_rss_comments' ?>"
-                       value="1"
+				<?php esc_html_e( 'Mask links in your RSS post content', $this->plugin_name ); ?>
+			</label>
+			<p class="description" id="<?php echo $this->options_prefix . 'noindex_tag' ?>_description">
+				<?php esc_html_e( 'May result in invalid RSS if used with some masking options.', $this->plugin_name ); ?>
+			</p>
+			<br>
+			<label>
+				<input type="checkbox"
+					   name="<?php echo $this->options_prefix . 'mask_rss_comments' ?>"
+					   id="<?php echo $this->options_prefix . 'mask_rss_comments' ?>"
+					   value="1"
 					<?php checked( $this->options->mask_rss_comments ); ?> />
-				<?php _e( 'Mask links in RSS comments', $this->plugin_name ); ?>
-            </label>
-            <p class="description" id="<?php echo $this->options_prefix . 'noindex_tag' ?>_description">
-				<?php _e( 'May result in invalid RSS if used with some masking options.', $this->plugin_name ); ?>
-            </p>
-        </fieldset>
+				<?php esc_html_e( 'Mask links in RSS comments', $this->plugin_name ); ?>
+			</label>
+			<p class="description" id="<?php echo $this->options_prefix . 'noindex_tag' ?>_description">
+				<?php esc_html_e( 'May result in invalid RSS if used with some masking options.', $this->plugin_name ); ?>
+			</p>
+		</fieldset>
 		<?php
 	}
 
@@ -1097,112 +1106,112 @@ class Admin {
 	 */
 	public function general_cb() {
 		?>
-        <fieldset>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'nofollow' ?>"
-                       id="<?php echo $this->options_prefix . 'nofollow' ?>"
-                       value="1"
+		<fieldset>
+			<label>
+				<input type="checkbox"
+					   name="<?php echo $this->options_prefix . 'nofollow' ?>"
+					   id="<?php echo $this->options_prefix . 'nofollow' ?>"
+					   value="1"
 					<?php checked( $this->options->nofollow ); ?> />
-				<?php _e( 'No Follow Masked Links', $this->plugin_name ); ?>
-            </label>
-            <p class="description" id="<?php echo $this->options_prefix . 'noindex_tag' ?>_description">
-				<?php _e( 'Add rel="nofollow" to masked links.', $this->plugin_name ); ?>
-            </p>
-            <br>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'target_blank' ?>"
-                       id="<?php echo $this->options_prefix . 'target_blank' ?>"
-                       value="1"
+				<?php esc_html_e( 'No Follow Masked Links', $this->plugin_name ); ?>
+			</label>
+			<p class="description" id="<?php echo $this->options_prefix . 'noindex_tag' ?>_description">
+				<?php esc_html_e( 'Add rel="nofollow" to masked links.', $this->plugin_name ); ?>
+			</p>
+			<br>
+			<label>
+				<input type="checkbox"
+					   name="<?php echo $this->options_prefix . 'target_blank' ?>"
+					   id="<?php echo $this->options_prefix . 'target_blank' ?>"
+					   value="1"
 					<?php checked( $this->options->target_blank ); ?> />
-				<?php _e( 'Open Masked Links in a New Window', $this->plugin_name ); ?>
-            </label>
-            <p class="description" id="<?php echo $this->options_prefix . 'noindex_tag' ?>_description">
-				<?php _e( 'Add target="_blank" to masked links.', $this->plugin_name ); ?>
-            </p>
-            <br>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'noindex_tag' ?>"
-                       id="<?php echo $this->options_prefix . 'noindex_tag' ?>"
-                       value="1"
+				<?php esc_html_e( 'Open Masked Links in a New Window', $this->plugin_name ); ?>
+			</label>
+			<p class="description" id="<?php echo $this->options_prefix . 'noindex_tag' ?>_description">
+				<?php esc_html_e( 'Add target="_blank" to masked links.', $this->plugin_name ); ?>
+			</p>
+			<br>
+			<label>
+				<input type="checkbox"
+					   name="<?php echo $this->options_prefix . 'noindex_tag' ?>"
+					   id="<?php echo $this->options_prefix . 'noindex_tag' ?>"
+					   value="1"
 					<?php checked( $this->options->noindex_tag ); ?> />
 				<?php
-				_e(
+				esc_html_e(
 					'Surround Masked Links with <code>&#x3C;noindex/&#x3E;</code> tags',
 					$this->plugin_name
 				);
 				?>
-            </label>
-            <p class="description" id="<?php echo $this->options_prefix . 'noindex_tag' ?>_description">
-				<?php _e( 'For yandex search engine.', $this->plugin_name ); ?>
-            </p>
-            <br>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'noindex_comment' ?>"
-                       id="<?php echo $this->options_prefix . 'noindex_comment' ?>"
-                       value="1"
+			</label>
+			<p class="description" id="<?php echo $this->options_prefix . 'noindex_tag' ?>_description">
+				<?php esc_html_e( 'For yandex search engine.', $this->plugin_name ); ?>
+			</p>
+			<br>
+			<label>
+				<input type="checkbox"
+					   name="<?php echo $this->options_prefix . 'noindex_comment' ?>"
+					   id="<?php echo $this->options_prefix . 'noindex_comment' ?>"
+					   value="1"
 					<?php checked( $this->options->noindex_comment ); ?> />
 				<?php
-				_e(
+				esc_html_e(
 					'Surround Masked Links with <code>&#x3C;!--noindex--&#x3E;</code> comments',
 					$this->plugin_name
 				);
 				?>
-            </label>
-            <p class="description" id="<?php echo $this->options_prefix . 'noindex_comment' ?>_description">
+			</label>
+			<p class="description" id="<?php echo $this->options_prefix . 'noindex_comment' ?>_description">
 				<?php
-				_e(
+				esc_html_e(
 					'For yandex search engine, better then noindex tag because valid.',
 					$this->plugin_name
 				);
 				?>
-            </p>
-        </fieldset>
+			</p>
+		</fieldset>
 		<?php
 	}
 
 	public function checkbox_cb( $data ) {
 		?>
-        <label>
-            <input type="checkbox"
-                   name="<?php echo esc_attr( $data['name'] ); ?>"
-                   id="<?php echo esc_attr( $data['id'] ); ?>"
-                   value="1"
+		<label>
+			<input type="checkbox"
+				   name="<?php echo esc_attr( $data['name'] ); ?>"
+				   id="<?php echo esc_attr( $data['id'] ); ?>"
+				   value="1"
 				<?php checked( $data['value'] ); ?> />
 			<?php echo esc_html( $data['title'] ); ?>
-        </label>
+		</label>
 		<?php if ( ! empty( $data['description'] ) ) : ?>
-            <p class="description">
+			<p class="description">
 				<?php echo esc_html( $data['description'] ); ?>
-            </p>
+			</p>
 		<?php endif; ?>
 		<?php
 	}
 
 	public function textarea_cb( $data ) {
 		?>
-        <fieldset>
+		<fieldset>
 			<?php if ( ! empty( $data['title'] ) ) : ?>
-                <label for="<?php echo esc_attr( $data['id'] ); ?>">
+				<label for="<?php echo esc_attr( $data['id'] ); ?>">
 					<?php echo esc_html( $data['title'] ); ?>
-                </label>
-                <br>
+				</label>
+				<br>
 			<?php endif; ?>
-            <textarea
-                    name="<?php echo esc_attr( $data['name'] ); ?>"
-                    id="<?php echo esc_attr( $data['id'] ); ?>"
-                    cols="50"
-                    class="large-text"
-                    rows="10"><?php echo esc_textarea( $data['value'] ); ?></textarea>
+			<textarea
+				name="<?php echo esc_attr( $data['name'] ); ?>"
+				id="<?php echo esc_attr( $data['id'] ); ?>"
+				cols="50"
+				class="large-text"
+				rows="10"><?php echo esc_textarea( $data['value'] ); ?></textarea>
 			<?php if ( ! empty( $data['description'] ) ) : ?>
-                <p class="description">
+				<p class="description">
 					<?php echo esc_html( $data['description'] ); ?>
-                </p>
+				</p>
 			<?php endif; ?>
-        </fieldset>
+		</fieldset>
 		<?php
 	}
 
@@ -1213,31 +1222,31 @@ class Admin {
 	 */
 	public function logging_cb() {
 		?>
-        <fieldset>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'logging' ?>"
-                       id="<?php echo $this->options_prefix . 'logging' ?>"
-                       value="1"
+		<fieldset>
+			<label>
+				<input type="checkbox"
+					   name="<?php echo $this->options_prefix . 'logging' ?>"
+					   id="<?php echo $this->options_prefix . 'logging' ?>"
+					   value="1"
 					<?php checked( $this->options->logging ); ?> />
-				<?php _e( 'Enable Logging', $this->plugin_name ); ?>
-            </label>
-            <br>
-            <label>
-				<?php _e( 'Keep logs for ', $this->plugin_name ); ?>
-                <input type="text"
-                       name="<?php echo $this->options_prefix . 'log_duration' ?>"
-                       id="<?php echo $this->options_prefix . 'log_duration' ?>"
-                       size="3"
-                       maxlength="4"
-                       value="<?php echo $this->options->log_duration >= 0 ? $this->options->log_duration : 30 ?>"
+				<?php esc_html_e( 'Enable Logging', $this->plugin_name ); ?>
+			</label>
+			<br>
+			<label>
+				<?php esc_html_e( 'Keep logs for ', $this->plugin_name ); ?>
+				<input type="text"
+					   name="<?php echo $this->options_prefix . 'log_duration' ?>"
+					   id="<?php echo $this->options_prefix . 'log_duration' ?>"
+					   size="3"
+					   maxlength="4"
+					   value="<?php echo $this->options->log_duration >= 0 ? $this->options->log_duration : 30 ?>"
 					<?php echo true == $this->options->logging ? '' : 'readonly' ?> />
-				<?php _e( 'days', $this->plugin_name ); ?>
-            </label>
-            <p class="description">
-				<?php _e( 'Set to 0 to keep logs permanently.', $this->plugin_name ) ?>
-            </p>
-        </fieldset>
+				<?php esc_html_e( 'days', $this->plugin_name ); ?>
+			</label>
+			<p class="description">
+				<?php esc_html_e( 'Set to 0 to keep logs permanently.', $this->plugin_name ) ?>
+			</p>
+		</fieldset>
 		<?php
 	}
 
@@ -1248,26 +1257,26 @@ class Admin {
 	 */
 	public function anonymize_cb() {
 		?>
-        <fieldset>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'anonymize_links' ?>"
-                       id="<?php echo $this->options_prefix . 'anonymize_links' ?>"
-                       value="1"
+		<fieldset>
+			<label>
+				<input type="checkbox"
+					   name="<?php echo $this->options_prefix . 'anonymize_links' ?>"
+					   id="<?php echo $this->options_prefix . 'anonymize_links' ?>"
+					   value="1"
 					<?php checked( $this->options->anonymize_links ); ?> />
-				<?php _e( 'Enable Anonymous Links', $this->plugin_name ); ?>
-            </label>
-            <br>
-            <label>
-				<?php _e( 'Anonymizer prefix ', $this->plugin_name ); ?>
-                <input type="text"
-                       name="<?php echo $this->options_prefix . 'anonymous_link_provider' ?>"
-                       id="<?php echo $this->options_prefix . 'anonymous_link_provider' ?>"
-                       value="<?php echo $this->options->anonymous_link_provider ?>"
+				<?php esc_html_e( 'Enable Anonymous Links', $this->plugin_name ); ?>
+			</label>
+			<br>
+			<label>
+				<?php esc_html_e( 'Anonymizer prefix ', $this->plugin_name ); ?>
+				<input type="text"
+					   name="<?php echo $this->options_prefix . 'anonymous_link_provider' ?>"
+					   id="<?php echo $this->options_prefix . 'anonymous_link_provider' ?>"
+					   value="<?php echo $this->options->anonymous_link_provider ?>"
 					<?php echo true == $this->options->anonymize_links ? '' : 'readonly' ?> />
-                <code>http://www.example.com</code>
-            </label>
-        </fieldset>
+				<code>http://www.example.com</code>
+			</label>
+		</fieldset>
 		<?php
 	}
 
@@ -1278,80 +1287,80 @@ class Admin {
 	 */
 	public function bot_targeting_cb() {
 		?>
-        <fieldset>
-            <p>
-                <label>
-                    <input type="radio"
-                           name="<?php echo $this->options_prefix . 'bot_targeting' ?>"
-                           id="<?php echo $this->options_prefix . 'bot_targeting' ?>"
-                           value="all"
+		<fieldset>
+			<p>
+				<label>
+					<input type="radio"
+						   name="<?php echo $this->options_prefix . 'bot_targeting' ?>"
+						   id="<?php echo $this->options_prefix . 'bot_targeting' ?>"
+						   value="all"
 						<?php checked( $this->options->bot_targeting, 'all' ); ?> />
-					<?php _e( 'Target All Bots', $this->plugin_name ); ?>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input type="radio"
-                           name="<?php echo $this->options_prefix . 'bot_targeting' ?>"
-                           id="<?php echo $this->options_prefix . 'bot_targeting' ?>"
-                           value="specific"
+					<?php esc_html_e( 'Target All Bots', $this->plugin_name ); ?>
+				</label>
+			</p>
+			<p>
+				<label>
+					<input type="radio"
+						   name="<?php echo $this->options_prefix . 'bot_targeting' ?>"
+						   id="<?php echo $this->options_prefix . 'bot_targeting' ?>"
+						   value="specific"
 						<?php checked( $this->options->bot_targeting, 'specific' ); ?> />
-					<?php _e( 'Target Specific Bot(s)', $this->plugin_name ); ?>
-                </label>
-            </p>
-            <ul>
-                <li>
-                    <label for="">
-						<?php _e( 'Bot(s)', $this->plugin_name ) ?>
-                        <select name="<?php echo $this->options_prefix . 'bots_selector[]' ?>"
-                                id="<?php echo $this->options_prefix . 'bots_selector' ?>"
-                                multiple
+					<?php esc_html_e( 'Target Specific Bot(s)', $this->plugin_name ); ?>
+				</label>
+			</p>
+			<ul>
+				<li>
+					<label for="">
+						<?php esc_html_e( 'Bot(s)', $this->plugin_name ) ?>
+						<select name="<?php echo $this->options_prefix . 'bots_selector[]' ?>"
+								id="<?php echo $this->options_prefix . 'bots_selector' ?>"
+								multiple
 							<?php disabled( $this->options->bot_targeting, 'all' ); ?>>
-                            <option value="aolspider"
+							<option value="aolspider"
 								<?php
 								selected( in_array( 'aolspider', $this->options->bots_selector ) )
 								?>>AOL
-                            </option>
-                            <option value="askbot"
+							</option>
+							<option value="askbot"
 								<?php
 								selected( in_array( 'askbot', $this->options->bots_selector ) )
 								?>>Ask
-                            </option>
-                            <option value="baiduspider"
+							</option>
+							<option value="baiduspider"
 								<?php
 								selected( in_array( 'baiduspider', $this->options->bots_selector ) )
 								?>>Baidu
-                            </option>
-                            <option value="bingbot"
+							</option>
+							<option value="bingbot"
 								<?php
 								selected( in_array( 'bingbot', $this->options->bots_selector ) )
 								?>>Bing
-                            </option>
-                            <option value="duckduckbot"
+							</option>
+							<option value="duckduckbot"
 								<?php
 								selected( in_array( 'duckduckbot', $this->options->bots_selector ) )
 								?>>DuckDuckGo
-                            </option>
-                            <option value="googlebot"
+							</option>
+							<option value="googlebot"
 								<?php
 								selected( in_array( 'googlebot', $this->options->bots_selector ) )
 								?>>Google
-                            </option>
-                            <option value="yahoobot"
+							</option>
+							<option value="yahoobot"
 								<?php
 								selected( in_array( 'yahoobot', $this->options->bots_selector ) )
 								?>>Yahoo
-                            </option>
-                            <option value="yandexbot"
+							</option>
+							<option value="yandexbot"
 								<?php
 								selected( in_array( 'yandexbot', $this->options->bots_selector ) )
 								?>>Yandex
-                            </option>
-                        </select>
-                    </label>
-                </li>
-            </ul>
-        </fieldset>
+							</option>
+						</select>
+					</label>
+				</li>
+			</ul>
+		</fieldset>
 		<?php
 	}
 
@@ -1362,43 +1371,43 @@ class Admin {
 	 */
 	public function advanced_cb() {
 		?>
-        <fieldset>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'check_referrer' ?>"
-                       id="<?php echo $this->options_prefix . 'check_referrer' ?>"
-                       value="1"
+		<fieldset>
+			<label>
+				<input type="checkbox"
+					   name="<?php echo $this->options_prefix . 'check_referrer' ?>"
+					   id="<?php echo $this->options_prefix . 'check_referrer' ?>"
+					   value="1"
 					<?php checked( $this->options->check_referrer ); ?> />
-				<?php _e( 'Check Referrer', $this->plugin_name ); ?>
-            </label>
-            <p class="description">
+				<?php esc_html_e( 'Check Referrer', $this->plugin_name ); ?>
+			</label>
+			<p class="description">
 				<?php
-				_e(
+				esc_html_e(
 					'Check for document referer and restrict redirect if it is not your own website.
                               Useful against spoofing attacks.',
 					$this->plugin_name
 				)
 				?>
-            </p>
-            <br>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'remove_all_links' ?>"
-                       id="<?php echo $this->options_prefix . 'remove_all_links' ?>"
-                       value="1"
+			</p>
+			<br>
+			<label>
+				<input type="checkbox"
+					   name="<?php echo $this->options_prefix . 'remove_all_links' ?>"
+					   id="<?php echo $this->options_prefix . 'remove_all_links' ?>"
+					   value="1"
 					<?php checked( $this->options->remove_all_links ); ?> />
-				<?php _e( 'Remove All Links', $this->plugin_name ); ?>
-            </label>
-            <br>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'links_to_text' ?>"
-                       id="<?php echo $this->options_prefix . 'links_to_text' ?>"
-                       value="1"
+				<?php esc_html_e( 'Remove All Links', $this->plugin_name ); ?>
+			</label>
+			<br>
+			<label>
+				<input type="checkbox"
+					   name="<?php echo $this->options_prefix . 'links_to_text' ?>"
+					   id="<?php echo $this->options_prefix . 'links_to_text' ?>"
+					   value="1"
 					<?php checked( $this->options->links_to_text ); ?> />
-				<?php _e( 'Convert All Links to Text', $this->plugin_name ); ?>
-            </label>
-        </fieldset>
+				<?php esc_html_e( 'Convert All Links to Text', $this->plugin_name ); ?>
+			</label>
+		</fieldset>
 		<?php
 	}
 
@@ -1409,25 +1418,25 @@ class Admin {
 	 */
 	public function debugging_cb() {
 		?>
-        <fieldset>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'debug_mode' ?>"
-                       id="<?php echo $this->options_prefix . 'debug_mode' ?>"
-                       value="1"
+		<fieldset>
+			<label>
+				<input type="checkbox"
+					   name="<?php echo $this->options_prefix . 'debug_mode' ?>"
+					   id="<?php echo $this->options_prefix . 'debug_mode' ?>"
+					   value="1"
 					<?php checked( $this->options->debug_mode ); ?> />
-				<?php _e( 'Enable Debug Mode', $this->plugin_name ); ?>
-            </label>
-            <p class="description">
+				<?php esc_html_e( 'Enable Debug Mode', $this->plugin_name ); ?>
+			</label>
+			<p class="description">
 				<?php
-				_e(
+				esc_html_e(
 					'Adds comment lines like
                               <code>&#x3C;!--mihdan-noexternallinks debug: some info--&#x3E;</code> to output.',
 					$this->plugin_name
 				)
 				?>
-            </p>
-        </fieldset>
+			</p>
+		</fieldset>
 		<?php
 	}
 
@@ -1438,10 +1447,10 @@ class Admin {
 	 */
 	public function link_structure_default_cb() {
 		?>
-        <code>
+		<code>
 			<?php echo get_bloginfo( 'url' ) ?>/<?php
 			echo $this->permalink_query ?>goto<?php echo $this->permalink_equals ?>https://example.com
-        </code>
+		</code>
 		<?php
 	}
 
@@ -1452,12 +1461,12 @@ class Admin {
 	 */
 	public function link_structure_custom_cb() {
 		?>
-        <code><?php echo get_bloginfo( 'url' ) ?>/<?php echo $this->permalink_query ?></code>
-        <input type="text"
-               name="<?php echo $this->options_prefix . 'separator' ?>"
-               id="<?php echo $this->options_prefix . 'separator' ?>"
-               value="<?php echo 'goto' === $this->options->separator ? 'goto' : $this->options->separator ?>"/>
-        <code><?php echo $this->permalink_equals ?>https://example.com</code>
+		<code><?php echo get_bloginfo( 'url' ) ?>/<?php echo $this->permalink_query ?></code>
+		<input type="text"
+			   name="<?php echo $this->options_prefix . 'separator' ?>"
+			   id="<?php echo $this->options_prefix . 'separator' ?>"
+			   value="<?php echo 'goto' === $this->options->separator ? 'goto' : $this->options->separator ?>"/>
+		<code><?php echo $this->permalink_equals ?>https://example.com</code>
 		<?php
 	}
 
@@ -1468,13 +1477,13 @@ class Admin {
 	 */
 	public function link_encoding_none_cb() {
 		?>
-        <code>
+		<code>
 			<?php echo get_bloginfo( 'url' )
 			?>/<?php echo $this->permalink_query ?><span class="link-separator"><?php
 				echo $this->options->separator ?
 					$this->options->separator :
 					'goto' ?></span><?php echo $this->permalink_equals ?>https://example.com
-        </code>
+		</code>
 		<?php
 	}
 
@@ -1485,13 +1494,13 @@ class Admin {
 	 */
 	public function link_encoding_numbers_cb() {
 		?>
-        <code>
+		<code>
 			<?php echo get_bloginfo( 'url' )
 			?>/<?php echo $this->permalink_query ?><span class="link-separator"><?php
 				echo $this->options->separator ?
 					$this->options->separator :
 					'goto' ?></span><?php echo $this->permalink_equals ?>123
-        </code>
+		</code>
 		<?php
 	}
 
@@ -1502,13 +1511,13 @@ class Admin {
 	 */
 	public function link_shortening_none_cb() {
 		?>
-        <code>
+		<code>
 			<?php echo get_bloginfo( 'url' )
 			?>/<?php echo $this->permalink_query ?><span class="link-separator"><?php
 				echo $this->options->separator ?
 					$this->options->separator :
 					'goto' ?></span><?php echo $this->permalink_equals ?>https://example.com
-        </code>
+		</code>
 		<?php
 	}
 
@@ -1519,50 +1528,50 @@ class Admin {
 	 */
 	public function link_shortening_adfly_cb() {
 		?>
-        <table>
-            <tr>
-                <td width="100"><?php _e( 'API Key', $this->plugin_name ) ?></td>
-                <td>
-                    <input type="text"
-                           name="<?php echo $this->options_prefix . 'adfly_api_key' ?>"
-                           id="<?php echo $this->options_prefix . 'adfly_api_key' ?>"
-                           value="<?php echo $this->options->adfly_api_key ?>"/>
-                </td>
-            </tr>
-            <tr>
-                <td><?php _e( 'User ID', $this->plugin_name ) ?></td>
-                <td>
-                    <input type="text"
-                           name="<?php echo $this->options_prefix . 'adfly_user_id' ?>"
-                           id="<?php echo $this->options_prefix . 'adfly_user_id' ?>"
-                           value="<?php echo $this->options->adfly_user_id ?>"/>
-                </td>
-            </tr>
-            <tr>
-                <td><?php _e( 'Domain', $this->plugin_name ) ?></td>
-                <td>
-                    <select name="<?php echo $this->options_prefix . 'adfly_domain' ?>"
-                            id="<?php echo $this->options_prefix . 'adfly_domain' ?>">
-                        <option value="adf.ly" <?php selected( $this->options->adfly_domain, 'adf.ly' ); ?>><?php _e( 'adf.ly', $this->plugin_name ) ?></option>
-                        <option value="q.gs" <?php selected( $this->options->adfly_domain, 'q.gs' ); ?>><?php _e( 'q.gs', $this->plugin_name ) ?></option>
-                        <option value="j.gs" <?php selected( $this->options->adfly_domain, 'j.gs' ); ?>><?php _e( 'j.gs', $this->plugin_name ) ?></option>
-                        <option value="random" <?php selected( $this->options->adfly_domain, 'random' ); ?>><?php _e( 'random', $this->plugin_name ) ?></option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><?php _e( 'Advert Type', $this->plugin_name ) ?></td>
-                <td>
-                    <select name="<?php echo $this->options_prefix . 'adfly_advert_type' ?>"
-                            id="<?php echo $this->options_prefix . 'adfly_advert_type' ?>">
-                        <option value="2" <?php selected( $this->options->adfly_advert_type, '2' ); ?>><?php _e( 'No advertising', $this->plugin_name ) ?></option>
-                        <option value="3" <?php selected( $this->options->adfly_advert_type, '3' ); ?>><?php _e( 'Framed banner', $this->plugin_name ) ?></option>
-                        <option value="1" <?php selected( $this->options->adfly_advert_type, '1' ); ?>><?php _e( 'Interstitial advertising', $this->plugin_name ) ?></option>
-                    </select>
-                </td>
-            </tr>
-        </table>
-        <code>http://adf.ly/1npeZF</code>
+		<table>
+			<tr>
+				<td width="100"><?php esc_html_e( 'API Key', $this->plugin_name ) ?></td>
+				<td>
+					<input type="text"
+						   name="<?php echo $this->options_prefix . 'adfly_api_key' ?>"
+						   id="<?php echo $this->options_prefix . 'adfly_api_key' ?>"
+						   value="<?php echo $this->options->adfly_api_key ?>"/>
+				</td>
+			</tr>
+			<tr>
+				<td><?php esc_html_e( 'User ID', $this->plugin_name ) ?></td>
+				<td>
+					<input type="text"
+						   name="<?php echo $this->options_prefix . 'adfly_user_id' ?>"
+						   id="<?php echo $this->options_prefix . 'adfly_user_id' ?>"
+						   value="<?php echo $this->options->adfly_user_id ?>"/>
+				</td>
+			</tr>
+			<tr>
+				<td><?php esc_html_e( 'Domain', $this->plugin_name ) ?></td>
+				<td>
+					<select name="<?php echo $this->options_prefix . 'adfly_domain' ?>"
+							id="<?php echo $this->options_prefix . 'adfly_domain' ?>">
+						<option value="adf.ly" <?php selected( $this->options->adfly_domain, 'adf.ly' ); ?>><?php esc_html_e( 'adf.ly', $this->plugin_name ) ?></option>
+						<option value="q.gs" <?php selected( $this->options->adfly_domain, 'q.gs' ); ?>><?php esc_html_e( 'q.gs', $this->plugin_name ) ?></option>
+						<option value="j.gs" <?php selected( $this->options->adfly_domain, 'j.gs' ); ?>><?php esc_html_e( 'j.gs', $this->plugin_name ) ?></option>
+						<option value="random" <?php selected( $this->options->adfly_domain, 'random' ); ?>><?php esc_html_e( 'random', $this->plugin_name ) ?></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><?php esc_html_e( 'Advert Type', $this->plugin_name ) ?></td>
+				<td>
+					<select name="<?php echo $this->options_prefix . 'adfly_advert_type' ?>"
+							id="<?php echo $this->options_prefix . 'adfly_advert_type' ?>">
+						<option value="2" <?php selected( $this->options->adfly_advert_type, '2' ); ?>><?php esc_html_e( 'No advertising', $this->plugin_name ) ?></option>
+						<option value="3" <?php selected( $this->options->adfly_advert_type, '3' ); ?>><?php esc_html_e( 'Framed banner', $this->plugin_name ) ?></option>
+						<option value="1" <?php selected( $this->options->adfly_advert_type, '1' ); ?>><?php esc_html_e( 'Interstitial advertising', $this->plugin_name ) ?></option>
+					</select>
+				</td>
+			</tr>
+		</table>
+		<code>http://adf.ly/1npeZF</code>
 		<?php
 	}
 
@@ -1573,27 +1582,27 @@ class Admin {
 	 */
 	public function link_shortening_bitly_cb() {
 		?>
-        <table>
-            <tr>
-                <td width="100"><?php _e( 'Login', $this->plugin_name ) ?></td>
-                <td>
-                    <input type="text"
-                           name="<?php echo $this->options_prefix . 'bitly_login' ?>"
-                           id="<?php echo $this->options_prefix . 'bitly_login' ?>"
-                           value="<?php echo $this->options->bitly_login ?>"/>
-                </td>
-            </tr>
-            <tr>
-                <td><?php _e( 'API Key', $this->plugin_name ) ?></td>
-                <td>
-                    <input type="text"
-                           name="<?php echo $this->options_prefix . 'bitly_api_key' ?>"
-                           id="<?php echo $this->options_prefix . 'bitly_api_key' ?>"
-                           value="<?php echo $this->options->bitly_api_key ?>"/>
-                </td>
-            </tr>
-        </table>
-        <code>http://bit.ly/2w2V71G</code>
+		<table>
+			<tr>
+				<td width="100"><?php esc_html_e( 'Login', $this->plugin_name ) ?></td>
+				<td>
+					<input type="text"
+						   name="<?php echo $this->options_prefix . 'bitly_login' ?>"
+						   id="<?php echo $this->options_prefix . 'bitly_login' ?>"
+						   value="<?php echo $this->options->bitly_login ?>"/>
+				</td>
+			</tr>
+			<tr>
+				<td><?php esc_html_e( 'API Key', $this->plugin_name ) ?></td>
+				<td>
+					<input type="text"
+						   name="<?php echo $this->options_prefix . 'bitly_api_key' ?>"
+						   id="<?php echo $this->options_prefix . 'bitly_api_key' ?>"
+						   value="<?php echo $this->options->bitly_api_key ?>"/>
+				</td>
+			</tr>
+		</table>
+		<code>http://bit.ly/2w2V71G</code>
 		<?php
 	}
 
@@ -1604,18 +1613,18 @@ class Admin {
 	 */
 	public function link_shortening_linkshrink_cb() {
 		?>
-        <table>
-            <tr>
-                <td width="100"><?php _e( 'API Key', $this->plugin_name ) ?></td>
-                <td>
-                    <input type="text"
-                           name="<?php echo $this->options_prefix . 'linkshrink_api_key' ?>"
-                           id="<?php echo $this->options_prefix . 'linkshrink_api_key' ?>"
-                           value="<?php echo $this->options->linkshrink_api_key ?>"/>
-                </td>
-            </tr>
-        </table>
-        <code>http://linkshrink.net/721lH9</code>
+		<table>
+			<tr>
+				<td width="100"><?php esc_html_e( 'API Key', $this->plugin_name ) ?></td>
+				<td>
+					<input type="text"
+						   name="<?php echo $this->options_prefix . 'linkshrink_api_key' ?>"
+						   id="<?php echo $this->options_prefix . 'linkshrink_api_key' ?>"
+						   value="<?php echo $this->options->linkshrink_api_key ?>"/>
+				</td>
+			</tr>
+		</table>
+		<code>http://linkshrink.net/721lH9</code>
 		<?php
 	}
 
@@ -1626,18 +1635,18 @@ class Admin {
 	 */
 	public function link_shortening_shortest_cb() {
 		?>
-        <table>
-            <tr>
-                <td width="100"><?php _e( 'API Key', $this->plugin_name ) ?></td>
-                <td>
-                    <input type="text"
-                           name="<?php echo $this->options_prefix . 'shortest_api_key' ?>"
-                           id="<?php echo $this->options_prefix . 'shortest_api_key' ?>"
-                           value="<?php echo $this->options->shortest_api_key ?>"/>
-                </td>
-            </tr>
-        </table>
-        <code>http://destyy.com/q15Xzx</code>
+		<table>
+			<tr>
+				<td width="100"><?php esc_html_e( 'API Key', $this->plugin_name ) ?></td>
+				<td>
+					<input type="text"
+						   name="<?php echo $this->options_prefix . 'shortest_api_key' ?>"
+						   id="<?php echo $this->options_prefix . 'shortest_api_key' ?>"
+						   value="<?php echo $this->options->shortest_api_key ?>"/>
+				</td>
+			</tr>
+		</table>
+		<code>http://destyy.com/q15Xzx</code>
 		<?php
 	}
 
@@ -1648,26 +1657,26 @@ class Admin {
 	 */
 	public function link_shortening_yourls_cb() {
 		?>
-        <table>
-            <tr>
-                <td width="100"><?php _e( 'Domain', $this->plugin_name ) ?></td>
-                <td>
-                    <input type="text"
-                           name="<?php echo $this->options_prefix . 'yourls_domain' ?>"
-                           id="<?php echo $this->options_prefix . 'yourls_domain' ?>"
-                           value="<?php echo $this->options->yourls_domain ?>"/>
-                </td>
-            </tr>
-            <tr>
-                <td><?php _e( 'Signature', $this->plugin_name ) ?></td>
-                <td>
-                    <input type="text"
-                           name="<?php echo $this->options_prefix . 'yourls_signature' ?>"
-                           id="<?php echo $this->options_prefix . 'yourls_signature' ?>"
-                           value="<?php echo $this->options->yourls_signature ?>"/>
-                </td>
-            </tr>
-        </table>
+		<table>
+			<tr>
+				<td width="100"><?php esc_html_e( 'Domain', $this->plugin_name ) ?></td>
+				<td>
+					<input type="text"
+						   name="<?php echo $this->options_prefix . 'yourls_domain' ?>"
+						   id="<?php echo $this->options_prefix . 'yourls_domain' ?>"
+						   value="<?php echo $this->options->yourls_domain ?>"/>
+				</td>
+			</tr>
+			<tr>
+				<td><?php esc_html_e( 'Signature', $this->plugin_name ) ?></td>
+				<td>
+					<input type="text"
+						   name="<?php echo $this->options_prefix . 'yourls_signature' ?>"
+						   id="<?php echo $this->options_prefix . 'yourls_signature' ?>"
+						   value="<?php echo $this->options->yourls_signature ?>"/>
+				</td>
+			</tr>
+		</table>
 		<?php
 	}
 
@@ -1678,18 +1687,18 @@ class Admin {
 	 */
 	public function link_encoding_aes256_cb() {
 		?>
-        <code>
+		<code>
 			<?php echo get_bloginfo( 'url' )
 			?>/<?php echo $this->permalink_query ?><span class="link-separator"><?php
 				echo $this->options->separator ?
 					$this->options->separator :
 					'goto' ?></span><?php echo $this->permalink_equals ?>
-            bpAc0lhj6liv34KXZfvNxpi5VSAPxPbz2g6jbUAAgHM=:N9QaHkKpnpawbSlWgCp1iQ==
-        </code>
+			bpAc0lhj6liv34KXZfvNxpi5VSAPxPbz2g6jbUAAgHM=:N9QaHkKpnpawbSlWgCp1iQ==
+		</code>
 		<?php if ( ! $this->options->encryption ): ?>
-            <p class="description">
-				<?php _e( 'Requires OpenSSL (<strong>Recommended</strong>) or Mcrypt (<strong>Deprecated in PHP 7</strong>).', $this->plugin_name ) ?>
-            </p>
+			<p class="description">
+				<?php esc_html_e( 'Requires OpenSSL (<strong>Recommended</strong>) or Mcrypt (<strong>Deprecated in PHP 7</strong>).', $this->plugin_name ) ?>
+			</p>
 		<?php endif; ?>
 		<?php
 	}
@@ -1701,13 +1710,13 @@ class Admin {
 	 */
 	public function link_encoding_base64_cb() {
 		?>
-        <code>
+		<code>
 			<?php echo get_bloginfo( 'url' )
 			?>/<?php echo $this->permalink_query ?><span class="link-separator"><?php
 				echo $this->options->separator ?
 					$this->options->separator :
 					'goto' ?></span><?php echo $this->permalink_equals ?>aHR0cHM6Ly9leGFtcGxlLmNvbQ%3D%3D
-        </code>
+		</code>
 		<?php
 	}
 
@@ -1718,18 +1727,18 @@ class Admin {
 	 */
 	public function javascript_cb() {
 		?>
-        <fieldset>
+		<fieldset>
             <textarea class="large-text code" rows="10" cols="50"
-                      name="<?php echo $this->options_prefix . 'redirect_message' ?>"
-                      id="<?php echo $this->options_prefix . 'redirect_message' ?>"
+					  name="<?php echo $this->options_prefix . 'redirect_message' ?>"
+					  id="<?php echo $this->options_prefix . 'redirect_message' ?>"
                     <?php echo 'javascript' == $this->options->masking_type ?
-	                    '' : 'readonly' ?>><?php echo $this->options->redirect_message ?></textarea>
+						'' : 'readonly' ?>><?php echo $this->options->redirect_message ?></textarea>
 			<?php if ( 'javascript' !== $this->options->masking_type ) : ?>
-                <p class="description">
-					<?php _e( 'Javascript redirect not selected.', $this->plugin_name ) ?>
-                </p>
+				<p class="description">
+					<?php esc_html_e( 'Javascript redirect not selected.', $this->plugin_name ) ?>
+				</p>
 			<?php endif ?>
-        </fieldset>
+		</fieldset>
 		<?php
 	}
 
@@ -1740,8 +1749,8 @@ class Admin {
 	 */
 	public function include_exclude_cb() {
 		?>
-        <p>
-			<?php _e(
+		<p>
+			<?php esc_html_e(
 				'You can choose to target specific domains (<em>include</em>), or exclude specific domains
                 (<em>exclude</em>), by entering their URLs below. When entering a URL you should include the
                 protocol prefix - for example, <strong>https://</strong>google.com or
@@ -1753,7 +1762,7 @@ class Admin {
                 "<strong>https://www.pinterest.com</strong>".',
 				$this->plugin_name
 			) ?>
-        </p>
+		</p>
 		<?php
 	}
 
@@ -1796,19 +1805,19 @@ class Admin {
 	 */
 	public function include_cb() {
 		?>
-        <fieldset>
-            <label for="<?php echo $this->options_prefix . 'inclusion_list' ?>">
-				<?php _e(
+		<fieldset>
+			<label for="<?php echo $this->options_prefix . 'inclusion_list' ?>">
+				<?php esc_html_e(
 					'Enter URLs you wish to be masked. One URL per line. All other URLs will be ignored.',
 					$this->plugin_name
 				) ?>
-            </label>
-            <br>
-            <textarea class="large-text code" rows="10" cols="50"
-                      name="<?php echo $this->options_prefix . 'inclusion_list' ?>"
-                      id="<?php echo $this->options_prefix . 'inclusion_list' ?>"><?php
+			</label>
+			<br>
+			<textarea class="large-text code" rows="10" cols="50"
+					  name="<?php echo $this->options_prefix . 'inclusion_list' ?>"
+					  id="<?php echo $this->options_prefix . 'inclusion_list' ?>"><?php
 				echo $this->options->inclusion_list ?></textarea>
-        </fieldset>
+		</fieldset>
 		<?php
 	}
 
@@ -1819,43 +1828,43 @@ class Admin {
 	 */
 	public function exclude_cb() {
 		?>
-        <fieldset>
-            <label for="<?php echo $this->options_prefix . 'exclusion_list' ?>">
-				<?php _e(
+		<fieldset>
+			<label for="<?php echo $this->options_prefix . 'exclusion_list' ?>">
+				<?php esc_html_e(
 					'Enter URLs you wish to exclude from being masked. One URL per line.
                     <em>Javascript, Magnet, Mailto, Skype and Tel</em> links are all excluded by default.
                     To exclude a full protocol, just add a line for that prefix - for example,
                     "<strong>ftp://</strong>".',
 					$this->plugin_name
 				) ?>
-            </label>
-            <br>
-            <textarea class="large-text code" rows="10" cols="50"
-                      name="<?php echo $this->options_prefix . 'exclusion_list' ?>"
-                      id="<?php echo $this->options_prefix . 'exclusion_list' ?>"><?php
+			</label>
+			<br>
+			<textarea class="large-text code" rows="10" cols="50"
+					  name="<?php echo $this->options_prefix . 'exclusion_list' ?>"
+					  id="<?php echo $this->options_prefix . 'exclusion_list' ?>"><?php
 				echo $this->options->exclusion_list ?></textarea>
-            <br>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'skip_follow' ?>"
-                       id="<?php echo $this->options_prefix . 'skip_follow' ?>"
-                       value="1"
+			<br>
+			<label>
+				<input type="checkbox"
+					   name="<?php echo $this->options_prefix . 'skip_follow' ?>"
+					   id="<?php echo $this->options_prefix . 'skip_follow' ?>"
+					   value="1"
 					<?php checked( $this->options->skip_follow ); ?> />
-				<?php _e( 'Do Not Mask Follow Links', $this->plugin_name ); ?>
-            </label>
-            <br>
-            <label>
-                <input type="checkbox"
-                       name="<?php echo $this->options_prefix . 'skip_auth' ?>"
-                       id="<?php echo $this->options_prefix . 'skip_auth' ?>"
-                       value="1"
+				<?php esc_html_e( 'Do Not Mask Follow Links', $this->plugin_name ); ?>
+			</label>
+			<br>
+			<label>
+				<input type="checkbox"
+					   name="<?php echo $this->options_prefix . 'skip_auth' ?>"
+					   id="<?php echo $this->options_prefix . 'skip_auth' ?>"
+					   value="1"
 					<?php checked( $this->options->skip_auth ); ?> />
-				<?php _e( 'Do Not Mask Links When User Logged In', $this->plugin_name ); ?>
-            </label>
-            <p class="description">
-				<?php _e( 'May conflict with caching plugins.', $this->plugin_name ); ?>
-            </p>
-        </fieldset>
+				<?php esc_html_e( 'Do Not Mask Links When User Logged In', $this->plugin_name ); ?>
+			</label>
+			<p class="description">
+				<?php esc_html_e( 'May conflict with caching plugins.', $this->plugin_name ); ?>
+			</p>
+		</fieldset>
 		<?php
 	}
 
@@ -1866,7 +1875,7 @@ class Admin {
 	 */
 	public function seo_hide_cb() {
 		?>
-        <p>Hiding links using SEO hide method.</p>
+		<p>Hiding links using SEO hide method.</p>
 		<?php
 	}
 
@@ -1885,28 +1894,28 @@ class Admin {
 			? get_post_meta( $post->ID, 'mask_links', true ) : 'default';
 		?>
 
-        <div id="mask-links-select">
-            <fieldset>
-                <legend class="screen-reader-text">Mask Links</legend>
-                <input type="radio"
-                       name="mask_links"
-                       id="mask_links_default"
-                       value="default"
+		<div id="mask-links-select">
+			<fieldset>
+				<legend class="screen-reader-text">Mask Links</legend>
+				<input type="radio"
+					   name="mask_links"
+					   id="mask_links_default"
+					   value="default"
 					<?php checked( $mask, 'default' ) ?>>
-                <label for="mask_links_default">
-					<?php _e( 'Use default settings', $this->plugin_name ) ?>
-                </label>
-                <br>
-                <input type="radio"
-                       name="mask_links"
-                       id="mask_links_disabled"
-                       value="disabled"
+				<label for="mask_links_default">
+					<?php esc_html_e( 'Use default settings', $this->plugin_name ) ?>
+				</label>
+				<br>
+				<input type="radio"
+					   name="mask_links"
+					   id="mask_links_disabled"
+					   value="disabled"
 					<?php checked( $mask, 'disabled' ) ?>>
-                <label for="mask_links_disabled">
-					<?php _e( 'Do not mask links', $this->plugin_name ) ?>
-                </label>
-            </fieldset>
-        </div>
+				<label for="mask_links_disabled">
+					<?php esc_html_e( 'Do not mask links', $this->plugin_name ) ?>
+				</label>
+			</fieldset>
+		</div>
 
 		<?php
 	}
@@ -2005,14 +2014,14 @@ class Admin {
 	 */
 	function parser_notice() {
 		?>
-        <div class="notice notice-warning">
-            <p>
-				<?php _e(
+		<div class="notice notice-warning">
+			<p>
+				<?php esc_html_e(
 					'<strong>Custom Parser</strong> is active, some options/settings may not work. We do <strong>not</strong> recommend using this feature!',
 					$this->plugin_name
 				); ?>
-            </p>
-        </div>
+			</p>
+		</div>
 		<?php
 	}
 
@@ -2023,14 +2032,14 @@ class Admin {
 	 */
 	function mcrypt_deprecation_notice() {
 		?>
-        <div class="notice notice-warning">
-            <p>
-				<?php _e(
+		<div class="notice notice-warning">
+			<p>
+				<?php esc_html_e(
 					'<strong>AES-256 Encoding</strong> - mcrypt has been deprecated in favour of OpenSSL.',
 					$this->plugin_name
 				); ?>
-            </p>
-        </div>
+			</p>
+		</div>
 		<?php
 	}
 
@@ -2041,21 +2050,21 @@ class Admin {
 	 */
 	function output_buffer_notice() {
 		?>
-        <div class="notice notice-warning is-dismissible">
-            <p>
-				<?php _e(
+		<div class="notice notice-warning is-dismissible">
+			<p>
+				<?php esc_html_e(
 					'<strong>Output Buffering</strong> is disabled, <em>Mask All Links</em> will not work. Contact your server administrator to get this feature enabled.',
 					$this->plugin_name
 				); ?>
-            </p>
-        </div>
+			</p>
+		</div>
 		<?php
 	}
 
 	/**
 	 * Add plugin action links
 	 *
-	 * @param array $actions Default actions.
+	 * @param array  $actions     Default actions.
 	 * @param string $plugin_file Plugin file.
 	 *
 	 * @return array

@@ -16,6 +16,8 @@
 
 namespace Mihdan\No_External_Links;
 
+use Mihdan\No_External_Links\Admin\Admin;
+
 /**
  * Class Main.
  */
@@ -35,7 +37,7 @@ class Main {
 	 *
 	 * @since    4.0.0
 	 * @access   protected
-	 * @var      Mihdan_NoExternalLinks_Public $public Contains all public facing functions.
+	 * @var      Frontend $public Contains all public facing functions.
 	 */
 	protected $public;
 
@@ -90,7 +92,7 @@ class Main {
 	 *
 	 * @since    4.0.0
 	 * @access   protected
-	 * @var      WP_CustomParser $custom_parser Contains custom functions.
+	 * @var      \WP_CustomParser $custom_parser Contains custom functions.
 	 */
 	private $custom_parser;
 
@@ -175,7 +177,7 @@ class Main {
 		/**
 		 * Site Health Tests.
 		 */
-		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/site-health.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/SiteHealth.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -185,12 +187,12 @@ class Main {
 		/**
 		 * The class responsible for the masks table.
 		 */
-		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/mask-table.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/MaskTable.php';
 
 		/**
 		 * The class responsible for the logs table.
 		 */
-		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/log-table.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/LogTable.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -498,7 +500,7 @@ class Main {
 		);
 
 		if ( $this->custom_parser ) {
-			$this->public = new WP_CustomParser(
+			$this->public = new \WP_CustomParser(
 				$this->get_plugin_name(),
 				$this->get_version(),
 				$this->get_options()

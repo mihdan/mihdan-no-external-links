@@ -7,9 +7,9 @@
  * @author  mihdan
  */
 
-namespace Mihdan\No_External_Links;
+namespace Mihdan\No_External_Links\Admin;
 
-class Site_Health {
+class SiteHealth {
 
 	/**
 	 * @var string

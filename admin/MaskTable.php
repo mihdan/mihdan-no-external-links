@@ -8,11 +8,15 @@
  * @author        mihdan
  */
 
+namespace Mihdan\No_External_Links\Admin;
+
+use WP_List_Table;
+
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-class Mihdan_NoExternalLinks_Admin_Mask_Table extends WP_List_Table {
+class MaskTable extends WP_List_Table {
 
 	/**
 	 * The ID of this plugin.
