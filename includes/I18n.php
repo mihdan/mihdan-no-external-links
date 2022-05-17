@@ -11,7 +11,9 @@
  * @author        mihdan
  */
 
-class Mihdan_NoExternalLinks_i18n {
+namespace Mihdan\No_External_Links;
+
+class I18n {
 
     /**
      * The ID of this plugin.

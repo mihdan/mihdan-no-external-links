@@ -10,7 +10,9 @@
  * @author        mihdan
  */
 
-class Mihdan_NoExternalLinks_Upgrader {
+namespace Mihdan\No_External_Links;
+
+class Upgrader {
 
     /**
      * The ID of this plugin.

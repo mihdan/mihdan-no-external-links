@@ -8,10 +8,14 @@
  * @author        mihdan
  */
 
+namespace Mihdan\No_External_Links;
+
+use stdClass;
+
 /**
- * Class Mihdan_NoExternalLinks_Public
+ * Class Frontend
  */
-class Mihdan_NoExternalLinks_Public {
+class Frontend {
 
 	/**
 	 * The ID of this plugin.

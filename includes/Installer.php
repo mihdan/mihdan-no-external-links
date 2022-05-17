@@ -10,7 +10,9 @@
  * @author        mihdan
  */
 
-class Mihdan_NoExternalLinks_Installer {
+namespace Mihdan\No_External_Links;
+
+class Installer {
 
     /**
      * The ID of this plugin.
@@ -66,7 +68,7 @@ class Mihdan_NoExternalLinks_Installer {
 
         if ( false === $installed_version || version_compare( $installed_version, '4.2.1', '<' ) ) {
 
-            Mihdan_NoExternalLinks_Database::migrate();
+            Database::migrate();
 
             $installed_version = '4.5.1';
             update_option( $this->options_prefix . 'version', $installed_version );

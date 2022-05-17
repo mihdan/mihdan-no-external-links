@@ -8,7 +8,9 @@
  * @author        mihdan
  */
 
-class Mihdan_NoExternalLinks_Database {
+namespace Mihdan\No_External_Links;
+
+class Database {
 
     /**
      * Migrates any database changes.

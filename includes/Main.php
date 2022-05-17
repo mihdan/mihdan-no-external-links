@@ -144,33 +144,33 @@ class Main {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/loader.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/Loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/i18n.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/I18n.php';
 
 		/**
 		 * The class responsible for checking compatibility.
 		 */
-		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/compatibility.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/Compatibility.php';
 
 		/**
 		 * The class responsible for database tables.
 		 */
-		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/database.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/Database.php';
 
 		/**
 		 * The class responsible for installing the plugin.
 		 */
-		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/installer.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/Installer.php';
 
 		/**
 		 * The class responsible for upgrading the plugin.
 		 */
-		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/upgrader.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/Upgrader.php';
 
 		/**
 		 * Site Health Tests.
@@ -180,7 +180,7 @@ class Main {
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/admin.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/admin/Admin.php';
 
 		/**
 		 * The class responsible for the masks table.
@@ -196,7 +196,7 @@ class Main {
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/public/public.php';
+		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/public/Frontend.php';
 
 		/**
 		 * The class responsible for custom functionality.
@@ -205,7 +205,7 @@ class Main {
 			require_once $this->custom_parser;
 		}
 
-		$this->loader = new Mihdan_NoExternalLinks_Loader();
+		$this->loader = new Loader();
 
 	}
 
@@ -237,7 +237,7 @@ class Main {
 		$current_options = get_option( 'Main' );
 
 		if ( false === $current_options ) {
-			$plugin_installer = new Mihdan_NoExternalLinks_Installer(
+			$plugin_installer = new Installer(
 				$this->get_plugin_name(), $this->get_version(), $this->get_options_prefix()
 			);
 
@@ -256,7 +256,7 @@ class Main {
 	 */
 	private function upgrade() {
 
-		$plugin_upgrader = new Mihdan_NoExternalLinks_Upgrader(
+		$plugin_upgrader = new Upgrader(
 			$this->get_plugin_name(), $this->get_version(), $this->get_options_prefix()
 		);
 
@@ -275,7 +275,7 @@ class Main {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Mihdan_NoExternalLinks_i18n( $this->get_plugin_name() );
+		$plugin_i18n = new I18n( $this->get_plugin_name() );
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -490,7 +490,7 @@ class Main {
 	 */
 	private function initiate() {
 
-		$this->admin = new Mihdan_NoExternalLinks_Admin(
+		$this->admin = new Admin(
 			$this->get_plugin_name(),
 			$this->get_version(),
 			$this->get_options(),
@@ -504,7 +504,7 @@ class Main {
 				$this->get_options()
 			);
 		} else {
-			$this->public = new Mihdan_NoExternalLinks_Public(
+			$this->public = new Frontend(
 				$this->get_plugin_name(),
 				$this->get_version(),
 				$this->get_options()
