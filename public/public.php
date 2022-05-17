@@ -3,11 +3,14 @@
  * Public facing specific functionality.
  *
  * @since         4.0.0
- * @package       Mihdan_NoExternalLinks
- * @subpackage    Mihdan_NoExternalLinks/Public
+ * @package       mihdan-no-external-links
+ * @subpackage    mihdan-no-external-links/public
  * @author        mihdan
  */
 
+/**
+ * Class Mihdan_NoExternalLinks_Public
+ */
 class Mihdan_NoExternalLinks_Public {
 
 	/**

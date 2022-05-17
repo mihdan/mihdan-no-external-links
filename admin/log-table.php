@@ -3,8 +3,8 @@
  * Admin log table functionality.
  *
  * @since         4.0.0
- * @package       Mihdan_NoExternalLinks
- * @subpackage    Mihdan_NoExternalLinks/Admin
+ * @package       mihdan-no-external-links
+ * @subpackage    mihdan-no-external-links/Admin
  * @author        mihdan
  */
 

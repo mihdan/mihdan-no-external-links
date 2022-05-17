@@ -4,13 +4,13 @@
  *
  * @link              https://wordpress.org/plugins/mihdan-no-external-links/
  * @since             4.0.0
- * @package           Mihdan_NoExternalLinks
+ * @package           mihdan-no-external-links
  *
  * @wordpress-plugin
  * Plugin Name:       Mihdan: No External Links
  * Plugin URI:        https://wordpress.org/plugins/mihdan-no-external-links/
  * Description:       Convert external links into internal links, site wide or post/page specific. Add NoFollow, Click logging, and more...
- * Version:           4.8.0
+ * Version:           5.0.0
  * Author:            Mikhail Kobzarev
  * Author URI:        https://www.kobzarev.com/
  * License:           GPL-2.0+
@@ -20,23 +20,26 @@
  * GitHub Plugin URI: https://github.com/mihdan/mihdan-no-external-links/
  */
 
+namespace Mihdan\No_External_Links;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'MIHDAN_NO_EXTERNAL_LINKS_FILE', __FILE__ );
+const MIHDAN_NO_EXTERNAL_LINKS_FILE    = __FILE__;
+const MIHDAN_NO_EXTERNAL_LINKS_DIR     = __DIR__;
+const MIHDAN_NO_EXTERNAL_LINKS_VERSION = '5.0.0';
+const MIHDAN_NO_EXTERNAL_LINKS_SLUG    = 'mihdan-no-external-links';
+
 define( 'MIHDAN_NO_EXTERNAL_LINKS_BASENAME', plugin_basename( __FILE__ ) );
-define( 'MIHDAN_NO_EXTERNAL_LINKS_DIR', __DIR__ );
 define( 'MIHDAN_NO_EXTERNAL_LINKS_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
-define( 'MIHDAN_NO_EXTERNAL_LINKS_VERSION', '4.8.0' );
-define( 'MIHDAN_NO_EXTERNAL_LINKS_SLUG', 'mihdan-no-external-links' );
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/mihdan-noexternallinks.php';
+require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/Main.php';
 
 /**
  * Begins execution of the plugin.
@@ -47,11 +50,4 @@ require MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/mihdan-noexternallinks.php';
  *
  * @since    4.0.0
  */
-function run_mihdan_noexternallinks() {
-	$plugin = new Mihdan_NoExternalLinks();
-	$plugin->run();
-}
-
-run_mihdan_noexternallinks();
-
-// eof;
+( new Main() )->run();

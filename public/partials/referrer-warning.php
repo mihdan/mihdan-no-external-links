@@ -3,8 +3,8 @@
  * Markup for Mihdan: No External Links Referrer Warning page.
  *
  * @since         4.0.0
- * @package       Mihdan_NoExternalLinks
- * @subpackage    Mihdan_NoExternalLinks/Public/Partials
+ * @package       mihdan-no-external-links
+ * @subpackage    mihdan-no-external-links/Public/Partials
  * @author        SteamerDevelopment
  */
 ?>

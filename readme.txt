@@ -2,9 +2,10 @@
 Author: mihdan
 Contributors: mihdan
 Tags: seo, link, links, publisher, post, posts, comments
-Requires at least: 5.0
+Requires at least: 5.7.4
 Tested up to: 5.9
-Stable tag: 4.8.0
+Stable tag: 5.0.0
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Convert external links into internal links, site wide or post/page specific. Add NoFollow, Click logging, and more...
@@ -66,6 +67,11 @@ Mihdan: No External Links **does not** make any changes to your database, it jus
 4. [Optional] Configure Mihdan: No External Links settings.
 
 == Changelog ==
+
+= 5.0.0 (14.04.2022) =
+* Code refactoring
+* Set minimum compatibility PHP version to 7.4
+* PHP 8.1 compatibility
 
 = 4.8.0 (07.04.2022) =
 * Added a link to plugin settings on all plugins page

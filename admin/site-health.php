@@ -3,7 +3,7 @@
  * Class that add Site Health tests.
  *
  * @since   4.5.1
- * @package Mihdan_NoExternalLinks
+ * @package mihdan-no-external-links
  * @author  mihdan
  */
 

@@ -3,8 +3,8 @@
  * Markup for Mihdan: No External Links Masks page.
  *
  * @since         4.2.0
- * @package       Mihdan_NoExternalLinks
- * @subpackage    Mihdan_NoExternalLinks/Admin/Partials
+ * @package       mihdan-no-external-links
+ * @subpackage    mihdan-no-external-links/Admin/Partials
  * @author        mihdan
  */
 ?>

@@ -5,8 +5,8 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since         4.0.0
- * @package       Mihdan_NoExternalLinks
- * @subpackage    Mihdan_NoExternalLinks/Includes
+ * @package       mihdan-no-external-links
+ * @subpackage    mihdan-no-external-links/Includes
  * @author        mihdan
  */
 
@@ -70,7 +70,7 @@ class Mihdan_NoExternalLinks_Upgrader {
 
 	    if ( false === $installed_version || version_compare( $installed_version, '4.0.0', '<' ) ) {
 
-            $current_options = get_option( 'mihdan_noexternallinks' );
+            $current_options = get_option( 'Main' );
 
             if ( false !== $current_options ) {
 
@@ -305,7 +305,7 @@ class Mihdan_NoExternalLinks_Upgrader {
                 $wpdb->query( "ALTER TABLE $table_name RENAME $new_table_name" );
                 $wpdb->query( "DROP TABLE IF EXISTS $table_name" );
 
-                delete_option( 'mihdan_noexternallinks' );
+                delete_option( 'Main' );
                 delete_option( 'mihdan_noexternallinks_flush' );
 
                 $installed_version = '4.0.0';

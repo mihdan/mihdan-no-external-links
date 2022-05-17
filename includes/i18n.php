@@ -6,8 +6,8 @@
  * so that it is ready for translation.
  *
  * @since         4.0.0
- * @package       Mihdan_NoExternalLinks
- * @subpackage    Mihdan_NoExternalLinks/Includes
+ * @package       mihdan-no-external-links
+ * @subpackage    mihdan-no-external-links/Includes
  * @author        mihdan
  */
 
