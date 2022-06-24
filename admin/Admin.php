@@ -1776,7 +1776,7 @@ class Admin {
 		$cached    = get_transient( $transient );
 
 		if ( false !== $cached ) {
-			echo $cached;
+			echo $cached; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 			return;
 		}
@@ -1793,9 +1793,7 @@ class Admin {
 		$content = ob_get_clean();
 		set_transient( $transient, $content, 1 * DAY_IN_SECONDS );
 
-		echo $content;
-
-		return;
+		echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
