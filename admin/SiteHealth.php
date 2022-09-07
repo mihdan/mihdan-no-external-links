@@ -9,6 +9,8 @@
 
 namespace Mihdan\No_External_Links\Admin;
 
+use const Mihdan\No_External_Links\MIHDAN_NO_EXTERNAL_LINKS_SLUG;
+
 class SiteHealth {
 
 	/**
