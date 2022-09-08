@@ -68,6 +68,9 @@ Mihdan: No External Links **does not** make any changes to your database, it jus
 
 == Changelog ==
 
+= 5.0.1 (08.09.2022) =
+* Code refactoring to conform coding and securiry standards.
+
 = 5.0.0 (14.04.2022) =
 * Code refactoring
 * Set minimum compatibility PHP version to 7.4
