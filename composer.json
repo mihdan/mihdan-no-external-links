@@ -26,6 +26,7 @@
     "wp-coding-standards/wpcs": "^2.3"
   },
   "scripts": {
-    "phpcs": "phpcs --standard=phpcs.xml"
+    "phpcs": "phpcs --standard=phpcs.xml",
+    "phpcbf": "phpcbf --standard=phpcs.xml"
   }
 }
