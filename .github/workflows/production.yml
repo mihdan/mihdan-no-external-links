@@ -11,6 +11,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install composer requirements
+        run: composer install --no-dev --prefer-dist --no-progress --no-suggest
+
       - name: WordPress plugin deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
         with:
