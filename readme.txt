@@ -4,7 +4,7 @@ Contributors: mihdan
 Tags: seo, link, links, publisher, post, posts, comments
 Requires at least: 5.7.4
 Tested up to: 6.0
-Stable tag: 5.0.1
+Stable tag: 5.0.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -68,8 +68,11 @@ Mihdan: No External Links **does not** make any changes to your database, it jus
 
 == Changelog ==
 
+= 5.0.2 (09.09.2022) =
+* Added polyfill for the deprecated mcrypt PHP module
+
 = 5.0.1 (08.09.2022) =
-* Code refactoring to conform coding and securiry standards.
+* Code refactoring to conform coding and security standards.
 
 = 5.0.0 (14.04.2022) =
 * Code refactoring

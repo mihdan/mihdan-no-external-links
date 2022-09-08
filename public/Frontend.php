@@ -14,6 +14,7 @@
 // phpcs:disable PHPCompatibility.Constants.RemovedConstants.mcrypt_mode_ecbDeprecatedRemoved
 // phpcs:disable PHPCompatibility.Constants.RemovedConstants.mcrypt_randDeprecatedRemoved
 // phpcs:disable PHPCompatibility.Constants.RemovedConstants.mcrypt_rijndael_256DeprecatedRemoved
+// phpcs:disable PHPCompatibility.Constants.RemovedConstants.mcrypt_dev_randomDeprecatedRemoved
 // phpcs:disable PHPCompatibility.Extensions.RemovedExtensions.mcryptDeprecatedRemoved
 // phpcs:disable PHPCompatibility.FunctionUse.RemovedFunctions.mcrypt_create_ivDeprecatedRemoved
 // phpcs:disable PHPCompatibility.FunctionUse.RemovedFunctions.mcrypt_decryptDeprecatedRemoved
@@ -623,15 +624,17 @@ class Frontend {
 	/**
 	 * Encodes url.
 	 *
-	 * @since     4.0.0
-	 *
 	 * @param string $url Url.
 	 *
 	 * @return string
 	 * @noinspection PhpUndefinedClassInspection
 	 * @noinspection SqlResolve
+	 * @noinspection CryptographicallySecureAlgorithmsInspection
+	 * @noinspection EncryptionInitializationVectorRandomnessInspection
+	 *
+	 * @since  4.0.0
 	 */
-	public function encode_link( $url ): string {
+	public function encode_link( string $url ): string {
 
 		global $wpdb;
 
@@ -652,7 +655,7 @@ class Frontend {
 
 					$url = openssl_encrypt( $url, 'AES-256-CBC', $encryption_key, 0, $iv );
 				} elseif ( 'mcrypt' === $this->options->encryption ) {
-					$iv = mcrypt_create_iv( mcrypt_get_iv_size( MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB ), MCRYPT_RAND );
+					$iv = mcrypt_create_iv( mcrypt_get_iv_size( MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB ), MCRYPT_DEV_RANDOM );
 
 					$url = trim( base64_encode( mcrypt_encrypt( MCRYPT_RIJNDAEL_256, $encryption_key, $url, MCRYPT_MODE_ECB, $iv ) ) );
 				}
@@ -727,12 +730,13 @@ class Frontend {
 	/**
 	 * Decodes encoded url.
 	 *
-	 * @since     4.0.0
-	 *
 	 * @param string $url Url.
 	 *
 	 * @return string $url
 	 * @noinspection SqlResolve
+	 * @noinspection CryptographicallySecureAlgorithmsInspection
+	 *
+	 * @since     4.0.0
 	 */
 	public function decode_link( $url ): string {
 
