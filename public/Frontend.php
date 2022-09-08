@@ -11,6 +11,14 @@
 // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 /** @noinspection PhpMultipleClassDeclarationsInspection */
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
+// phpcs:disable PHPCompatibility.Constants.RemovedConstants.mcrypt_mode_ecbDeprecatedRemoved
+// phpcs:disable PHPCompatibility.Constants.RemovedConstants.mcrypt_randDeprecatedRemoved
+// phpcs:disable PHPCompatibility.Constants.RemovedConstants.mcrypt_rijndael_256DeprecatedRemoved
+// phpcs:disable PHPCompatibility.Extensions.RemovedExtensions.mcryptDeprecatedRemoved
+// phpcs:disable PHPCompatibility.FunctionUse.RemovedFunctions.mcrypt_create_ivDeprecatedRemoved
+// phpcs:disable PHPCompatibility.FunctionUse.RemovedFunctions.mcrypt_decryptDeprecatedRemoved
+// phpcs:disable PHPCompatibility.FunctionUse.RemovedFunctions.mcrypt_encryptDeprecatedRemoved
+// phpcs:disable PHPCompatibility.FunctionUse.RemovedFunctions.mcrypt_get_iv_sizeDeprecatedRemoved
 
 namespace Mihdan\No_External_Links;
 

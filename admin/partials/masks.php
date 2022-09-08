@@ -7,6 +7,7 @@
  * @subpackage    mihdan-no-external-links/Admin/Partials
  * @author        mihdan
  */
+
 ?>
 
 <div class="wrap">

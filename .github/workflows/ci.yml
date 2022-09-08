@@ -9,9 +9,6 @@ jobs:
         os: [ubuntu-latest]
         php-version: [ '7.4', '8.0', '8.1' ]
 
-    env:
-      wp-plugin-directory: wordpress/wp-content/plugins/hcaptcha-wordpress-plugin
-
     runs-on: ${{ matrix.os }}
 
     name: PHP ${{ matrix.php-version }} on ${{ matrix.os }}
@@ -19,8 +16,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          path: ${{ env.wp-plugin-directory }}
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -31,7 +26,6 @@ jobs:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get Composer cache directory
-        working-directory: ${{ env.wp-plugin-directory }}
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
@@ -46,7 +40,6 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        working-directory: ${{ env.wp-plugin-directory }}
         run: |
           composer config github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer install
@@ -54,5 +47,4 @@ jobs:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run code sniffer
-        working-directory: ${{ env.wp-plugin-directory }}
         run: composer phpcs

@@ -38,7 +38,6 @@
     <rule ref="WordPress">
         <exclude name="Generic.Arrays.DisallowShortArraySyntax.Found"/>
         <exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
-        <exclude name="WordPress.PHP.YodaConditions" />
         <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
         <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
         <exclude name="WordPress.WP.I18n.NonSingularStringLiteralDomain" />
