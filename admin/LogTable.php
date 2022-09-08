@@ -13,9 +13,12 @@ namespace Mihdan\No_External_Links\Admin;
 use WP_List_Table;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
+/**
+ * LogTable class.
+ */
 class LogTable extends WP_List_Table {
 
 	/**
@@ -25,7 +28,7 @@ class LogTable extends WP_List_Table {
 	 * @access   private
 	 * @var      string $plugin_name The ID of this plugin.
 	 */
-	private $plugin_name;
+	private string $plugin_name;
 
 	/**
 	 * The options prefix of this plugin.
@@ -34,7 +37,7 @@ class LogTable extends WP_List_Table {
 	 * @access   private
 	 * @var      string $options_prefix The options prefix of this plugin.
 	 */
-	private $options_prefix;
+	private string $options_prefix;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -67,16 +70,14 @@ class LogTable extends WP_List_Table {
 	 * @since    4.0.0
 	 */
 	public function no_items() {
-
-		_e( 'No logs available.', $this->plugin_name );
-
+		esc_html_e( 'No logs available.', $this->plugin_name );
 	}
 
 	/**
 	 * Render a column when no column specific method exists.
 	 *
-	 * @param array  $item
-	 * @param string $column_name
+	 * @param array  $item Item array.
+	 * @param string $column_name Column name.
 	 *
 	 * @return    mixed
 	 * @since     4.0.0
@@ -92,11 +93,11 @@ class LogTable extends WP_List_Table {
 				$actions = array(
 					'delete' => sprintf(
 						'<a href="?page=%s&action=%s&log=%s&_wpnonce=%s">Delete</a>',
-						esc_attr( $_REQUEST['page'] ),
+						isset( $_REQUEST['page'] ) ? absint( $_REQUEST['page'] ) : 1, // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 						'delete',
 						absint( $item['id'] ),
 						$delete_nonce
-					)
+					),
 				);
 
 				return $title . $this->row_actions( $actions );
@@ -109,7 +110,7 @@ class LogTable extends WP_List_Table {
 			case 'datetime':
 				return $item['date'];
 			default:
-				return print_r( $item, true );
+				return print_r( $item, true ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 		}
 
 	}
@@ -117,15 +118,15 @@ class LogTable extends WP_List_Table {
 	/**
 	 * Render the bulk edit checkbox
 	 *
-	 * @param array $item
+	 * @param array $item Item array.
 	 *
 	 * @return    string
 	 * @since     4.0.0
 	 */
-	function column_cb( $item ) {
-
+	public function column_cb( $item ): string {
 		return sprintf(
-			'<input type="checkbox" name="bulk-delete[]" value="%s" />', $item['id']
+			'<input type="checkbox" name="bulk-delete[]" value="%s" />',
+			$item['id']
 		);
 
 	}
@@ -136,19 +137,15 @@ class LogTable extends WP_List_Table {
 	 * @return    array    $columns
 	 * @since     4.0.0
 	 */
-	function get_columns() {
-
-		$columns = array(
+	public function get_columns(): array {
+		return array(
 			'cb'            => '<input type="checkbox" />',
 			'title'         => __( 'URL', $this->plugin_name ),
 			'referring_url' => __( 'Referring URL', $this->plugin_name ),
 			'user_agent'    => __( 'User Agent', $this->plugin_name ),
 			'ip_address'    => __( 'IP Address', $this->plugin_name ),
-			'datetime'      => __( 'Date/Time', $this->plugin_name )
+			'datetime'      => __( 'Date/Time', $this->plugin_name ),
 		);
-
-		return $columns;
-
 	}
 
 	/**
@@ -157,18 +154,14 @@ class LogTable extends WP_List_Table {
 	 * @return    array     $sortable_columns
 	 * @since     4.0.0
 	 */
-	public function get_sortable_columns() {
-
-		$sortable_columns = array(
+	public function get_sortable_columns(): array {
+		return array(
 			'title'         => array( 'title', true ),
 			'referring_url' => array( 'referring_url', true ),
 			'user_agent'    => array( 'user_agent', true ),
 			'ip_address'    => array( 'ip_address', true ),
-			'datetime'      => array( 'datetime', true )
+			'datetime'      => array( 'datetime', true ),
 		);
-
-		return $sortable_columns;
-
 	}
 
 	/**
@@ -177,14 +170,10 @@ class LogTable extends WP_List_Table {
 	 * @return    array    $actions
 	 * @since     4.0.0
 	 */
-	public function get_bulk_actions() {
-
-		$actions = array(
-			'bulk-delete' => 'Delete'
+	public function get_bulk_actions(): array {
+		return array(
+			'bulk-delete' => 'Delete',
 		);
-
-		return $actions;
-
 	}
 
 	/**
@@ -192,7 +181,7 @@ class LogTable extends WP_List_Table {
 	 *
 	 * @since     4.0.0
 	 */
-	public function prepare_items() {
+	public function prepare_items(): void {
 
 		$this->_column_headers = $this->get_column_info();
 
@@ -203,12 +192,11 @@ class LogTable extends WP_List_Table {
 		$this->set_pagination_args(
 			array(
 				'total_items' => $total_items,
-				'per_page'    => $per_page
+				'per_page'    => $per_page,
 			)
 		);
 
 		$this->items = $this->get_logs( $per_page, $current_page );
-
 	}
 
 	/**
@@ -217,28 +205,28 @@ class LogTable extends WP_List_Table {
 	 * @return   null|string
 	 * @since    4.0.0
 	 */
-	public function record_count() {
-
+	public function record_count(): ?string {
 		global $wpdb;
 
 		$table_name = $wpdb->prefix . 'external_links_logs';
 
 		$sql = "SELECT COUNT(id) FROM $table_name";
 
+		// phpcs:disable
 		return $wpdb->get_var( $sql );
-
+		// phpcs:enable
 	}
 
 	/**
 	 * Retrieve external links log data from the database
 	 *
-	 * @param int $per_page
-	 * @param int $page_number
+	 * @param int $per_page    Items per page.
+	 * @param int $page_number Page number.
 	 *
 	 * @return    mixed
 	 * @since     4.0.0
 	 */
-	public function get_logs( $per_page = 5, $page_number = 1 ) {
+	public function get_logs( int $per_page = 5, int $page_number = 1 ) {
 
 		global $wpdb;
 
@@ -253,14 +241,17 @@ class LogTable extends WP_List_Table {
 			'ip_address'    => 'ip_address',
 		);
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( ! empty( $_REQUEST['order'] ) ) {
-			$order = esc_sql( $_REQUEST['order'] );
+			$order = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 
-		if ( ! empty( $_REQUEST['orderby'] ) && array_key_exists( $_REQUEST['orderby'], $mapping ) ) {
-			$order_by = $mapping[ $_REQUEST['orderby'] ];
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! empty( $_REQUEST['orderby'] ) && array_key_exists( sanitize_sql_orderby( wp_unslash( $_REQUEST['orderby'] ) ), $mapping ) ) {
+			$order_by = $mapping[ sanitize_sql_orderby( wp_unslash( $_REQUEST['orderby'] ) ) ]; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 
+		// phpcs:disable
 		$result = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT * FROM {$wpdb->prefix}external_links_logs ORDER BY %s %s LIMIT %d OFFSET %d",
@@ -273,6 +264,7 @@ class LogTable extends WP_List_Table {
 			),
 			ARRAY_A
 		);
+		// phpcs:enable
 
 		return $result;
 
@@ -283,18 +275,20 @@ class LogTable extends WP_List_Table {
 	 *
 	 * @since     4.0.0
 	 */
-	public function process_bulk_action() {
+	public function process_bulk_action(): void {
 
 		$redirect = wp_get_raw_referer();
 
 		if ( 'delete' === $this->current_action() ) {
 
-			$nonce = esc_attr( $_REQUEST['_wpnonce'] );
+			$nonce = ! empty( $_REQUEST['_wpnonce'] )
+				? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) )
+				: '';
 
 			if ( ! wp_verify_nonce( $nonce, $this->options_prefix . 'delete_log' ) ) {
 				wp_die( __( 'Are you sure you want to do this?' ) );
 			} else {
-				$delete = $this->delete_log( absint( $_GET['log'] ) );
+				$delete = $this->delete_log( ! empty( $_GET['log'] ) ? absint( $_GET['log'] ) : 0 );
 
 				$delete_count = 0;
 				if ( $delete ) {
@@ -303,17 +297,19 @@ class LogTable extends WP_List_Table {
 
 				$redirect = add_query_arg( 'delete_count', $delete_count, $redirect );
 
-				wp_redirect( $redirect );
+				wp_safe_redirect( $redirect );
 				exit;
 			}
-
 		}
 
-		if ( ( isset( $_POST['action'] ) && $_POST['action'] == 'bulk-delete' )
-		     || ( isset( $_POST['action2'] ) && $_POST['action2'] == 'bulk-delete' )
+		if (
+			( isset( $_POST['action'] ) && $_POST['action'] === 'bulk-delete' ) ||
+			( isset( $_POST['action2'] ) && $_POST['action2'] === 'bulk-delete' )
 		) {
 
-			$delete_ids = esc_sql( $_POST['bulk-delete'] );
+			$delete_ids = ! empty( $_POST['bulk-delete'] )
+				? array_map( 'sanitize_text_field', wp_unslash( $_POST['bulk-delete'] ) )
+				: [];
 
 			$delete_count = 0;
 			foreach ( $delete_ids as $id ) {
@@ -326,7 +322,7 @@ class LogTable extends WP_List_Table {
 
 			$redirect = add_query_arg( 'delete_count', $delete_count, $redirect );
 
-			wp_redirect( $redirect );
+			wp_safe_redirect( $redirect );
 			exit;
 		}
 
@@ -335,20 +331,22 @@ class LogTable extends WP_List_Table {
 	/**
 	 * Delete a log record.
 	 *
-	 * @param int $id log ID
+	 * @param int $id log ID.
 	 *
 	 * @return    bool
 	 * @since     4.0.0
 	 */
-	public function delete_log( $id ) {
+	public function delete_log( int $id ): bool {
 
 		global $wpdb;
 
+		// phpcs:disable
 		$delete_count = $wpdb->delete(
 			$wpdb->prefix . 'external_links_logs',
 			array( 'ID' => $id ),
 			array( '%d' )
 		);
+		// phpcs:enable
 
 		if ( $delete_count > 0 ) {
 			return true;
@@ -363,17 +361,22 @@ class LogTable extends WP_List_Table {
 	 *
 	 * @since    4.2.0
 	 */
-	function log_delete_notice() {
-		$delete_count = isset( $_GET['delete_count'] ) ? ( int ) $_GET['delete_count'] : 0;
+	public function log_delete_notice(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$delete_count = ! empty( $_GET['delete_count'] )
+			? (int) $_GET['delete_count'] // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			: 0;
 
-		if ( 1 == $delete_count ) {
+		if ( $delete_count === 1 ) {
 			?>
 			<div class="notice notice-success">
 				<p>
-					<?php _e(
+					<?php
+					esc_html_e(
 						'Log deleted.',
 						$this->plugin_name
-					); ?>
+					);
+					?>
 				</p>
 			</div>
 			<?php
@@ -381,9 +384,10 @@ class LogTable extends WP_List_Table {
 			?>
 			<div class="notice notice-success">
 				<p>
-					<?php echo sprintf(
-						__( '%s logs deleted.', $this->plugin_name ), number_format_i18n( $delete_count )
-					); ?>
+					<?php
+					// translators: number of deleted items.
+					echo sprintf( esc_html__( '%s logs deleted.', $this->plugin_name ), (int) $delete_count );
+					?>
 				</p>
 			</div>
 			<?php

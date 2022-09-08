@@ -55,7 +55,7 @@ class SiteHealth {
 	 * @return array
 	 */
 	public function check_buffering() {
-		$output_buffer = ( boolean ) ini_get( 'output_buffering' );
+		$output_buffer = (bool) ini_get( 'output_buffering' );
 
 		$result = [
 			'label'       => __( 'Output Buffering is enabled', $this->plugin_name ),
