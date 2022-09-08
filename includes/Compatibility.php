@@ -8,6 +8,8 @@
  * @author        mihdan
  */
 
+// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
+
 namespace Mihdan\No_External_Links;
 
 /**
@@ -36,10 +38,10 @@ class Compatibility {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @param string $plugin_name The name of this plugin.
-	 * @param string $options_prefix The option prefix of this plugin.
-	 *
 	 * @since    4.0.0
+	 *
+	 * @param string $plugin_name    The name of this plugin.
+	 * @param string $options_prefix The option prefix of this plugin.
 	 */
 	public function __construct( string $plugin_name, string $options_prefix ) {
 		$this->plugin_name    = $plugin_name;
@@ -52,16 +54,18 @@ class Compatibility {
 	 * Checks plugin is compatible with WordPress and PHP.
 	 * Disables plugin if checks fail.
 	 *
-	 * @param string $wp WordPress version.
+	 * @since    4.0.0
+	 *
+	 * @param string $wp  WordPress version.
 	 * @param string $php PHP version.
 	 *
-	 * @since    4.0.0
+	 * @noinspection ForgottenDebugOutputInspection
 	 */
-	public function check( string $wp = '3.5', string $php = '5.3' ) {
+	public function check( string $wp = '3.5', string $php = '5.3' ): void {
 
 		$compatibility_check = get_option( $this->options_prefix . 'compatibility_check' );
 
-		if ( $compatibility_check !== 1 ) {
+		if ( 1 !== $compatibility_check ) {
 			global $wp_version;
 
 			if ( version_compare( PHP_VERSION, $php, '<' ) ) {

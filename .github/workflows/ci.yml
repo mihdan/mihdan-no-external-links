@@ -1,0 +1,50 @@
+name: CI
+
+on: [ push, pull_request ]
+
+jobs:
+  cs_and_tests:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        php-version: [ '7.4', '8.0', '8.1' ]
+
+    runs-on: ${{ matrix.os }}
+
+    name: PHP ${{ matrix.php-version }} on ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: json, mysqli, mbstring, zip
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Set up Composer caching
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-composer-dependencies
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: |
+          composer config github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer install
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run code sniffer
+        run: composer phpcs

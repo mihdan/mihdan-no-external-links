@@ -7,19 +7,28 @@
  * @author  mihdan
  */
 
+// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
+
 namespace Mihdan\No_External_Links\Admin;
 
 use const Mihdan\No_External_Links\MIHDAN_NO_EXTERNAL_LINKS_SLUG;
 
+/**
+ * Class SiteHealth.
+ */
 class SiteHealth {
 
 	/**
+	 * Plugin name.
+	 *
 	 * @var string
 	 */
-	private $plugin_name;
+	private string $plugin_name;
 
 	/**
 	 * Site_Health constructor.
+	 *
+	 * @param string $plugin_name Plugin name.
 	 */
 	public function __construct( $plugin_name ) {
 		$this->plugin_name = $plugin_name;
@@ -30,21 +39,23 @@ class SiteHealth {
 	/**
 	 * Init plugin hooks.
 	 */
-	public function init_hooks() {
+	public function init_hooks(): void {
 		add_filter( 'site_status_tests', [ $this, 'add_test' ] );
 	}
 
 	/**
-	 * @param array $tests
+	 * Add test.
 	 *
-	 * @return mixed
+	 * @param array $tests Tests.
+	 *
+	 * @return array
 	 */
-	public function add_test( $tests ) {
+	public function add_test( $tests ): array {
 
-		$tests['direct'][ MIHDAN_NO_EXTERNAL_LINKS_SLUG ] = array(
+		$tests['direct'][ MIHDAN_NO_EXTERNAL_LINKS_SLUG ] = [
 			'label' => __( 'Output Buffering', $this->plugin_name ),
 			'test'  => [ $this, 'check_buffering' ],
-		);
+		];
 
 		return $tests;
 	}
@@ -54,16 +65,18 @@ class SiteHealth {
 	 *
 	 * @return array
 	 */
-	public function check_buffering() {
+	public function check_buffering(): array {
 		$output_buffer = (bool) ini_get( 'output_buffering' );
+
+		// phpcs:disable WordPress.WP.I18n.NoHtmlWrappedStrings
 
 		$result = [
 			'label'       => __( 'Output Buffering is enabled', $this->plugin_name ),
 			'status'      => 'good',
-			'badge'       => array(
+			'badge'       => [
 				'label' => __( 'Performance' ),
 				'color' => 'blue',
-			),
+			],
 			'description' => __( '<p>Output Buffering is enabled. <em>Mask All Links</em> will work.</p>', $this->plugin_name ),
 		];
 
@@ -71,10 +84,10 @@ class SiteHealth {
 			$result = [
 				'label'       => __( 'Output Buffering is disabled', $this->plugin_name ),
 				'status'      => 'critical',
-				'badge'       => array(
+				'badge'       => [
 					'label' => __( 'Performance' ),
 					'color' => 'red',
-				),
+				],
 				'description' => __( '<p>Output Buffering is disabled, <em>Mask All Links</em> will not work. Contact your server administrator to get this feature enabled.</p>', $this->plugin_name ),
 			];
 		}
@@ -82,5 +95,3 @@ class SiteHealth {
 		return $result;
 	}
 }
-
-// eol.

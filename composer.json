@@ -1,32 +1,32 @@
 {
-    "name": "mihdan/mihdan-no-external-links",
-    "description": "Convert external links into internal links, site wide or post/page specific. Add NoFollow, Click logging, and more...",
-    "type": "wordpress-plugin",
-    "require-dev": {
-        "squizlabs/php_codesniffer": "^3.6",
-        "phpcompatibility/php-compatibility": "^9.3",
-        "phpcompatibility/phpcompatibility-wp": "^2.1",
-        "wp-coding-standards/wpcs": "^2.3"
-    },
-    "license": "GPL-2.0-or-later",
-    "authors": [
-        {
-            "name": "Mikhail Kobzarev",
-            "email": "mikhail@kobzarev.com"
-        }
-    ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "config": {
-        "platform": {
-            "php": "7.4"
-        }
-    },
-    "require": {
-        "php": ">=7.4"
-    },
-    "scripts": {
-        "phpcs": "phpcs --standard=./phpcs.xml",
-        "phpcbf": "phpcbf --standard=./phpcs.xml"
+  "name": "mihdan/mihdan-no-external-links",
+  "description": "Convert external links into internal links, site wide or post/page specific. Add NoFollow, Click logging, and more...",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Mikhail Kobzarev",
+      "email": "mikhail@kobzarev.com"
     }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "platform": {
+      "php": "7.4"
+    }
+  },
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.6",
+    "phpcompatibility/php-compatibility": "^9.3",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "wp-coding-standards/wpcs": "^2.3"
+  },
+  "scripts": {
+    "phpcs": "phpcs --standard=phpcs.xml",
+    "phpcbf": "phpcbf --standard=phpcs.xml"
+  }
 }
