@@ -27,7 +27,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-const MIHDAN_NO_EXTERNAL_LINKS_FILE    = __FILE__;
 const MIHDAN_NO_EXTERNAL_LINKS_DIR     = __DIR__;
 const MIHDAN_NO_EXTERNAL_LINKS_VERSION = '5.0.0';
 const MIHDAN_NO_EXTERNAL_LINKS_SLUG    = 'mihdan-no-external-links';

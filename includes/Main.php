@@ -14,9 +14,14 @@
  * @author        mihdan
  */
 
+// phpcs:ignore Generic.Commenting.DocComment.MissingShort
+/** @noinspection PhpUndefinedClassInspection */
+// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
+
 namespace Mihdan\No_External_Links;
 
 use Mihdan\No_External_Links\Admin\Admin;
+use WP_CustomParser;
 
 /**
  * Class Main.
@@ -92,7 +97,7 @@ class Main {
 	 *
 	 * @since    4.0.0
 	 * @access   protected
-	 * @var      \WP_CustomParser $custom_parser Contains custom functions.
+	 * @var      WP_CustomParser $custom_parser Contains custom functions.
 	 */
 	private $custom_parser;
 
@@ -140,7 +145,7 @@ class Main {
 	 * @since    4.0.0
 	 * @access   private
 	 */
-	private function load_dependencies() {
+	private function load_dependencies(): void {
 
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
@@ -220,7 +225,7 @@ class Main {
 	 * @since    4.0.0
 	 * @access   private
 	 */
-	private function compatibility_check() {
+	private function compatibility_check(): void {
 
 		$plugin_compatibility = new Compatibility( $this->get_plugin_name(), $this->get_options_prefix() );
 
@@ -234,13 +239,15 @@ class Main {
 	 * @since    4.2.0
 	 * @access   private
 	 */
-	private function install() {
+	private function install(): void {
 
 		$current_options = get_option( 'Main' );
 
 		if ( false === $current_options ) {
 			$plugin_installer = new Installer(
-				$this->get_plugin_name(), $this->get_version(), $this->get_options_prefix()
+				$this->get_plugin_name(),
+				$this->get_version(),
+				$this->get_options_prefix()
 			);
 
 			$plugin_installer->install();
@@ -256,10 +263,12 @@ class Main {
 	 * @since    4.0.0
 	 * @access   private
 	 */
-	private function upgrade() {
+	private function upgrade(): void {
 
 		$plugin_upgrader = new Upgrader(
-			$this->get_plugin_name(), $this->get_version(), $this->get_options_prefix()
+			$this->get_plugin_name(),
+			$this->get_version(),
+			$this->get_options_prefix()
 		);
 
 		$plugin_upgrader->upgrade();
@@ -275,7 +284,7 @@ class Main {
 	 * @since    4.0.0
 	 * @access   private
 	 */
-	private function set_locale() {
+	private function set_locale(): void {
 
 		$plugin_i18n = new I18n( $this->get_plugin_name() );
 
@@ -289,23 +298,27 @@ class Main {
 	 * @since    4.0.0
 	 * @access   private
 	 */
-	private function set_options() {
+	private function set_options(): void {
 
-		$output_buffer   = ( boolean ) ini_get( 'output_buffering' );
-		$masking_default = $output_buffer ? false : true;
+		$output_buffer   = (bool) ini_get( 'output_buffering' );
+		$masking_default = ! $output_buffer;
 
 		$encryption     = false;
 		$encryption_key = false;
 
 		if ( extension_loaded( 'openssl' ) ) {
 			$encryption     = 'openssl';
-			$encryption_key = openssl_random_pseudo_bytes( 32 );
+			$encryption_key = openssl_random_pseudo_bytes( 32, $strong_result );
+
+			if ( false === $encryption_key || false === $strong_result ) {
+				$encryption_key = md5( wp_rand() );
+			}
 		} elseif ( extension_loaded( 'mcrypt' ) ) {
 			$encryption     = 'mcrypt';
-			$encryption_key = md5( rand() );
+			$encryption_key = md5( wp_rand() );
 		}
 
-		// Default Options
+		// Default Options.
 		$options = array(
 			'masking_type'            => '302',
 			'redirect_time'           => 3,
@@ -356,7 +369,7 @@ class Main {
 				$this->plugin_name
 			),
 			'custom_parser'           => false,
-			'output_buffer'           => $output_buffer
+			'output_buffer'           => $output_buffer,
 		);
 
 		$this->options = $this->validate_options( $options );
@@ -366,7 +379,7 @@ class Main {
 	/**
 	 * Validates the options for this plugin.
 	 *
-	 * @param array $options
+	 * @param array $options Options.
 	 *
 	 * @return     object    $options
 	 * @since      4.2.0
@@ -393,7 +406,7 @@ class Main {
 				case 'bot_targeting':
 				case 'redirect_message':
 					if ( false !== $option ) {
-						$options[ $key ] = ( string ) $option;
+						$options[ $key ] = (string) $option;
 					}
 
 					continue 2;
@@ -406,35 +419,35 @@ class Main {
 				case 'linkshrink_api_key':
 				case 'shortest_api_key':
 				case 'yourls_domain':
-				case 'yourls_signature': //var_dump($key);var_dump($option);
+				case 'yourls_signature':
 					if ( false !== $option && '' !== $option ) {
-						$options[ $key ] = ( string ) $option;
+						$options[ $key ] = (string) $option;
 					}
 
 					continue 2;
 				case 'mask_links':
 					if ( false !== $option ) {
-						$options[ $key ] = ( string ) $option;
+						$options[ $key ] = (string) $option;
 					}
 
 					if ( ! $output_buffer ) {
-						$options[ $key ] = ( string ) 'specific';
+						$options[ $key ] = 'specific';
 					}
 
 					continue 2;
 				case 'link_encoding':
 					if ( false !== $option ) {
-						$options[ $key ] = ( string ) $option;
+						$options[ $key ] = (string) $option;
 					}
 
 					if ( 'aes256' === $option && ! $encryption ) {
-						$options[ $key ] = ( string ) 'none';
+						$options[ $key ] = 'none';
 					}
 
 					continue 2;
 				case 'separator':
 					if ( '' !== $option && false !== $option ) {
-						$options[ $key ] = ( string ) $option;
+						$options[ $key ] = (string) $option;
 					} else {
 						$options[ $key ] = 'goto';
 					}
@@ -443,21 +456,23 @@ class Main {
 				case 'encryption_key':
 					if ( '' === $option || false === $option ) {
 						if ( $encryption_key ) {
+							// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 							$encryption_key = base64_encode( $encryption_key );
+
 							update_option( $this->options_prefix . $key, $encryption_key );
-							$options[ $key ] = ( string ) $encryption_key;
+							$options[ $key ] = $encryption_key;
 						} else {
 							$options[ $key ] = false;
 						}
 					} else {
-						$options[ $key ] = ( string ) $option;
+						$options[ $key ] = (string) $option;
 					}
 
 					continue 2;
 				case 'redirect_time':
 				case 'log_duration':
 					if ( false !== $option ) {
-						$options[ $key ] = ( int ) $option;
+						$options[ $key ] = (int) $option;
 					}
 
 					continue 2;
@@ -468,14 +483,14 @@ class Main {
 
 					continue 2;
 				case 'bots_selector':
-					if ( false !== $option || '' !== $option ) {
-						$options[ $key ] = ( array ) $option;
+					if ( false !== $option && '' !== $option ) {
+						$options[ $key ] = (array) $option;
 					}
 
 					continue 2;
 				default:
 					if ( false !== $option ) {
-						$options[ $key ] = ( int ) $option === 1 ? true : false;
+						$options[ $key ] = 1 === ( (int) $option );
 					}
 			}
 		}
@@ -489,8 +504,9 @@ class Main {
 	 *
 	 * @since    4.0.0
 	 * @access   private
+	 * @noinspection SqlResolve
 	 */
-	private function initiate() {
+	private function initiate(): void {
 
 		$this->admin = new Admin(
 			$this->get_plugin_name(),
@@ -500,7 +516,7 @@ class Main {
 		);
 
 		if ( $this->custom_parser ) {
-			$this->public = new \WP_CustomParser(
+			$this->public = new WP_CustomParser(
 				$this->get_plugin_name(),
 				$this->get_version(),
 				$this->get_options()
@@ -516,15 +532,15 @@ class Main {
 		if ( $this->options->skip_auth ) {
 			$this->public->debug_info( 'Masking is enabled only for non logged in users' );
 
-			// TODO: Look to improve this; without including pluggable.php
+			// TODO: Look to improve this; without including pluggable.php.
 			if ( ! function_exists( 'is_user_logged_in' ) ) {
 				$this->public->debug_info( '\'is_user_logged_in\' function not found! Trying to include its file' );
 
-				require_once( ABSPATH . 'wp-includes/pluggable.php' );
+				require_once ABSPATH . 'wp-includes/pluggable.php';
 			}
 		}
 
-		if ( $this->options->logging && $this->options->log_duration !== 0 ) {
+		if ( $this->options->logging && 0 !== $this->options->log_duration ) {
 
 			global $wpdb;
 
@@ -534,26 +550,27 @@ class Main {
 
 			$last_cleared = get_option( $this->options_prefix . 'last_cleared_logs' );
 
+			// phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
 			if ( ! $last_cleared || $last_cleared < current_time( 'timestamp' ) - 3600 * 24 ) {
 				$sql = "DELETE FROM $table_name WHERE date < DATE_SUB('$current_time', INTERVAL %d DAY)";
 
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 				$wpdb->query( $wpdb->prepare( $sql, $this->options->log_duration ) );
 
+				// phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
 				update_option( $this->options_prefix . 'last_cleared_logs', current_time( 'timestamp' ) );
 			}
-
 		}
 
 	}
 
 	/**
-	 * Register all of the hooks related to the admin area functionality
-	 * of the plugin.
+	 * Register all the hooks related to the admin area functionality of the plugin.
 	 *
 	 * @since    4.0.0
 	 * @access   private
 	 */
-	private function define_admin_hooks() {
+	private function define_admin_hooks(): void {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_scripts' );
@@ -565,20 +582,19 @@ class Main {
 		$this->loader->add_filter( 'install_plugins_table_api_args_' . MIHDAN_NO_EXTERNAL_LINKS_SLUG, $this->admin, 'install_plugins_table_api_args' );
 
 		$this->loader->add_filter( 'set-screen-option', $this->admin, 'mask_page_set_screen_options', null, 3 );
-		$hook_name = vsprintf( 'load-%s_page_%s-masks', array(
-			strtolower( sanitize_file_name( __( 'External Links', $this->plugin_name ) ) ),
-			$this->get_plugin_name()
-		) );
+		$hook_name = vsprintf(
+			'load-%s_page_%s-masks',
+			[ strtolower( sanitize_file_name( __( 'External Links', $this->plugin_name ) ) ), $this->get_plugin_name() ]
+		);
 
 		$this->loader->add_action( $hook_name, $this->admin, 'mask_page_screen_options' );
-		//$this->loader->add_action( 'load-toplevel_page_' . $this->get_plugin_name(), $this->admin, 'mask_page_screen_options' );
 
 		$this->loader->add_filter( 'set-screen-option', $this->admin, 'log_page_set_screen_options', null, 3 );
 
-		$hook_name = vsprintf( 'load-%s_page_%s-logs', array(
-			strtolower( sanitize_file_name( __( 'External Links', $this->plugin_name ) ) ),
-			$this->get_plugin_name()
-		) );
+		$hook_name = vsprintf(
+			'load-%s_page_%s-logs',
+			[ strtolower( sanitize_file_name( __( 'External Links', $this->plugin_name ) ) ), $this->get_plugin_name() ]
+		);
 
 		$this->loader->add_action( $hook_name, $this->admin, 'log_page_screen_options' );
 
@@ -590,13 +606,12 @@ class Main {
 	}
 
 	/**
-	 * Register all of the hooks related to the public-facing functionality
-	 * of the plugin.
+	 * Register all the hooks related to the public-facing functionality of the plugin.
 	 *
 	 * @since    4.0.0
 	 * @access   private
 	 */
-	private function define_public_hooks() {
+	private function define_public_hooks(): void {
 
 		$this->loader->add_filter( 'template_redirect', $this->public, 'check_redirect', 1 );
 
@@ -604,13 +619,13 @@ class Main {
 			$this->public->debug_info( "User is authorised, we're not doing anything" );
 		} else {
 			if ( 'all' === $this->options->mask_links ) {
-				$this->public->debug_info( "Setting fullmask filters" );
+				$this->public->debug_info( 'Setting fullmask filters' );
 
 				$this->loader->add_filter( 'the_content', $this->public, 'check_post', 99 );
 				$this->loader->add_filter( 'the_excerpt', $this->public, 'check_post', 99 );
 				$this->loader->add_filter( 'wp', $this->public, 'fullpage_filter', 99 );
 			} else {
-				$this->public->debug_info( "Setting per element filters" );
+				$this->public->debug_info( 'Setting per element filters' );
 
 				if ( $this->options->mask_posts_pages ) {
 					$this->loader->add_filter( 'the_content', $this->public, 'check_post', 99 );
@@ -647,11 +662,11 @@ class Main {
 	}
 
 	/**
-	 * Run the loader to execute all of the hooks with WordPress.
+	 * Run the loader to execute all the hooks with WordPress.
 	 *
 	 * @since    4.0.0
 	 */
-	public function run() {
+	public function run(): void {
 		$this->loader->run();
 	}
 
@@ -662,17 +677,17 @@ class Main {
 	 * @return    string    The name of the plugin.
 	 * @since     4.0.0
 	 */
-	public function get_plugin_name() {
+	public function get_plugin_name(): string {
 		return $this->plugin_name;
 	}
 
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
-	 * @return    Mihdan_NoExternalLinks_Loader    Orchestrates the hooks of the plugin.
 	 * @since     4.0.0
+	 * @return    Loader    Orchestrates the hooks of the plugin.
 	 */
-	public function get_loader() {
+	public function get_loader(): Loader {
 		return $this->loader;
 	}
 
@@ -682,7 +697,7 @@ class Main {
 	 * @return    string    The version number of the plugin.
 	 * @since     4.0.0
 	 */
-	public function get_version() {
+	public function get_version(): string {
 		return $this->version;
 	}
 
@@ -692,7 +707,7 @@ class Main {
 	 * @return    string    The option prefix for the plugin.
 	 * @since     4.0.0
 	 */
-	public function get_options_prefix() {
+	public function get_options_prefix(): string {
 		return $this->options_prefix;
 	}
 

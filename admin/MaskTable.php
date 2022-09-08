@@ -8,14 +8,19 @@
  * @author        mihdan
  */
 
+// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
+
 namespace Mihdan\No_External_Links\Admin;
 
 use WP_List_Table;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
+/**
+ * Class MaskTable.
+ */
 class MaskTable extends WP_List_Table {
 
 	/**
@@ -39,10 +44,10 @@ class MaskTable extends WP_List_Table {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @param string $plugin_name The name of the plugin.
-	 * @param string $options_prefix The options prefix of the plugin.
-	 *
 	 * @since    4.2.0
+	 *
+	 * @param string $plugin_name    The name of the plugin.
+	 * @param string $options_prefix The options prefix of the plugin.
 	 */
 	public function __construct( $plugin_name, $options_prefix ) {
 
@@ -50,97 +55,96 @@ class MaskTable extends WP_List_Table {
 		$this->options_prefix = $options_prefix;
 
 		parent::__construct(
-			array(
+			[
 				'singular' => __( 'Mask', 'mihdan-no-external-links' ),
 				'plural'   => __( 'Masks', 'mihdan-no-external-links' ),
 				'ajax'     => false,
-			)
+			]
 		);
 
-		add_action( 'admin_notices', array( $this, 'mask_delete_notice' ) );
+		add_action( 'admin_notices', [ $this, 'mask_delete_notice' ] );
 
 	}
 
 	/**
 	 * Retrieve external links mask data from the database
 	 *
-	 * @param int $per_page
-	 * @param int $page_number
-	 *
-	 * @return    mixed
 	 * @since     4.2.0
+	 *
+	 * @param int $per_page    Number of items per page.
+	 * @param int $page_number Page number.
+	 *
+	 * @return array
 	 */
-	public function get_masks( $per_page = 5, $page_number = 1 ) {
+	public function get_masks( $per_page = 5, $page_number = 1 ): array {
 
 		global $wpdb;
 
 		$order_by = 'id';
 		$order    = 'ASC';
 		$offset   = ( $page_number - 1 ) * $per_page;
-		$mapping  = array(
+		$mapping  = [
 			'title'   => 'url',
 			'mask'    => 'mask',
 			'numeric' => 'id',
-		);
+		];
 
-		if ( ! empty( $_REQUEST['order'] ) ) {
-			$order = esc_sql( $_REQUEST['order'] );
-		}
+		// Nonce is verified in the WP_List_table class.
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
+		$order    = isset( $_REQUEST['order'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ) : $order;
+		$orderby  = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) : '';
+		$order_by = array_key_exists( $orderby, $mapping ) ? $mapping[ $orderby ] : $order_by;
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
 
-		if ( ! empty( $_REQUEST['orderby'] ) && array_key_exists( $_REQUEST['orderby'], $mapping ) ) {
-			$order_by = $mapping[ $_REQUEST['orderby'] ];
-		}
-
-		$result = $wpdb->get_results(
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		return (array) $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT * FROM {$wpdb->prefix}external_links_masks ORDER BY %s %s LIMIT %d OFFSET %d",
-				array(
+				[
 					$order_by,
 					$order,
 					$per_page,
 					$offset,
-				)
+				]
 			),
 			ARRAY_A
 		);
-
-		return $result;
 
 	}
 
 	/**
 	 * Delete a mask record.
 	 *
-	 * @param int $id Mask ID
-	 *
-	 * @return    bool
 	 * @since     4.2.0
+	 *
+	 * @param int $id Mask ID.
+	 *
+	 * @return bool
 	 */
-	public function delete_mask( $id ) {
+	public function delete_mask( $id ): bool {
 
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$delete_count = $wpdb->delete(
 			$wpdb->prefix . 'external_links_masks',
-			array( 'ID' => $id ),
-			array( '%d' )
+			[ 'ID' => $id ],
+			[ '%d' ]
 		);
 
-		if ( $delete_count > 0 ) {
-			return true;
-		}
-
-		return false;
+		return $delete_count > 0;
 
 	}
 
 	/**
 	 * Returns the count of records in the database.
 	 *
-	 * @return   null|string
 	 * @since    4.2.0
+	 *
+	 * @return int
+	 * @noinspection SqlResolve
 	 */
-	public function record_count() {
+	public function record_count(): int {
 
 		global $wpdb;
 
@@ -148,7 +152,8 @@ class MaskTable extends WP_List_Table {
 
 		$sql = "SELECT COUNT(id) FROM $table_name";
 
-		return $wpdb->get_var( $sql );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		return (int) $wpdb->get_var( $sql );
 
 	}
 
@@ -157,22 +162,23 @@ class MaskTable extends WP_List_Table {
 	 *
 	 * @since    4.2.0
 	 */
-	public function no_items() {
+	public function no_items(): void {
 
-		_e( 'No masks available.', $this->plugin_name );
+		esc_html_e( 'No masks available.', $this->plugin_name );
 
 	}
 
 	/**
 	 * Render a column when no column specific method exists.
 	 *
-	 * @param array  $item
-	 * @param string $column_name
-	 *
-	 * @return    mixed
 	 * @since     4.2.0
+	 *
+	 * @param array  $item        Item.
+	 * @param string $column_name Column name.
+	 *
+	 * @return string
 	 */
-	public function column_default( $item, $column_name ) {
+	public function column_default( $item, $column_name ): string {
 
 		switch ( $column_name ) {
 			case 'title':
@@ -180,39 +186,44 @@ class MaskTable extends WP_List_Table {
 
 				$title = '<strong>' . $item['url'] . '</strong>';
 
-				$actions = array(
+				$page    = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : '';
+				$actions = [
 					'delete' => sprintf(
 						'<a href="?page=%s&action=%s&mask=%s&_wpnonce=%s">Delete</a>',
-						esc_attr( $_REQUEST['page'] ),
+						esc_attr( $page ),
 						'delete',
 						absint( $item['id'] ),
 						$delete_nonce
-					)
-				);
+					),
+				];
 
 				return $title . $this->row_actions( $actions );
 			case 'mask':
-				return $item['mask'];
+				return (string) $item['mask'];
 			case 'numeric':
-				return $item['id'];
+				return (string) $item['id'];
 			default:
-				return print_r( $item, true );
+				break;
 		}
 
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+		return (string) print_r( $item, true );
 	}
 
 	/**
 	 * Render the bulk edit checkbox
 	 *
-	 * @param array $item
-	 *
-	 * @return    string
 	 * @since     4.2.0
+	 *
+	 * @param array $item Item.
+	 *
+	 * @return string
 	 */
-	function column_cb( $item ) {
+	public function column_cb( $item ): string {
 
 		return sprintf(
-			'<input type="checkbox" name="bulk-delete[]" value="%s" />', $item['id']
+			'<input type="checkbox" name="bulk-delete[]" value="%s" />',
+			$item['id']
 		);
 
 	}
@@ -220,53 +231,48 @@ class MaskTable extends WP_List_Table {
 	/**
 	 *  Associative array of columns
 	 *
-	 * @return    array    $columns
 	 * @since     4.2.0
+	 *
+	 * @return array $columns
 	 */
-	function get_columns() {
+	public function get_columns(): array {
 
-		$columns = array(
+		return [
 			'cb'      => '<input type="checkbox" />',
 			'title'   => __( 'URL', $this->plugin_name ),
 			'mask'    => __( 'Mask' ),
-			'numeric' => __( 'Numeric' )
-		);
-
-		return $columns;
+			'numeric' => __( 'Numeric' ),
+		];
 
 	}
 
 	/**
 	 * Columns to make sortable.
 	 *
-	 * @return    array     $sortable_columns
 	 * @since     4.2.0
+	 *
+	 * @return array $sortable_columns
 	 */
-	public function get_sortable_columns() {
+	public function get_sortable_columns(): array {
 
-		$sortable_columns = array(
-			'title'   => array( 'title', true ),
-			'mask'    => array( 'mask', true ),
-			'numeric' => array( 'numeric', true )
-		);
-
-		return $sortable_columns;
+		return [
+			'title'   => [ 'title', true ],
+			'mask'    => [ 'mask', true ],
+			'numeric' => [ 'numeric', true ],
+		];
 
 	}
 
 	/**
 	 * Returns an associative array containing the bulk action
 	 *
-	 * @return    array    $actions
 	 * @since     4.2.0
+	 *
+	 * @return array $actions
 	 */
-	public function get_bulk_actions() {
+	public function get_bulk_actions(): array {
 
-		$actions = array(
-			'bulk-delete' => 'Delete'
-		);
-
-		return $actions;
+		return [ 'bulk-delete' => 'Delete' ];
 
 	}
 
@@ -275,7 +281,7 @@ class MaskTable extends WP_List_Table {
 	 *
 	 * @since     4.2.0
 	 */
-	public function prepare_items() {
+	public function prepare_items(): void {
 
 		$this->_column_headers = $this->get_column_info();
 
@@ -284,10 +290,10 @@ class MaskTable extends WP_List_Table {
 		$total_items  = $this->record_count();
 
 		$this->set_pagination_args(
-			array(
+			[
 				'total_items' => $total_items,
-				'per_page'    => $per_page
-			)
+				'per_page'    => $per_page,
+			]
 		);
 
 		$this->items = $this->get_masks( $per_page, $current_page );
@@ -297,52 +303,55 @@ class MaskTable extends WP_List_Table {
 	/**
 	 * Processes any bulk actions.
 	 *
-	 * @since     4.2.0
+	 * @since        4.2.0
+	 *
+	 * @noinspection ForgottenDebugOutputInspection
 	 */
-	public function process_bulk_action() {
+	public function process_bulk_action(): void {
 
 		$redirect = wp_get_raw_referer();
 
-		if ( 'delete' === $this->current_action() ) {
+		$nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-			$nonce = esc_attr( $_REQUEST['_wpnonce'] );
-
-			if ( ! wp_verify_nonce( $nonce, $this->options_prefix . 'delete_mask' ) ) {
-				wp_die( __( 'Are you sure you want to do this?' ) );
-			} else {
-				$delete = $this->delete_mask( absint( $_GET['mask'] ) );
-
-				$delete_count = 0;
-				if ( $delete ) {
-					++ $delete_count;
-				}
-
-				$redirect = add_query_arg( 'delete_count', $delete_count, $redirect );
-
-				wp_redirect( $redirect );
-				exit;
-			}
-
+		if ( ! wp_verify_nonce( $nonce, $this->options_prefix . 'delete_mask' ) ) {
+			wp_die( esc_html__( 'Are you sure you want to do this?' ) );
 		}
 
-		if ( ( isset( $_POST['action'] ) && $_POST['action'] == 'bulk-delete' )
-		     || ( isset( $_POST['action2'] ) && $_POST['action2'] == 'bulk-delete' )
-		) {
+		if ( 'delete' === $this->current_action() ) {
 
-			$delete_ids = esc_sql( $_POST['bulk-delete'] );
+			$mask   = isset( $_GET['mask'] ) ? absint( $_GET['mask'] ) : '';
+			$delete = $this->delete_mask( $mask );
 
 			$delete_count = 0;
-			foreach ( $delete_ids as $id ) {
-				$delete = $this->delete_mask( $id );
+			if ( $delete ) {
+				++ $delete_count;
+			}
 
-				if ( $delete ) {
-					++ $delete_count;
+			$redirect = add_query_arg( 'delete_count', $delete_count, $redirect );
+
+			wp_safe_redirect( $redirect );
+			exit;
+		}
+
+		$action  = isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '';
+		$action2 = isset( $_POST['action2'] ) ? sanitize_text_field( wp_unslash( $_POST['action2'] ) ) : '';
+
+		if ( 'bulk-delete' === $action || 'bulk-delete' === $action2 ) {
+
+			$delete_count = 0;
+			$delete_ids   = isset( $_POST['bulk-delete'] ) ?
+				array_map( 'intval', (array) wp_unslash( $_POST['bulk-delete'] ) ) :
+				[];
+
+			foreach ( $delete_ids as $id ) {
+				if ( $this->delete_mask( $id ) ) {
+					$delete_count ++;
 				}
 			}
 
 			$redirect = add_query_arg( 'delete_count', $delete_count, $redirect );
 
-			wp_redirect( $redirect );
+			wp_safe_redirect( $redirect );
 			exit;
 		}
 
@@ -353,17 +362,19 @@ class MaskTable extends WP_List_Table {
 	 *
 	 * @since    4.2.0
 	 */
-	function mask_delete_notice() {
-		$delete_count = isset( $_GET['delete_count'] ) ? ( int ) $_GET['delete_count'] : 0;
+	public function mask_delete_notice(): void {
+		$delete_count = isset( $_GET['delete_count'] ) ? (int) $_GET['delete_count'] : 0;
 
-		if ( 1 == $delete_count ) {
+		if ( 1 === $delete_count ) {
 			?>
 			<div class="notice notice-success">
 				<p>
-					<?php _e(
+					<?php
+					esc_html_e(
 						'Mask deleted.',
 						$this->plugin_name
-					); ?>
+					);
+					?>
 				</p>
 			</div>
 			<?php
@@ -371,9 +382,15 @@ class MaskTable extends WP_List_Table {
 			?>
 			<div class="notice notice-success">
 				<p>
-					<?php echo sprintf(
-						__( '%s masks deleted.', $this->plugin_name ), number_format_i18n( $delete_count )
-					); ?>
+					<?php
+					echo esc_html(
+						sprintf(
+						// translators: 1: Count.
+							__( '%s masks deleted.', $this->plugin_name ),
+							number_format_i18n( $delete_count )
+						)
+					);
+					?>
 				</p>
 			</div>
 			<?php
