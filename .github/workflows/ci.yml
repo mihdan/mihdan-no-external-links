@@ -1,6 +1,13 @@
 name: CI
 
-on: [ push, pull_request ]
+on:
+  push:
+    tags:
+      - '!**'
+  pull_request:
+    branches:
+      - 'main'
+      - 'master'
 
 jobs:
   cs_and_tests:
