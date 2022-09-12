@@ -83,9 +83,9 @@ class LogTable extends WP_List_Table {
 	 * @param array  $item        Item array.
 	 * @param string $column_name Column name.
 	 *
-	 * @return string
+	 * @return string|null
 	 */
-	public function column_default( $item, $column_name ): string {
+	public function column_default( $item, $column_name ): ?string {
 
 		// Nonce is verified in the WP_List_Table class.
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
@@ -293,7 +293,7 @@ class LogTable extends WP_List_Table {
 			? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) )
 			: '';
 
-		if ( ! wp_verify_nonce( $nonce, $this->options_prefix . 'delete_log' ) ) {
+		if ( ! empty( $nonce ) && ! wp_verify_nonce( $nonce, $this->options_prefix . 'delete_log' ) ) {
 			wp_die( esc_html__( 'Are you sure you want to do this?' ) );
 		}
 

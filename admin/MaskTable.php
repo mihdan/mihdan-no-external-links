@@ -176,9 +176,9 @@ class MaskTable extends WP_List_Table {
 	 * @param array  $item        Item.
 	 * @param string $column_name Column name.
 	 *
-	 * @return string
+	 * @return string|null
 	 */
-	public function column_default( $item, $column_name ): string {
+	public function column_default( $item, $column_name ): ?string {
 
 		switch ( $column_name ) {
 			case 'title':
@@ -311,9 +311,11 @@ class MaskTable extends WP_List_Table {
 
 		$redirect = wp_get_raw_referer();
 
-		$nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+		$nonce = isset( $_REQUEST['_wpnonce'] )
+			? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) )
+			: '';
 
-		if ( ! wp_verify_nonce( $nonce, $this->options_prefix . 'delete_mask' ) ) {
+		if ( ! empty( $nonce ) && ! wp_verify_nonce( $nonce, $this->options_prefix . 'delete_mask' ) ) {
 			wp_die( esc_html__( 'Are you sure you want to do this?' ) );
 		}
 

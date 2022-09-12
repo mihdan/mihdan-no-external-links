@@ -93,15 +93,6 @@ class Main {
 	private $options_prefix;
 
 	/**
-	 * The class that's responsible for custom functionality.
-	 *
-	 * @since    4.0.0
-	 * @access   protected
-	 * @var      WP_CustomParser $custom_parser Contains custom functions.
-	 */
-	private $custom_parser;
-
-	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -115,14 +106,6 @@ class Main {
 		$this->plugin_name    = 'mihdan-no-external-links';
 		$this->version        = MIHDAN_NO_EXTERNAL_LINKS_VERSION;
 		$this->options_prefix = 'mihdan_noexternallinks_';
-
-		$upload_dir    = wp_upload_dir();
-		$custom_parser = $upload_dir['basedir'] . '/custom-parser.php';
-
-		$this->custom_parser = false;
-		if ( file_exists( $custom_parser ) ) {
-			$this->custom_parser = $custom_parser;
-		}
 
 		$this->load_dependencies();
 		$this->compatibility_check();
@@ -204,13 +187,6 @@ class Main {
 		 * side of the site.
 		 */
 		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/public/Frontend.php';
-
-		/**
-		 * The class responsible for custom functionality.
-		 */
-		if ( $this->custom_parser ) {
-			require_once $this->custom_parser;
-		}
 
 		$this->loader = new Loader();
 
@@ -368,7 +344,6 @@ class Main {
 				'You will be redirected in 3 seconds. If your browser does not automatically redirect you, please <a href="%linkurl%">click here</a>.',
 				$this->plugin_name
 			),
-			'custom_parser'           => false,
 			'output_buffer'           => $output_buffer,
 		);
 
@@ -476,12 +451,6 @@ class Main {
 					}
 
 					continue 2;
-				case 'custom_parser':
-					if ( $this->custom_parser ) {
-						$options[ $key ] = true;
-					}
-
-					continue 2;
 				case 'bots_selector':
 					if ( false !== $option && '' !== $option ) {
 						$options[ $key ] = (array) $option;
@@ -515,19 +484,11 @@ class Main {
 			$this->get_options_prefix()
 		);
 
-		if ( $this->custom_parser ) {
-			$this->public = new WP_CustomParser(
-				$this->get_plugin_name(),
-				$this->get_version(),
-				$this->get_options()
-			);
-		} else {
-			$this->public = new Frontend(
-				$this->get_plugin_name(),
-				$this->get_version(),
-				$this->get_options()
-			);
-		}
+		$this->public = new Frontend(
+			$this->get_plugin_name(),
+			$this->get_version(),
+			$this->get_options()
+		);
 
 		if ( $this->options->skip_auth ) {
 			$this->public->debug_info( 'Masking is enabled only for non logged in users' );

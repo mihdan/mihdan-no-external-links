@@ -4,7 +4,7 @@ Contributors: mihdan, kaggdesign
 Tags: seo, link, links, publisher, post, posts, comments
 Requires at least: 5.7.4
 Tested up to: 6.0
-Stable tag: 5.0.2.1
+Stable tag: 5.0.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -28,11 +28,6 @@ Mihdan: No External Links is designed for specialists who sell different kinds o
 
 = How To Use =
 Just do everything like you would normally, and as long as the plugin is active, external links will be automatically masked.
-
-= Custom Parser =
-We do **not** recommend using this feature! - Future updates may break your custom parser, we would recommend submitting a [feature request](https://wordpress.org/support/plugin/mihdan-no-external-links) instead.
-Due to a recent update, any existing custom parsers will need to be updated to fit with the new code base. (Please see FAQs below for more details)
-**_Limited support will be provided for any custom parser issues._**
 
 = Recommended Settings =
 The default settings that are used on a fresh install of the plugin are what we recommend.
@@ -67,6 +62,11 @@ Mihdan: No External Links **does not** make any changes to your database, it jus
 4. [Optional] Configure Mihdan: No External Links settings.
 
 == Changelog ==
+
+= 5.0.3 (12.09.2022) =
+* Fixed fatal errors on logging pages
+* Fixed errors in translations in the WordPress admin
+* Removed custom link parser functionality
 
 = 5.0.2 (09.09.2022) =
 * Added polyfill for the deprecated mcrypt PHP module
@@ -417,7 +417,7 @@ Bugfix for email links.
 Bugfix for wrong html parsing.
 
 = 0.04 =
-Activation \ Deactivation improved, optimization, localization settings now stored as options.
+Activation/Deactivation improved, optimization, localization settings now stored as options.
 
 = 0.03 =
 Bugfix.
@@ -428,59 +428,12 @@ Multilanguagal release.
 = 0.01 =
 First release.
 
-== Frequently Asked Questions ==
-
-= Custom Parser Migration Instructions =
-Remove the following lines of code:
-`if (!defined('WP_PLUGIN_DIR'))
-    include_once(ABSPATH . 'wp-content/plugins/mihdan-noexternallinks/mihdan-noexternallinks-parser.php');
-else
-    include_once(WP_PLUGIN_DIR . '/mihdan-noexternallinks/mihdan-noexternallinks-parser.php');`
-
-Change:
-`class custom_parser extends mihdan_noexternallinks_parser`
-
-To:
-`class WP_CustomParser extends Mihdan_NoExternalLinks_Public`
-
-Change any options references:
-* `$this->options['no302']` to `$this->options->masking_type == 'javascript'`
-* `$this->options['redtime']` to `$this->options->redirect_time`
-* `$this->options['fullmask']` to `$this->options->mask_links == 'all'`
-* `$this->options['mask_mine']` to `$this->options->mask_posts_pages`
-* `$this->options['mask_comment']` to `$this->options->mask_comments`
-* `$this->options['mask_author']` to `$this->options->mask_comment_author`
-* `$this->options['mask_rss']` to `$this->options->mask_rss`
-* `$this->options['mask_rss_comment']` to `$this->options->mask_rss_comments`
-* `$this->options['add_nofollow']` to `$this->options->nofollow`
-* `$this->options['add_blank']` to `$this->options->target_blank`
-* `$this->options['put_noindex']` to `$this->options->noindex_tag`
-* `$this->options['put_noindex_comment']` to `$this->options->noindex_comment`
-* `$this->options['LINK_SEP']` to `$this->options->separator`
-* `$this->options['base64']` to `$this->options->link_encoding == 'base64'`
-* `$this->options['maskurl']` to `$this->options->link_encoding == 'numbers'`
-* `$this->options['stats']` to `$this->options->logging`
-* `$this->options['keep_stats']` to `$this->options->log_duration`
-* `$this->options['remove_links']` to `$this->options->remove_all_links`
-* `$this->options['link2text']` to `$this->options->links_to_text`
-* `$this->options['debug']` to `$this->options->debug_mode`
-* `$this->options['restrict_referer']` to `$this->options->check_referrer`
-* `$this->options['exclude_links']` to `$this->options->exclusion_list`
-* `$this->options['noforauth']` to `$this->options->skip_auth`
-* `$this->options['dont_mask_admin_follow']` to `$this->options->skip_follow`
-* `$this->options['redtxt']` to `$this->options->redirect_message`
-
-Change table names:
-* `links_stats` to `external_links_logs`
-* `masklinks` to `external_links_masks`
-
 == System Requirements ==
 
-* WordPress 3.5+
-* PHP 5.3+
+* WordPress 5.0+
+* PHP 7.4+
 
 == Known Issues ==
 
-* Localization is no longer working.
-* Mask links in RSS comments does not always work.
+There are no known errors at this time.
 

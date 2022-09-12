@@ -1179,7 +1179,7 @@ class Admin {
 					<?php checked( $this->options->noindex_tag ); ?> />
 				<?php
 				esc_html_e(
-					'Surround Masked Links with <code>&#x3C;noindex/&#x3E;</code> tags',
+					'Surround Masked Links with &#x3C;noindex/&#x3E; tags',
 					$this->plugin_name
 				);
 				?>
@@ -1197,7 +1197,7 @@ class Admin {
 					<?php checked( $this->options->noindex_comment ); ?> />
 				<?php
 				esc_html_e(
-					'Surround Masked Links with <code>&#x3C;!--noindex--&#x3E;</code> comments',
+					'Surround Masked Links with &#x3C;!--noindex--&#x3E; comments',
 					$this->plugin_name
 				);
 				?>
@@ -1812,7 +1812,7 @@ class Admin {
 		if ( ! $this->options->encryption ) {
 			?>
 			<p class="description">
-				<?php esc_html_e( 'Requires OpenSSL (<strong>Recommended</strong>) or Mcrypt (<strong>Deprecated in PHP 7</strong>).', $this->plugin_name ); ?>
+				<?php esc_html_e( 'Requires OpenSSL (Recommended) or Mcrypt (Deprecated in PHP 7).', $this->plugin_name ); ?>
 			</p>
 			<?php
 		}
@@ -1848,9 +1848,7 @@ class Admin {
 					class="large-text code" rows="10" cols="50"
 					name="<?php echo esc_attr( $this->options_prefix . 'redirect_message' ); ?>"
 					id="<?php echo esc_attr( $this->options_prefix . 'redirect_message' ); ?>"
-				<?php echo 'javascript' === $this->options->masking_type ? '' : 'readonly'; ?>>
-			<?php echo esc_html( $this->options->redirect_message ); ?>
-			</textarea>
+				<?php echo 'javascript' === $this->options->masking_type ? '' : 'readonly'; ?>><?php echo esc_html( $this->options->redirect_message ); ?></textarea>
 			</label>
 			<?php if ( 'javascript' !== $this->options->masking_type ) : ?>
 				<p class="description">
@@ -1871,15 +1869,15 @@ class Admin {
 		<p>
 			<?php
 			esc_html_e(
-				'You can choose to target specific domains (<em>include</em>), or exclude specific domains
-                (<em>exclude</em>), by entering their URLs below. When entering a URL you should include the
-                protocol prefix - for example, <strong>https://</strong>google.com or
-                <strong>ftp://</strong>microsoft.com. Please note that domains with and without
-                "<strong>www</strong>" are considered different, so are "<strong>http://</strong>" and
-                "<strong>https://</strong>". If you wish to include or exclude "<strong>pinterest.com</strong>"
-                then you may want to specify "<strong>https://pinterest.com</strong>",
-                "<strong>http://www.pinterest.com</strong>", "<strong>https://pinterest.com</strong>" and
-                "<strong>https://www.pinterest.com</strong>".',
+				'You can choose to target specific domains (include), or exclude specific domains
+                (exclude), by entering their URLs below. When entering a URL you should include the
+                protocol prefix - for example, https://google.com or
+                ftp://microsoft.com. Please note that domains with and without
+                "www" are considered different, so are "http://" and
+                "https://". If you wish to include or exclude "pinterest.com"
+                then you may want to specify "https://pinterest.com",
+                "http://www.pinterest.com", "https://pinterest.com" and
+                "https://www.pinterest.com".',
 				$this->plugin_name
 			);
 			?>
@@ -1957,9 +1955,9 @@ class Admin {
 				<?php
 				esc_html_e(
 					'Enter URLs you wish to exclude from being masked. One URL per line.
-                    <em>Javascript, Magnet, Mailto, Skype and Tel</em> links are all excluded by default.
+                    Javascript, Magnet, Mailto, Skype and Tel links are all excluded by default.
                     To exclude a full protocol, just add a line for that prefix - for example,
-                    "<strong>ftp://</strong>".',
+                    "ftp://".',
 					$this->plugin_name
 				);
 				?>
@@ -2153,7 +2151,7 @@ class Admin {
 			<p>
 				<?php
 				esc_html_e(
-					'<strong>Custom Parser</strong> is active, some options/settings may not work. We do <strong>not</strong> recommend using this feature!',
+					'Custom Parser is active, some options/settings may not work. We do not recommend using this feature!',
 					$this->plugin_name
 				);
 				?>
@@ -2173,7 +2171,7 @@ class Admin {
 			<p>
 				<?php
 				esc_html_e(
-					'<strong>AES-256 Encoding</strong> - mcrypt has been deprecated in favour of OpenSSL.',
+					'AES-256 Encoding - mcrypt has been deprecated in favour of OpenSSL.',
 					$this->plugin_name
 				);
 				?>
@@ -2193,7 +2191,7 @@ class Admin {
 			<p>
 				<?php
 				esc_html_e(
-					'<strong>Output Buffering</strong> is disabled, <em>Mask All Links</em> will not work. Contact your server administrator to get this feature enabled.',
+					'Output Buffering is disabled, Mask All Links will not work. Contact your server administrator to get this feature enabled.',
 					$this->plugin_name
 				);
 				?>
