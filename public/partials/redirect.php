@@ -27,7 +27,22 @@
 		$url = $url ?? null;
 		// phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		if ( $this->options->redirect_message && $url ) {
-			echo esc_html( str_replace( '%linkurl%', esc_url( $url ), $this->options->redirect_message ) );
+			$allowed_html = [
+				'a' => [
+					'href'   => true,
+					'title'  => true,
+					'rel'    => true,
+					'target' => true,
+				],
+			];
+			echo wp_kses(
+				str_replace(
+					'%linkurl%',
+					esc_url( $url ),
+					$this->options->redirect_message
+				),
+				$allowed_html
+			);
 		} elseif ( $url ) {
 			$message = __( 'You were going to the redirect link, but something did not work properly.<br> Please, click ', $this->plugin_name );
 			echo (

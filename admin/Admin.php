@@ -1887,6 +1887,9 @@ class Admin {
 					name="<?php echo esc_attr( $this->options_prefix . 'redirect_page' ); ?>"
 					id="<?php echo esc_attr( $this->options_prefix . 'redirect_page' ); ?>"
 				>
+					<option value="0">
+						<?php esc_html_e( 'Select Page', $this->plugin_name ); ?>
+					</option>
 					<?php foreach ( $pages as $page ) : ?>
 						<option
 							value="<?php echo absint( $page->ID ); ?>"
