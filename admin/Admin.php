@@ -1876,7 +1876,7 @@ class Admin {
 	/**
 	 * Render the redirect page settings section.
 	 *
-	 * @since  4.0.0
+	 * @since  5.0.4
 	 */
 	public function redirect_page(): void {
 		$pages = get_pages();

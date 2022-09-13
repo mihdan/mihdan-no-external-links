@@ -1063,7 +1063,7 @@ class Frontend {
 				if ( $page_content ) {
 					echo str_replace( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						'%linkurl%',
-						esc_url( $this->decode_link( $url ) ),
+						esc_url( $url ),
 						wp_remote_retrieve_body( $page_content )
 					);
 				}

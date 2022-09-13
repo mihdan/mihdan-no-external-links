@@ -340,11 +340,11 @@ class Main {
 			'exclusion_list'          => '',
 			'skip_auth'               => false,
 			'skip_follow'             => false,
+			'redirect_page'           => 0,
 			'redirect_message'        => __(
 				'You will be redirected in 3 seconds. If your browser does not automatically redirect you, please <a href="%linkurl%">click here</a>.',
 				$this->plugin_name
 			),
-			'redirect_page'           => 0,
 			'output_buffer'           => $output_buffer,
 		);
 
