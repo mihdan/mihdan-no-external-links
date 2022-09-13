@@ -344,6 +344,7 @@ class Main {
 				'You will be redirected in 3 seconds. If your browser does not automatically redirect you, please <a href="%linkurl%">click here</a>.',
 				$this->plugin_name
 			),
+			'redirect_page'           => 0,
 			'output_buffer'           => $output_buffer,
 		);
 
@@ -445,6 +446,7 @@ class Main {
 
 					continue 2;
 				case 'redirect_time':
+				case 'redirect_page':
 				case 'log_duration':
 					if ( false !== $option ) {
 						$options[ $key ] = (int) $option;

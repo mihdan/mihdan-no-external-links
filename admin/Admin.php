@@ -916,6 +916,20 @@ class Admin {
 		);
 
 		add_settings_field(
+			$this->options_prefix . 'redirect_page',
+			__( 'Redirect Page', $this->plugin_name ),
+			[ $this, 'redirect_page' ],
+			$this->plugin_name . '-settings-advanced',
+			$this->options_prefix . 'settings_advanced_section',
+			''
+		);
+
+		register_setting(
+			$this->plugin_name . '-settings-advanced',
+			$this->options_prefix . 'redirect_page'
+		);
+
+		add_settings_field(
 			$this->options_prefix . 'include',
 			__( 'Include', $this->plugin_name ),
 			[ $this, 'include_cb' ],
@@ -1855,6 +1869,32 @@ class Admin {
 					<?php esc_html_e( 'Javascript redirect not selected.', $this->plugin_name ); ?>
 				</p>
 			<?php endif ?>
+		</fieldset>
+		<?php
+	}
+
+	/**
+	 * Render the redirect page settings section.
+	 *
+	 * @since  4.0.0
+	 */
+	public function redirect_page(): void {
+		$pages = get_pages();
+		?>
+		<fieldset>
+			<label>
+				<select
+					name="<?php echo esc_attr( $this->options_prefix . 'redirect_page' ); ?>"
+					id="<?php echo esc_attr( $this->options_prefix . 'redirect_page' ); ?>"
+				>
+					<?php foreach ( $pages as $page ) : ?>
+						<option
+							value="<?php echo absint( $page->ID ); ?>"
+							<?php selected( $this->options->redirect_page, $page->ID ); ?>
+						><?php echo esc_html( $page->post_title ); ?></option>
+					<?php endforeach; ?>
+				</select>
+			</label>
 		</fieldset>
 		<?php
 	}

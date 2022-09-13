@@ -1054,7 +1054,22 @@ class Frontend {
 				header( 'Refresh: ' . $redirect_time . '; url=' . $url );
 			}
 
-			include_once 'partials/redirect.php';
+			if ( $this->options->redirect_page > 0 ) {
+				// Disable page indexing.
+				header( 'X-Robots-Tag: noindex, nofollow', true );
+
+				$page_content = wp_remote_get( get_permalink( $this->options->redirect_page ) );
+
+				if ( $page_content ) {
+					echo str_replace( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						'%linkurl%',
+						esc_url( $this->decode_link( $url ) ),
+						wp_remote_retrieve_body( $page_content )
+					);
+				}
+			} else {
+				include_once 'partials/redirect.php';
+			}
 		}
 
 		// phpcs:enable WordPress.PHP.NoSilencedErrors.Discouraged
