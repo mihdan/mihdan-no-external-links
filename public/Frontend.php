@@ -854,24 +854,6 @@ class Frontend {
 				}
 
 				break;
-			case 'linkshrink':
-				$shortener = 'linkshrink';
-
-				$sql    = "SELECT mask FROM $table_name WHERE LOWER(url) = LOWER(%s) AND LOWER(short_url) = 'linkshrink' LIMIT 1";
-				$result = $wpdb->get_var( $wpdb->prepare( $sql, $url ) );
-
-				if ( $result ) {
-					return $result;
-				}
-
-				$api_url  = 'https://linkshrink.net/api.php?key=' . $this->options->linkshrink_api_key . '&url=' . $long_url;
-				$response = wp_remote_get( $api_url, [ 'timeout' => 2 ] );
-
-				if ( $response['body'] ) {
-					$short_url = $response['body'];
-				}
-
-				break;
 			case 'shortest':
 				$shortener = 'shortest';
 

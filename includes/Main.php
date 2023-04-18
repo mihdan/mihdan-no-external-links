@@ -21,7 +21,6 @@
 namespace Mihdan\No_External_Links;
 
 use Mihdan\No_External_Links\Admin\Admin;
-use WP_CustomParser;
 
 /**
  * Class Main.
@@ -322,7 +321,6 @@ class Main {
 			'adfly_domain'            => 'adf.ly',
 			'bitly_login'             => 'steamerdev',
 			'bitly_api_key'           => 'R_31d62b0aa55e4c0abe306693624ff73a',
-			'linkshrink_api_key'      => 'Ssk',
 			'shortest_api_key'        => '57bfc99a0c2ce713061730b696750659',
 			'yourls_domain'           => '',
 			'yourls_signature'        => '',
@@ -334,7 +332,7 @@ class Main {
 			'anonymize_links'         => false,
 			'anonymous_link_provider' => 'https://href.li/?',
 			'bot_targeting'           => 'all',
-			'bots_selector'           => '',
+			'bots_selector'           => [],
 			'check_referrer'          => true,
 			'inclusion_list'          => '',
 			'exclusion_list'          => '',
@@ -392,7 +390,6 @@ class Main {
 				case 'adfly_advert_type':
 				case 'bitly_login':
 				case 'bitly_api_key':
-				case 'linkshrink_api_key':
 				case 'shortest_api_key':
 				case 'yourls_domain':
 				case 'yourls_signature':

@@ -775,20 +775,6 @@ class Admin {
 		);
 
 		add_settings_field(
-			$this->options_prefix . 'link_shortening_linkshrink',
-			'<input type="radio"
-                         name="' . $this->options_prefix . 'link_shortening"
-                         id="' . $this->options_prefix . 'link_shortening_linkshrink"
-                         value="linkshrink"
-                         ' . checked( $this->options->link_shortening, 'linkshrink', false ) . ' /> ' .
-			__( 'Link Shrink', $this->plugin_name ),
-			[ $this, 'link_shortening_linkshrink_cb' ],
-			$this->plugin_name . '-settings-links',
-			$this->options_prefix . 'settings_link_shortening_section',
-			[ 'label_for' => $this->options_prefix . 'link_shortening_linkshrink' ]
-		);
-
-		add_settings_field(
 			$this->options_prefix . 'link_shortening_shortest',
 			'<input type="radio"
                          name="' . $this->options_prefix . 'link_shortening"
@@ -864,14 +850,6 @@ class Admin {
 		register_setting(
 			$this->plugin_name . '-settings-links',
 			$this->options_prefix . 'bitly_api_key',
-			[
-				'sanitize_callback' => 'sanitize_text_field',
-			]
-		);
-
-		register_setting(
-			$this->plugin_name . '-settings-links',
-			$this->options_prefix . 'linkshrink_api_key',
 			[
 				'sanitize_callback' => 'sanitize_text_field',
 			]
@@ -1726,31 +1704,6 @@ class Admin {
 	 *
 	 * @since  4.2.0
 	 */
-	public function link_shortening_linkshrink_cb(): void {
-		?>
-		<table>
-			<tr>
-				<td style="width: 100%;"><?php esc_html_e( 'API Key', $this->plugin_name ); ?></td>
-				<td>
-					<label>
-						<input
-							type="text"
-							name="<?php echo esc_attr( $this->options_prefix . 'linkshrink_api_key' ); ?>"
-							id="<?php echo esc_attr( $this->options_prefix . 'linkshrink_api_key' ); ?>"
-							value="<?php echo esc_attr( $this->options->linkshrink_api_key ); ?>"/>
-					</label>
-				</td>
-			</tr>
-		</table>
-		<code>https://linkshrink.net/721lH9</code>
-		<?php
-	}
-
-	/**
-	 * Render the masking type settings section.
-	 *
-	 * @since  4.2.0
-	 */
 	public function link_shortening_shortest_cb(): void {
 		?>
 		<table>
@@ -2168,10 +2121,6 @@ class Admin {
 		$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : null;
 
 		if ( 'mihdan-no-external-links-settings' === $page || 'mihdan-no-external-links' === $page ) {
-			if ( $this->options->custom_parser ) {
-				add_action( 'admin_notices', [ $this, 'parser_notice' ] );
-			}
-
 			if ( 'aes256' === $this->options->link_encoding && 'mcrypt' === $this->options->encryption ) {
 				add_action( 'admin_notices', [ $this, 'mcrypt_deprecation_notice' ] );
 			}
@@ -2181,26 +2130,6 @@ class Admin {
 			}
 		}
 
-	}
-
-	/**
-	 * Display custom parser notice.
-	 *
-	 * @since    4.1.0
-	 */
-	public function parser_notice(): void {
-		?>
-		<div class="notice notice-warning">
-			<p>
-				<?php
-				esc_html_e(
-					'Custom Parser is active, some options/settings may not work. We do not recommend using this feature!',
-					$this->plugin_name
-				);
-				?>
-			</p>
-		</div>
-		<?php
 	}
 
 	/**

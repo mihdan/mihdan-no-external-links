@@ -3,8 +3,8 @@ Author: mihdan
 Contributors: mihdan, kaggdesign
 Tags: seo, link, links, publisher, post, posts, comments
 Requires at least: 5.7.4
-Tested up to: 6.0
-Stable tag: 5.0.4.2
+Tested up to: 6.2
+Stable tag: 5.0.5
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -63,13 +63,18 @@ Mihdan: No External Links **does not** make any changes to your database, it jus
 
 == Changelog ==
 
+= 5.0.5 (18.04.2023) =
+* Tested with WordPress 6.2.
+* Added PHP 8.2 support
+* Removed settings for the dead "Link Shrink" service
+* Removed custom link parser functionality
+
 = 5.0.4 (13.09.2022) =
 * Added possibility to specify any page of the site as a redirect page
 
 = 5.0.3 (12.09.2022) =
 * Fixed fatal errors on logging pages
 * Fixed errors in translations in the WordPress admin
-* Removed custom link parser functionality
 
 = 5.0.2 (09.09.2022) =
 * Added polyfill for the deprecated mcrypt PHP module
