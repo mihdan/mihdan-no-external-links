@@ -316,8 +316,12 @@ class Frontend {
 			$seo_hide_list = $this->textarea_to_array( $this->options->seo_hide_list );
 
 			if ( $seo_hide_list && in_array( $this->get_domain_from_url( $url ), $seo_hide_list, true ) ) {
-				// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-				return sprintf( '<span class="waslinkname" data-link="%s"%s>%s</span>', esc_attr( base64_encode( $url ) ), $blank, $anchor_text );
+				return sprintf(
+					'<span class="waslinkname" data-link="%s"%s>%s</span>',
+					esc_attr( base64_encode( $url ) ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+					str_replace( 'target', 'data-target', $blank ),
+					$anchor_text
+				);
 			}
 		}
 
@@ -1114,7 +1118,7 @@ class Frontend {
 				MIHDAN_NO_EXTERNAL_LINKS_SLUG . '-seo-hide',
 				MIHDAN_NO_EXTERNAL_LINKS_URL . '/public/js/seo-hide.js',
 				[],
-				MIHDAN_NO_EXTERNAL_LINKS_VERSION,
+				filemtime( MIHDAN_NO_EXTERNAL_LINKS_DIR . '/public/js/seo-hide.js' ),
 				true
 			);
 		}

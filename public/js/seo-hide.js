@@ -5,7 +5,7 @@
                 'click',
                 ( e ) => {
                     const link   = el.getAttribute( 'data-link' );
-                    const target = el.getAttribute( 'target' );
+                    const target = el.getAttribute( 'data-target' );
 
                     if ( ! link ) {
                         return;
