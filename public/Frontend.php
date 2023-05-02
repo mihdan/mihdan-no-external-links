@@ -316,8 +316,18 @@ class Frontend {
 			$seo_hide_list = $this->textarea_to_array( $this->options->seo_hide_list );
 
 			if ( $seo_hide_list && in_array( $this->get_domain_from_url( $url ), $seo_hide_list, true ) ) {
+				// Get classes.
+				$classes = 'waslinkname';
+
+				preg_match( '/class="([^"]+)"/si', $attributes, $maybe_classes );
+
+				if ( $maybe_classes[1] ) {
+					$classes .= ' ' . $maybe_classes[1];
+				}
+
 				return sprintf(
-					'<span class="waslinkname" data-link="%s"%s>%s</span>',
+					'<span class="%s" data-link="%s"%s>%s</span>',
+					esc_attr( $classes ),
 					esc_attr( base64_encode( $url ) ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 					str_replace( 'target', 'data-target', $blank ),
 					$anchor_text
