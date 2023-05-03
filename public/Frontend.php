@@ -321,7 +321,7 @@ class Frontend {
 
 				preg_match( '/class="([^"]+)"/si', $attributes, $maybe_classes );
 
-				if ( $maybe_classes[1] ) {
+				if ( ! empty( $maybe_classes[1] ) ) {
 					$classes .= ' ' . $maybe_classes[1];
 				}
 

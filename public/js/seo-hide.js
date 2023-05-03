@@ -23,26 +23,20 @@
         }
     );
 
-	function basePropertyOf( object ) {
-		return function ( key ) {
-			return object == null ? undefined : object[ key ];
-		};
-	}
-
-	var reEscapedHtml = /&(?:amp|lt|gt|quot|#39);/g,
-		reHasEscapedHtml = RegExp( reEscapedHtml.source ),
-		htmlUnescapes = {
-			'&amp;': '&',
-			'&lt;': '<',
-			'&gt;': '>',
-			'&quot;': '"',
-			'&#39;': "'"
-		},
-		unescapeHtmlChar = basePropertyOf( htmlUnescapes );
-
+	/**
+	 * Decode HTML entities.
+	 *
+	 * Example:
+	 * - &#038; -> &
+	 * - &amp; -> &
+	 *
+	 * @param text String for decoding.
+	 * @returns {string}
+	 */
 	function decodeHTMLEntities( text ) {
-		return ( text && reHasEscapedHtml.test( text ) )
-			? text.replace( reEscapedHtml, unescapeHtmlChar )
-			: text;
+		const textArea = document.createElement( 'textarea' );
+		textArea.innerHTML = text;
+
+		return textArea.value;
 	}
 } )( window, document );

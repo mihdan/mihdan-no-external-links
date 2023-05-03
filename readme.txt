@@ -4,7 +4,7 @@ Contributors: mihdan, kaggdesign
 Tags: seo, seo-hide, link, links, publisher, post, posts, comments
 Requires at least: 5.7.4
 Tested up to: 6.2
-Stable tag: 5.0.6
+Stable tag: 5.0.7
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -63,7 +63,11 @@ Mihdan: No External Links **does not** make any changes to your database, it jus
 
 == Changelog ==
 
-= 5.0.6 (03.05.2023) =
+= 5.0.7 (03.05.2023) =
+* Fixed ampersand conversion in links
+* Fixed PHP notices
+
+= 5.0.6 (02.05.2023) =
 * Resolve #[20](https://github.com/mihdan/mihdan-no-external-links/issues/20)
 * Resolve #[25](https://github.com/mihdan/mihdan-no-external-links/issues/25)
 * Resolve #[30](https://github.com/mihdan/mihdan-no-external-links/issues/30)
