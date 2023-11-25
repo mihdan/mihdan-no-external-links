@@ -313,25 +313,47 @@ class Frontend {
 		$nofollow  = $this->options->nofollow ? ' rel="nofollow"' : '';
 
 		if ( $this->options->seo_hide ) {
-			$seo_hide_list = $this->textarea_to_array( $this->options->seo_hide_list );
+			// Get classes.
+			$classes = 'waslinkname';
 
-			if ( $seo_hide_list && in_array( $this->get_domain_from_url( $url ), $seo_hide_list, true ) ) {
-				// Get classes.
-				$classes = 'waslinkname';
+			preg_match( '/class="([^"]+)"/si', $attributes, $maybe_classes );
 
-				preg_match( '/class="([^"]+)"/si', $attributes, $maybe_classes );
+			if ( ! empty( $maybe_classes[1] ) ) {
+				$classes .= ' ' . $maybe_classes[1];
+			}
 
-				if ( ! empty( $maybe_classes[1] ) ) {
-					$classes .= ' ' . $maybe_classes[1];
+			$current_domain = $this->get_domain_from_url( $url );
+
+			// Список включений.
+			$seo_hide_include_list = $this->textarea_to_array( $this->options->seo_hide_include_list );
+
+			// Список исключений.
+			$seo_hide_exclude_list = $this->textarea_to_array( $this->options->seo_hide_exclude_list );
+
+			// Маскировать только указанные ссылки.
+			if ( 'specific' === $this->options->seo_hide_mode ) {
+				if ( in_array( $current_domain, $seo_hide_include_list, true ) ) {
+					return sprintf(
+						'<span class="%s" data-link="%s"%s>%s</span>',
+						esc_attr( $classes ),
+						esc_attr( base64_encode( $url ) ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+						str_replace( 'target', 'data-target', $blank ),
+						$anchor_text
+					);
 				}
+			}
 
-				return sprintf(
-					'<span class="%s" data-link="%s"%s>%s</span>',
-					esc_attr( $classes ),
-					esc_attr( base64_encode( $url ) ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-					str_replace( 'target', 'data-target', $blank ),
-					$anchor_text
-				);
+			// Маскировать все ссылки, кроме указанных.
+			if ( 'all' === $this->options->seo_hide_mode ) {
+				if ( ! in_array( $current_domain, $seo_hide_exclude_list, true ) ) {
+					return sprintf(
+						'<span class="%s" data-link="%s"%s>%s</span>',
+						esc_attr( $classes ),
+						esc_attr( base64_encode( $url ) ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+						str_replace( 'target', 'data-target', $blank ),
+						$anchor_text
+					);
+				}
 			}
 		}
 

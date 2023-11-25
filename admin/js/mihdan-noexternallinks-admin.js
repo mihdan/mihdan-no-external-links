@@ -19,7 +19,15 @@
             enable_anonymize_links = $('input#mihdan_noexternallinks_anonymize_links'),
             anonymous_link_provider = $('input#mihdan_noexternallinks_anonymous_link_provider'),
             bot_targeting = $('input#mihdan_noexternallinks_bot_targeting'),
-            bots_selector = $('select#mihdan_noexternallinks_bots_selector');
+            bots_selector = $('select#mihdan_noexternallinks_bots_selector'),
+            seo_hide_mode = $('input[name="mihdan_noexternallinks_seo_hide_mode"]');
+
+		seo_hide_mode.on(
+			'change',
+			function () {
+				$( '.mihdan_noexternallinks_seo_hide_mode' ).toggleClass( 'mihdan_noexternallinks_hidden' );
+			}
+		);
 
         masking_type.on("change", function() {
             var masking_type_value = $(this).val();

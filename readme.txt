@@ -1,30 +1,30 @@
-=== Mihdan: No External Links ===
+=== No External Links ===
 Author: mihdan
 Contributors: mihdan, kaggdesign
 Tags: seo, seo-hide, link, links, publisher, post, posts, comments
 Requires at least: 5.7.4
-Tested up to: 6.2
-Stable tag: 5.0.7
+Tested up to: 6.4
+Stable tag: 5.1.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Convert external links into internal links, site wide or post/page specific. Add NoFollow, Click logging, and more...
 
 == Description ==
-Mihdan: No External Links converts external links to internal links. Featuring *Full Page or Targeted Content Filtering*, *Custom Redirect Page/Message*, *Encoded Masks*, *External Link Click Logging*, *Individual Link Exclusion*, *Post/Page Specific Exclusion*, and many more...
+No External Links converts external links to internal links. Featuring *Full Page or Targeted Content Filtering*, *Custom Redirect Page/Message*, *Encoded Masks*, *External Link Click Logging*, *Individual Link Exclusion*, *Post/Page Specific Exclusion*, and many more...
 
 = Example =
 Links like "*https://wordpress.org*" will be masked into
 "*http://www.example.com/goto/https://wordpress.org*".
 
 = Warning =
-Mihdan: No External Links may conflict with cache plugins.
+No External Links may conflict with cache plugins.
 Usually adding the redirect page to the caching plugin exclusions works fine, but there are no guarantees.
 Create a [support topic](https://wordpress.org/support/plugin/mihdan-no-external-links) if you need assistance resolving a caching issue.
 **_Please provide as much detail as possible, for example, what version of WordPress & PHP you are using. Which caching plugin you are using. The more information you include the better._**
 
 = Details =
-Mihdan: No External Links is designed for specialists who sell different kinds of advertisements on their web site and care about the number of outgoing links that can be found by search engines. Now you can make all external links internal.
+No External Links is designed for specialists who sell different kinds of advertisements on their web site and care about the number of outgoing links that can be found by search engines. Now you can make all external links internal.
 
 = How To Use =
 Just do everything like you would normally, and as long as the plugin is active, external links will be automatically masked.
@@ -45,23 +45,28 @@ We apologize that the latest version has changed so much that existing localizat
 If you would like to contribute to the translations please get in touch.
 
 = Note =
-Mihdan: No External Links **does not** make any changes to your database, it just processes the output. So you will not see these changes within the WYSIWYG editor.
+No External Links **does not** make any changes to your database, it just processes the output. So you will not see these changes within the WYSIWYG editor.
 
 == Installation ==
 
 = From your WordPress dashboard =
 1. Visit 'Plugins > Add New'
-2. Search for 'Mihdan: No External Links'
-3. Activate Mihdan: No External Links from your Plugins page.
-4. [Optional] Configure Mihdan: No External Links settings.
+2. Search for 'No External Links'
+3. Activate No External Links from your Plugins page.
+4. [Optional] Configure No External Links settings.
 
 = From WordPress.org =
-1. Download Mihdan: No External Links.
+1. Download No External Links.
 2. Upload the 'mihdan-noexternallinks' directory to your '/wp-content/plugins/' directory, using your favorite method (ftp, sftp, scp, etc...)
-3. Activate Mihdan: No External Links from your Plugins page.
-4. [Optional] Configure Mihdan: No External Links settings.
+3. Activate No External Links from your Plugins page.
+4. [Optional] Configure No External Links settings.
 
 == Changelog ==
+
+= 5.1.0 (25.11.2023) =
+* Tested with WordPress 6.4+.
+* Added PHP 8.3 support
+* Added excluded list for SEO hide
 
 = 5.0.7 (03.05.2023) =
 * Fixed ampersand conversion in links

@@ -1,16 +1,16 @@
 <?php
 /**
- * Mihdan: No External Links bootstrap file.
+ * No External Links bootstrap file.
  *
  * @link              https://wordpress.org/plugins/mihdan-no-external-links/
  * @since             4.0.0
  * @package           mihdan-no-external-links
  *
  * @wordpress-plugin
- * Plugin Name:       Mihdan: No External Links
+ * Plugin Name:       No External Links
  * Plugin URI:        https://wordpress.org/plugins/mihdan-no-external-links/
  * Description:       Convert external links into internal links, site wide or post/page specific. Add NoFollow, Click logging, and more...
- * Version:           5.0.7
+ * Version:           5.1.0
  * Author:            Mikhail Kobzarev
  * Author URI:        https://www.kobzarev.com/
  * License:           GPL-2.0+
@@ -28,7 +28,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 const MIHDAN_NO_EXTERNAL_LINKS_DIR     = __DIR__;
-const MIHDAN_NO_EXTERNAL_LINKS_VERSION = '5.0.7';
+const MIHDAN_NO_EXTERNAL_LINKS_VERSION = '5.1.0';
 const MIHDAN_NO_EXTERNAL_LINKS_SLUG    = 'mihdan-no-external-links';
 
 define( 'MIHDAN_NO_EXTERNAL_LINKS_BASENAME', plugin_basename( __FILE__ ) );

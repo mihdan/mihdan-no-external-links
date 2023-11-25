@@ -308,7 +308,9 @@ class Main {
 			'noindex_tag'             => false,
 			'noindex_comment'         => false,
 			'seo_hide'                => false,
-			'seo_hide_list'           => '',
+			'seo_hide_mode'           => 'specific',
+			'seo_hide_include_list'   => '',
+			'seo_hide_exclude_list'   => '',
 			'link_structure'          => 'default',
 			'separator'               => 'goto',
 			'link_encoding'           => 'none',
@@ -375,7 +377,9 @@ class Main {
 				case 'link_shortening':
 				case 'anonymous_link_provider':
 				case 'inclusion_list':
-				case 'seo_hide_list':
+				case 'seo_hide_mode':
+				case 'seo_hide_include_list':
+				case 'seo_hide_exclude_list':
 				case 'exclusion_list':
 				case 'bot_targeting':
 				case 'redirect_message':

@@ -141,15 +141,13 @@ class Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_styles(): void {
-
 		wp_enqueue_style(
 			$this->plugin_name,
 			plugin_dir_url( __FILE__ ) . 'css/mihdan-noexternallinks-admin.min.css',
 			[],
-			$this->version,
+			filemtime( plugin_dir_path( __FILE__ ) . 'css/mihdan-noexternallinks-admin.min.css' ),
 			'all'
 		);
-
 	}
 
 	/**
@@ -158,19 +156,17 @@ class Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_scripts(): void {
-
 		wp_enqueue_script(
 			$this->plugin_name,
 			plugin_dir_url( __FILE__ ) . 'js/mihdan-noexternallinks-admin.min.js',
 			[ 'jquery' ],
-			$this->version,
+			filemtime( plugin_dir_path( __FILE__ ) . 'js/mihdan-noexternallinks-admin.min.js', ),
 			false
 		);
 
 		wp_enqueue_script( 'plugin_install' );
 		wp_enqueue_script( 'updates' );
 		add_thickbox();
-
 	}
 
 	/**
@@ -215,7 +211,7 @@ class Admin {
 
 		add_menu_page(
 			__( 'No External Links', $this->plugin_name ),
-			__( 'External Links', $this->plugin_name ),
+			__( 'No External Links', $this->plugin_name ),
 			'manage_options',
 			$this->plugin_name,
 			[ $this, 'display_settings_page' ],
@@ -520,22 +516,82 @@ class Admin {
 		);
 
 		add_settings_field(
-			$this->options_prefix . 'seo_hide_list',
+			$this->options_prefix . 'seo_hide_mode_specific',
+			__( 'Mode', $this->plugin_name ),
+			[ $this, 'radio_cb' ],
+			$this->plugin_name . '-settings-seo-hide',
+			$this->options_prefix . 'settings_seo_hide_section',
+			[
+				'name'    => $this->options_prefix . 'seo_hide_mode',
+				'id'      => $this->options_prefix . 'seo_hide_mode_specific',
+				'value'   => 'specific',
+				'checked' => 'specific' === $this->options->seo_hide_mode,
+				'title'   => __( 'Specific links', $this->plugin_name ),
+			]
+		);
+
+		add_settings_field(
+			$this->options_prefix . 'seo_hide_include_list',
 			__( 'Include', $this->plugin_name ),
 			[ $this, 'textarea_cb' ],
 			$this->plugin_name . '-settings-seo-hide',
 			$this->options_prefix . 'settings_seo_hide_section',
 			[
-				'name'  => $this->options_prefix . 'seo_hide_list',
-				'id'    => $this->options_prefix . 'seo_hide_list',
-				'value' => $this->options->seo_hide_list,
-				'title' => __( 'Enter domains you wish to be masked. One domain per line. All other domain will be ignored.', $this->plugin_name ),
+				'name'        => $this->options_prefix . 'seo_hide_include_list',
+				'id'          => $this->options_prefix . 'seo_hide_include_list',
+				'value'       => $this->options->seo_hide_include_list,
+				'description' => __( 'Enter domains you wish <b>TO BE</b> masked. One domain per line. All other domain will be ignored.', $this->plugin_name ),
+				'class'       =>  ( 'all' === $this->options->seo_hide_mode )
+					? $this->options_prefix . 'seo_hide_mode ' . $this->options_prefix . 'hidden'
+					: $this->options_prefix . 'seo_hide_mode',
 			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings-seo-hide',
-			$this->options_prefix . 'seo_hide_list'
+			$this->options_prefix . 'seo_hide_include_list'
+		);
+
+		add_settings_field(
+			$this->options_prefix . 'seo_hide_mode_all',
+			__( 'Mode', $this->plugin_name ),
+			[ $this, 'radio_cb' ],
+			$this->plugin_name . '-settings-seo-hide',
+			$this->options_prefix . 'settings_seo_hide_section',
+			[
+				'name'    => $this->options_prefix . 'seo_hide_mode',
+				'id'      => $this->options_prefix . 'seo_hide_mode_all',
+				'value'   => 'all',
+				'checked' => 'all' === $this->options->seo_hide_mode,
+				'title'   => __( 'All links', $this->plugin_name ),
+			]
+		);
+
+		register_setting(
+			$this->plugin_name . '-settings-seo-hide',
+			$this->options_prefix . 'seo_hide_mode'
+		);
+
+		add_settings_field(
+			$this->options_prefix . 'seo_hide_exclude_list',
+			__( 'Exclude', $this->plugin_name ),
+			[ $this, 'textarea_cb' ],
+			$this->plugin_name . '-settings-seo-hide',
+			$this->options_prefix . 'settings_seo_hide_section',
+			[
+				'name'        => $this->options_prefix . 'seo_hide_exclude_list',
+				'id'          => $this->options_prefix . 'seo_hide_exclude_list',
+				'value'       => $this->options->seo_hide_exclude_list,
+				'description' => __( 'Enter domains you wish <b>NOT TO BE</b> masked. One domain per line. All other domain will be ignored.', $this->plugin_name ),
+				'class'       => ( 'specific' === $this->options->seo_hide_mode )
+					? $this->options_prefix . 'seo_hide_mode ' . $this->options_prefix . 'hidden'
+					: $this->options_prefix . 'seo_hide_mode',
+			]
+		);
+
+		register_setting(
+			$this->plugin_name . '-settings-seo-hide',
+			$this->options_prefix . 'seo_hide_exclude_list'
 		);
 
 		add_settings_field(
@@ -1233,6 +1289,32 @@ class Admin {
 	}
 
 	/**
+	 * Print radio.
+	 *
+	 * @param array $data Data.
+	 *
+	 * @return void
+	 */
+	public function radio_cb( $data ): void {
+		?>
+		<label>
+			<input
+				type="radio"
+				name="<?php echo esc_attr( $data['name'] ); ?>"
+				id="<?php echo esc_attr( $data['id'] ); ?>"
+				value="<?php echo esc_attr( $data['value'] ); ?>"
+				<?php checked( $data['checked'] ); ?> />
+			<?php echo esc_html( $data['title'] ); ?>
+		</label>
+		<?php if ( ! empty( $data['description'] ) ) : ?>
+			<p class="description">
+				<?php echo esc_html( $data['description'] ); ?>
+			</p>
+		<?php endif; ?>
+		<?php
+	}
+
+	/**
 	 * Print textarea.
 	 *
 	 * @param array $data Data.
@@ -1256,7 +1338,7 @@ class Admin {
 				rows="10"><?php echo esc_textarea( $data['value'] ); ?></textarea>
 			<?php if ( ! empty( $data['description'] ) ) : ?>
 				<p class="description">
-					<?php echo esc_html( $data['description'] ); ?>
+					<?php echo wp_kses_post( $data['description'] ); ?>
 				</p>
 			<?php endif; ?>
 		</fieldset>
