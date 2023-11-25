@@ -541,7 +541,7 @@ class Admin {
 				'id'          => $this->options_prefix . 'seo_hide_include_list',
 				'value'       => $this->options->seo_hide_include_list,
 				'description' => __( 'Enter domains you wish <b>TO BE</b> masked. One domain per line. All other domain will be ignored.', $this->plugin_name ),
-				'class'       =>  ( 'all' === $this->options->seo_hide_mode )
+				'class'       => ( 'all' === $this->options->seo_hide_mode )
 					? $this->options_prefix . 'seo_hide_mode ' . $this->options_prefix . 'hidden'
 					: $this->options_prefix . 'seo_hide_mode',
 			]
