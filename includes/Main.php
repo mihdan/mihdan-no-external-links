@@ -548,7 +548,7 @@ class Main {
 		$this->loader->add_filter( 'set-screen-option', $this->admin, 'mask_page_set_screen_options', null, 3 );
 		$hook_name = vsprintf(
 			'load-%s_page_%s-masks',
-			[ strtolower( sanitize_file_name( __( 'External Links', $this->plugin_name ) ) ), $this->get_plugin_name() ]
+			[ strtolower( sanitize_file_name( __( 'No External Links', $this->plugin_name ) ) ), $this->get_plugin_name() ]
 		);
 
 		$this->loader->add_action( $hook_name, $this->admin, 'mask_page_screen_options' );
@@ -557,7 +557,7 @@ class Main {
 
 		$hook_name = vsprintf(
 			'load-%s_page_%s-logs',
-			[ strtolower( sanitize_file_name( __( 'External Links', $this->plugin_name ) ) ), $this->get_plugin_name() ]
+			[ strtolower( sanitize_file_name( __( 'No External Links', $this->plugin_name ) ) ), $this->get_plugin_name() ]
 		);
 
 		$this->loader->add_action( $hook_name, $this->admin, 'log_page_screen_options' );

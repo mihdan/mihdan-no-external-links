@@ -322,6 +322,7 @@ class Frontend {
 				$classes .= ' ' . $maybe_classes[1];
 			}
 
+			// Получает доменное имя из URL.
 			$current_domain = $this->get_domain_from_url( $url );
 
 			// Список включений.
@@ -418,8 +419,8 @@ class Frontend {
 	 *
 	 * @return string
 	 */
-	private function get_domain_from_url( $url ): string {
-		return wp_parse_url( $url, PHP_URL_HOST );
+	private function get_domain_from_url( string $url ): string {
+		return (string) wp_parse_url( $url, PHP_URL_HOST );
 	}
 
 	/**
