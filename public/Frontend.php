@@ -140,6 +140,7 @@ class Frontend {
 				is_object( $post ) &&
 				function_exists( 'is_feed' ) &&
 				get_post_meta( $post->ID, 'mask_links', true ) !== 'disabled' &&
+				( $this->options->redirect_page > 0 && $post->ID !== (int) $this->options->redirect_page ) &&
 				! is_feed()
 			) {
 				$content = $this->filter( $content );
@@ -173,6 +174,12 @@ class Frontend {
 
 		if ( 'disabled' === get_post_meta( $post->ID, 'mask_links', true ) ) {
 			$this->debug_info( 'Meta nomask. No masking will be applied' );
+
+			return $content;
+		}
+
+		if ( $this->options->redirect_page > 0 && $post->ID === (int) $this->options->redirect_page ) {
+			$this->debug_info( 'Missing custom redirect page' );
 
 			return $content;
 		}
@@ -1080,11 +1087,12 @@ class Frontend {
 				$page_content = wp_remote_get( get_permalink( $this->options->redirect_page ) );
 
 				if ( $page_content ) {
-					echo str_replace( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-						'%linkurl%',
+					echo preg_replace( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						'#(https?://)?%linkurl%#i',
 						esc_url( $url ),
 						wp_remote_retrieve_body( $page_content )
 					);
+					die;
 				}
 			} else {
 				include_once 'partials/redirect.php';

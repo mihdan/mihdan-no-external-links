@@ -584,9 +584,6 @@ class Main {
 		} else {
 			if ( 'all' === $this->options->mask_links ) {
 				$this->public->debug_info( 'Setting fullmask filters' );
-
-				$this->loader->add_filter( 'the_content', $this->public, 'check_post', 99 );
-				$this->loader->add_filter( 'the_excerpt', $this->public, 'check_post', 99 );
 				$this->loader->add_filter( 'wp', $this->public, 'fullpage_filter', 99 );
 			} else {
 				$this->public->debug_info( 'Setting per element filters' );

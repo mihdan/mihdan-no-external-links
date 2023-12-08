@@ -155,7 +155,7 @@ class Admin {
 	 *
 	 * @since    4.0.0
 	 */
-	public function enqueue_scripts(): void {
+	public function enqueue_scripts( $hook ): void {
 		wp_enqueue_script(
 			$this->plugin_name,
 			plugin_dir_url( __FILE__ ) . 'js/mihdan-noexternallinks-admin.min.js',
@@ -167,6 +167,21 @@ class Admin {
 		wp_enqueue_script( 'plugin_install' );
 		wp_enqueue_script( 'updates' );
 		add_thickbox();
+
+		if ( 'toplevel_page_' . $this->plugin_name === $hook ) {
+			$settings = wp_enqueue_code_editor(
+				[
+					'type' => 'text/html',
+				]
+			);
+
+			if ( $settings ) {
+				wp_add_inline_script(
+					'code-editor',
+					sprintf( 'jQuery( function() { wp.codeEditor.initialize( "' . $this->options_prefix . 'redirect_message", %s ); } );', wp_json_encode( $settings ) )
+				);
+			}
+		}
 	}
 
 	/**
@@ -1892,14 +1907,15 @@ class Admin {
 	public function javascript_cb(): void {
 		?>
 		<fieldset>
-			<label>
-				<textarea
-					class="large-text code" rows="10" cols="50"
-					name="<?php echo esc_attr( $this->options_prefix . 'redirect_message' ); ?>"
-					id="<?php echo esc_attr( $this->options_prefix . 'redirect_message' ); ?>"
-				<?php echo 'javascript' === $this->options->masking_type ? '' : 'readonly'; ?>><?php echo esc_html( $this->options->redirect_message ); ?></textarea>
-			</label>
-			<?php if ( 'javascript' !== $this->options->masking_type ) : ?>
+			<?php if ( 'javascript' === $this->options->masking_type ) : ?>
+				<label>
+					<textarea
+						class="large-text code" rows="10" cols="50"
+						name="<?php echo esc_attr( $this->options_prefix . 'redirect_message' ); ?>"
+						id="<?php echo esc_attr( $this->options_prefix . 'redirect_message' ); ?>"
+					><?php echo esc_textarea( $this->options->redirect_message ); ?></textarea>
+				</label>
+			<?php else : ?>
 				<p class="description">
 					<?php esc_html_e( 'Javascript redirect not selected.', $this->plugin_name ); ?>
 				</p>
@@ -1917,22 +1933,28 @@ class Admin {
 		$pages = get_pages();
 		?>
 		<fieldset>
-			<label>
-				<select
-					name="<?php echo esc_attr( $this->options_prefix . 'redirect_page' ); ?>"
-					id="<?php echo esc_attr( $this->options_prefix . 'redirect_page' ); ?>"
-				>
-					<option value="0">
-						<?php esc_html_e( 'Select Page', $this->plugin_name ); ?>
-					</option>
-					<?php foreach ( $pages as $page ) : ?>
-						<option
-							value="<?php echo absint( $page->ID ); ?>"
-							<?php selected( $this->options->redirect_page, $page->ID ); ?>
-						><?php echo esc_html( $page->post_title ); ?></option>
-					<?php endforeach; ?>
-				</select>
-			</label>
+			<?php if ( 'javascript' === $this->options->masking_type ) : ?>
+				<label>
+					<select
+						name="<?php echo esc_attr( $this->options_prefix . 'redirect_page' ); ?>"
+						id="<?php echo esc_attr( $this->options_prefix . 'redirect_page' ); ?>"
+					>
+						<option value="0">
+							<?php esc_html_e( 'Select Page', $this->plugin_name ); ?>
+						</option>
+						<?php foreach ( $pages as $page ) : ?>
+							<option
+								value="<?php echo absint( $page->ID ); ?>"
+								<?php selected( $this->options->redirect_page, $page->ID ); ?>
+							><?php echo esc_html( $page->post_title ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</label>
+			<?php else : ?>
+				<p class="description">
+					<?php esc_html_e( 'Javascript redirect not selected.', $this->plugin_name ); ?>
+				</p>
+			<?php endif ?>
 		</fieldset>
 		<?php
 	}
