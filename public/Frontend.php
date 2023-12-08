@@ -140,10 +140,14 @@ class Frontend {
 				is_object( $post ) &&
 				function_exists( 'is_feed' ) &&
 				get_post_meta( $post->ID, 'mask_links', true ) !== 'disabled' &&
-				( $this->options->redirect_page > 0 && $post->ID !== (int) $this->options->redirect_page ) &&
 				! is_feed()
 			) {
-				$content = $this->filter( $content );
+				// Excludes custom redirect page.
+				if ( $this->options->redirect_page > 0 && $post->ID === (int) $this->options->redirect_page ) {
+					return $content;
+				} else {
+					$content = $this->filter( $content );
+				}
 			}
 		}
 
