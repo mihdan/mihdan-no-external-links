@@ -1,7 +1,7 @@
 === No External Links ===
 Author: mihdan
 Contributors: mihdan, kaggdesign
-Tags: seo, seo-hide, link, links, publisher, post, posts, comments
+Tags: seo, seo-hide, links, posts, comments
 Requires at least: 5.7.4
 Tested up to: 6.5
 Stable tag: 5.1.3
