@@ -727,7 +727,7 @@ class Frontend {
 
 				// No table found.
 				if ( is_null( $result ) && strpos( $wpdb->last_error, "doesn't exist" ) ) {
-					$create = Mihdan_NoExternalLinks_Database::migrate( 'external_links_masks' );
+					$create = Database::migrate( 'external_links_masks' );
 
 					if ( empty( $create ) ) {
 						$this->debug_info(
@@ -1019,7 +1019,7 @@ class Frontend {
 			$wpdb->last_error
 		);
 
-		$create = Mihdan_NoExternalLinks_Database::migrate( 'external_links_logs' );
+		$create = Database::migrate( 'external_links_logs' );
 
 		if ( empty( $create ) ) {
 			$this->debug_info(
