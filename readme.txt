@@ -4,7 +4,7 @@ Contributors: mihdan, kaggdesign
 Tags: seo, seo-hide, link, links, publisher, post, posts, comments
 Requires at least: 5.7.4
 Tested up to: 6.4
-Stable tag: 5.1.2.1
+Stable tag: 5.1.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -62,6 +62,9 @@ No External Links **does not** make any changes to your database, it just proces
 4. [Optional] Configure No External Links settings.
 
 == Changelog ==
+
+= 5.1.3 (21.05.2024) =
+* Fixed error of decoding links hidden with SeoHide
 
 = 5.1.2 (08.12.2023) =
 * Added a code editor to modify the redirect page
