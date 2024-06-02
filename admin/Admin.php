@@ -981,10 +981,15 @@ class Admin {
 		add_settings_field(
 			$this->options_prefix . 'include',
 			__( 'Include', $this->plugin_name ),
-			[ $this, 'include_cb' ],
+			[ $this, 'textarea_cb' ],
 			$this->plugin_name . '-settings-include-exclude',
 			$this->options_prefix . 'settings_include_exclude_section',
-			''
+			[
+				'name'        => $this->options_prefix . 'inclusion_list',
+				'id'          => $this->options_prefix . 'inclusion_list',
+				'value'       => $this->options->inclusion_list,
+				'description' => __( 'Enter URLs you wish to be masked. One URL per line. All other URLs will be ignored.', $this->plugin_name ),
+			]
 		);
 
 		register_setting(
@@ -995,10 +1000,15 @@ class Admin {
 		add_settings_field(
 			$this->options_prefix . 'exclude',
 			__( 'Exclude', $this->plugin_name ),
-			[ $this, 'exclude_cb' ],
+			[ $this, 'textarea_cb' ],
 			$this->plugin_name . '-settings-include-exclude',
 			$this->options_prefix . 'settings_include_exclude_section',
-			''
+			[
+				'name'        => $this->options_prefix . 'exclusion_list',
+				'id'          => $this->options_prefix . 'exclusion_list',
+				'value'       => $this->options->exclusion_list,
+				'description' => __( 'Enter URLs you wish to exclude from being masked. One URL per line. Javascript, Magnet, Mailto, Skype and Tel links are all excluded by default. To exclude a full protocol, just add a line for that prefix - for example, "ftp://".', $this->plugin_name ),
+			]
 		);
 
 		register_setting(
@@ -1006,9 +1016,37 @@ class Admin {
 			$this->options_prefix . 'exclusion_list'
 		);
 
+		add_settings_field(
+			$this->options_prefix . 'skip_auth',
+			'',
+			[ $this, 'checkbox_cb' ],
+			$this->plugin_name . '-settings-include-exclude',
+			$this->options_prefix . 'settings_include_exclude_section',
+			[
+				'name'  => $this->options_prefix . 'skip_auth',
+				'id'    => $this->options_prefix . 'skip_auth',
+				'value' => $this->options->skip_auth,
+				'title' => __( 'Do Not Mask Links When User Logged In (may conflict with caching plugins)', $this->plugin_name ),
+			]
+		);
+
 		register_setting(
 			$this->plugin_name . '-settings-include-exclude',
 			$this->options_prefix . 'skip_auth'
+		);
+
+		add_settings_field(
+			$this->options_prefix . 'skip_follow',
+			'',
+			[ $this, 'checkbox_cb' ],
+			$this->plugin_name . '-settings-include-exclude',
+			$this->options_prefix . 'settings_include_exclude_section',
+			[
+				'name'  => $this->options_prefix . 'skip_follow',
+				'id'    => $this->options_prefix . 'skip_follow',
+				'value' => $this->options->skip_follow,
+				'title' => __( 'Do Not Mask Follow Links', $this->plugin_name ),
+			]
 		);
 
 		register_setting(
@@ -1348,9 +1386,9 @@ class Admin {
 			<textarea
 				name="<?php echo esc_attr( $data['name'] ); ?>"
 				id="<?php echo esc_attr( $data['id'] ); ?>"
-				cols="50"
+				cols="<?php echo esc_attr( $data['cols'] ?? 50 ); ?>"
 				class="large-text"
-				rows="10"><?php echo esc_textarea( $data['value'] ); ?></textarea>
+				rows="<?php echo esc_attr( $data['rows'] ?? 10 ); ?>"><?php echo esc_textarea( $data['value'] ); ?></textarea>
 			<?php if ( ! empty( $data['description'] ) ) : ?>
 				<p class="description">
 					<?php echo wp_kses_post( $data['description'] ); ?>
@@ -2012,90 +2050,6 @@ class Admin {
 		set_transient( $transient, $content, DAY_IN_SECONDS );
 
 		echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	}
-
-	/**
-	 * Render the inclusion settings section.
-	 *
-	 * @since  4.2.0
-	 */
-	public function include_cb(): void {
-		?>
-		<fieldset>
-			<label for="<?php echo esc_attr( $this->options_prefix . 'inclusion_list' ); ?>">
-				<?php
-				esc_html_e(
-					'Enter URLs you wish to be masked. One URL per line. All other URLs will be ignored.',
-					$this->plugin_name
-				);
-				?>
-			</label>
-			<br>
-			<label>
-			<textarea
-				class="large-text code" rows="10" cols="50"
-				name="<?php echo esc_attr( $this->options_prefix . 'inclusion_list' ); ?>"
-				id="<?php echo esc_attr( $this->options_prefix . 'inclusion_list' ); ?>">
-				<?php echo esc_attr( $this->options->inclusion_list ); ?>
-			</textarea>
-			</label>
-		</fieldset>
-		<?php
-	}
-
-	/**
-	 * Render the exclusion settings section.
-	 *
-	 * @since  4.0.0
-	 */
-	public function exclude_cb(): void {
-		?>
-		<fieldset>
-			<label for="<?php echo esc_attr( $this->options_prefix . 'exclusion_list' ); ?>">
-				<?php
-				esc_html_e(
-					'Enter URLs you wish to exclude from being masked. One URL per line.
-                    Javascript, Magnet, Mailto, Skype and Tel links are all excluded by default.
-                    To exclude a full protocol, just add a line for that prefix - for example,
-                    "ftp://".',
-					$this->plugin_name
-				);
-				?>
-			</label>
-			<br>
-			<label>
-			<textarea
-				class="large-text code" rows="10" cols="50"
-				name="<?php echo esc_attr( $this->options_prefix . 'exclusion_list' ); ?>"
-				id="<?php echo esc_attr( $this->options_prefix . 'exclusion_list' ); ?>">
-				<?php echo esc_attr( $this->options->exclusion_list ); ?>
-			</textarea>
-			</label>
-			<br>
-			<label>
-				<input
-					type="checkbox"
-					name="<?php echo esc_attr( $this->options_prefix . 'skip_follow' ); ?>"
-					id="<?php echo esc_attr( $this->options_prefix . 'skip_follow' ); ?>"
-					value="1"
-					<?php checked( $this->options->skip_follow ); ?> />
-				<?php esc_html_e( 'Do Not Mask Follow Links', $this->plugin_name ); ?>
-			</label>
-			<br>
-			<label>
-				<input
-					type="checkbox"
-					name="<?php echo esc_attr( $this->options_prefix . 'skip_auth' ); ?>"
-					id="<?php echo esc_attr( $this->options_prefix . 'skip_auth' ); ?>"
-					value="1"
-					<?php checked( $this->options->skip_auth ); ?> />
-				<?php esc_html_e( 'Do Not Mask Links When User Logged In', $this->plugin_name ); ?>
-			</label>
-			<p class="description">
-				<?php esc_html_e( 'May conflict with caching plugins.', $this->plugin_name ); ?>
-			</p>
-		</fieldset>
-		<?php
 	}
 
 	/**
