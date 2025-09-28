@@ -154,8 +154,10 @@ class Admin {
 	 * Register the JavaScript for the admin area.
 	 *
 	 * @since    4.0.0
+	 *
+	 * @param string $hook The current admin page.
 	 */
-	public function enqueue_scripts( $hook ): void {
+	public function enqueue_scripts( string $hook ): void {
 		wp_enqueue_script(
 			$this->plugin_name,
 			plugin_dir_url( __FILE__ ) . 'js/mihdan-noexternallinks-admin.min.js',
