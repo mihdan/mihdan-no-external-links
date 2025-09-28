@@ -66,6 +66,7 @@ No External Links **does not** make any changes to your database, it just proces
 = 5.1.6 (28.09.2025) =
 * Resolved #[39](https://github.com/mihdan/mihdan-no-external-links/issues/39)
 * Resolved #[40](https://github.com/mihdan/mihdan-no-external-links/issues/40)
+* The error "Function _load_textdomain_just_in_time was called incorrectly" has been fixed
 
 = 5.1.5 (28.09.2025) =
 * Tested with WordPress 6.4+
