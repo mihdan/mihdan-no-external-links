@@ -110,7 +110,6 @@ class Main {
 		$this->compatibility_check();
 		$this->install();
 		$this->upgrade();
-		$this->set_locale();
 		$this->set_options();
 		$this->initiate();
 		$this->define_admin_hooks();
@@ -134,12 +133,6 @@ class Main {
 		 * core plugin.
 		 */
 		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/Loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/includes/I18n.php';
 
 		/**
 		 * The class responsible for checking compatibility.
@@ -247,23 +240,6 @@ class Main {
 		);
 
 		$plugin_upgrader->upgrade();
-
-	}
-
-	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * Uses the Plugin_Name_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since    4.0.0
-	 * @access   private
-	 */
-	private function set_locale(): void {
-
-		$plugin_i18n = new I18n( $this->get_plugin_name() );
-
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
 	}
 

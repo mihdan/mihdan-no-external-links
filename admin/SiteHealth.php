@@ -74,7 +74,7 @@ class SiteHealth {
 			'label'       => __( 'Output Buffering is enabled', $this->plugin_name ),
 			'status'      => 'good',
 			'badge'       => [
-				'label' => __( 'Performance' ),
+				'label' => __( 'Performance', $this->plugin_name ),
 				'color' => 'blue',
 			],
 			'description' => __( '<p>Output Buffering is enabled. <em>Mask All Links</em> will work.</p>', $this->plugin_name ),
@@ -85,7 +85,7 @@ class SiteHealth {
 				'label'       => __( 'Output Buffering is disabled', $this->plugin_name ),
 				'status'      => 'critical',
 				'badge'       => [
-					'label' => __( 'Performance' ),
+					'label' => __( 'Performance', $this->plugin_name ),
 					'color' => 'red',
 				],
 				'description' => __( '<p>Output Buffering is disabled, <em>Mask All Links</em> will not work. Contact your server administrator to get this feature enabled.</p>', $this->plugin_name ),

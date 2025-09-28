@@ -437,12 +437,18 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings',
-			$this->options_prefix . 'masking_type'
+			$this->options_prefix . 'masking_type',
+			[
+				'sanitize_callback' => 'sanitize_text_field',
+			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings',
-			$this->options_prefix . 'redirect_time'
+			$this->options_prefix . 'redirect_time',
+			[
+				'sanitize_callback' => 'sanitize_text_field',
+			]
 		);
 
 		add_settings_field(
@@ -456,32 +462,50 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings',
-			$this->options_prefix . 'mask_links'
+			$this->options_prefix . 'mask_links',
+			[
+				'sanitize_callback' => 'sanitize_text_field',
+			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings',
-			$this->options_prefix . 'mask_posts_pages'
+			$this->options_prefix . 'mask_posts_pages',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings',
-			$this->options_prefix . 'mask_comments'
+			$this->options_prefix . 'mask_comments',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings',
-			$this->options_prefix . 'mask_comment_author'
+			$this->options_prefix . 'mask_comment_author',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings',
-			$this->options_prefix . 'mask_rss'
+			$this->options_prefix . 'mask_rss',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings',
-			$this->options_prefix . 'mask_rss_comments'
+			$this->options_prefix . 'mask_rss_comments',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		add_settings_field(
@@ -495,22 +519,34 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings',
-			$this->options_prefix . 'nofollow'
+			$this->options_prefix . 'nofollow',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings',
-			$this->options_prefix . 'target_blank'
+			$this->options_prefix . 'target_blank',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings',
-			$this->options_prefix . 'noindex_tag'
+			$this->options_prefix . 'noindex_tag',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings',
-			$this->options_prefix . 'noindex_comment'
+			$this->options_prefix . 'noindex_comment',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		add_settings_field(
@@ -529,7 +565,10 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-seo-hide',
-			$this->options_prefix . 'seo_hide'
+			$this->options_prefix . 'seo_hide',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		add_settings_field(
@@ -566,7 +605,10 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-seo-hide',
-			$this->options_prefix . 'seo_hide_include_list'
+			$this->options_prefix . 'seo_hide_include_list',
+			[
+				'sanitize_callback' => 'wp_kses_post',
+			]
 		);
 
 		add_settings_field(
@@ -586,7 +628,10 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-seo-hide',
-			$this->options_prefix . 'seo_hide_mode'
+			$this->options_prefix . 'seo_hide_mode',
+			[
+				'sanitize_callback' => 'sanitize_text_field',
+			]
 		);
 
 		add_settings_field(
@@ -608,7 +653,10 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-seo-hide',
-			$this->options_prefix . 'seo_hide_exclude_list'
+			$this->options_prefix . 'seo_hide_exclude_list',
+			[
+				'sanitize_callback' => [ $this, 'wp_kses_post' ],
+			]
 		);
 
 		add_settings_field(
@@ -622,12 +670,18 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-advanced',
-			$this->options_prefix . 'logging'
+			$this->options_prefix . 'logging',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings-advanced',
-			$this->options_prefix . 'log_duration'
+			$this->options_prefix . 'log_duration',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		add_settings_field(
@@ -640,12 +694,18 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-advanced',
-			$this->options_prefix . 'anonymize_links'
+			$this->options_prefix . 'anonymize_links',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings-advanced',
-			$this->options_prefix . 'anonymous_link_provider'
+			$this->options_prefix . 'anonymous_link_provider',
+			[
+				'sanitize_callback' => 'sanitize_text_field',
+			]
 		);
 
 		add_settings_field(
@@ -658,12 +718,18 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-advanced',
-			$this->options_prefix . 'bot_targeting'
+			$this->options_prefix . 'bot_targeting',
+			[
+				'sanitize_callback' => 'sanitize_text_field',
+			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings-advanced',
-			$this->options_prefix . 'bots_selector'
+			$this->options_prefix . 'bots_selector',
+			[
+				'sanitize_callback' => [ $this, 'sanitize_text_array_deep' ],
+			]
 		);
 
 		add_settings_field(
@@ -677,17 +743,26 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-advanced',
-			$this->options_prefix . 'check_referrer'
+			$this->options_prefix . 'check_referrer',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings-advanced',
-			$this->options_prefix . 'remove_all_links'
+			$this->options_prefix . 'remove_all_links',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		register_setting(
 			$this->plugin_name . '-settings-advanced',
-			$this->options_prefix . 'links_to_text'
+			$this->options_prefix . 'links_to_text',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		add_settings_field(
@@ -701,7 +776,10 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-advanced',
-			$this->options_prefix . 'debug_mode'
+			$this->options_prefix . 'debug_mode',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		add_settings_field(
@@ -732,7 +810,10 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-links',
-			$this->options_prefix . 'link_structure'
+			$this->options_prefix . 'link_structure',
+			[
+				'sanitize_callback' => 'sanitize_text_field',
+			]
 		);
 
 		register_setting(
@@ -802,7 +883,10 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-links',
-			$this->options_prefix . 'link_encoding'
+			$this->options_prefix . 'link_encoding',
+			[
+				'sanitize_callback' => 'sanitize_text_field',
+			]
 		);
 
 		add_settings_field(
@@ -877,7 +961,10 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-links',
-			$this->options_prefix . 'link_shortening'
+			$this->options_prefix . 'link_shortening',
+			[
+				'sanitize_callback' => 'sanitize_text_field',
+			]
 		);
 
 		register_setting(
@@ -963,7 +1050,10 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-advanced',
-			$this->options_prefix . 'redirect_message'
+			$this->options_prefix . 'redirect_message',
+			[
+				'sanitize_callback' => 'wp_kses_post',
+			]
 		);
 
 		add_settings_field(
@@ -977,7 +1067,10 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-advanced',
-			$this->options_prefix . 'redirect_page'
+			$this->options_prefix . 'redirect_page',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		add_settings_field(
@@ -996,7 +1089,10 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-include-exclude',
-			$this->options_prefix . 'inclusion_list'
+			$this->options_prefix . 'inclusion_list',
+			[
+				'sanitize_callback' => 'wp_kses_post',
+			]
 		);
 
 		add_settings_field(
@@ -1015,7 +1111,10 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-include-exclude',
-			$this->options_prefix . 'exclusion_list'
+			$this->options_prefix . 'exclusion_list',
+			[
+				'sanitize_callback' => 'wp_kses_post',
+			]
 		);
 
 		add_settings_field(
@@ -1034,7 +1133,10 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-include-exclude',
-			$this->options_prefix . 'skip_auth'
+			$this->options_prefix . 'skip_auth',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		add_settings_field(
@@ -1053,7 +1155,10 @@ class Admin {
 
 		register_setting(
 			$this->plugin_name . '-settings-include-exclude',
-			$this->options_prefix . 'skip_follow'
+			$this->options_prefix . 'skip_follow',
+			[
+				'sanitize_callback' => 'intval',
+			]
 		);
 
 		add_settings_section(
@@ -2250,5 +2355,16 @@ class Admin {
 		}
 
 		return $actions;
+	}
+
+	/**
+	 * Sanitizes an array of strings from user input or from the database.
+	 *
+	 * @param array $array Array to sanitize.
+	 *
+	 * @return array
+	 */
+	public function sanitize_text_array_deep( array $array ): array {
+		return array_map( 'sanitize_text_field', $array );
 	}
 }

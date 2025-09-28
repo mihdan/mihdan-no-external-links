@@ -240,8 +240,8 @@ class MaskTable extends WP_List_Table {
 		return [
 			'cb'      => '<input type="checkbox" />',
 			'title'   => __( 'URL', $this->plugin_name ),
-			'mask'    => __( 'Mask' ),
-			'numeric' => __( 'Numeric' ),
+			'mask'    => __( 'Mask', $this->plugin_name ),
+			'numeric' => __( 'Numeric', $this->plugin_name ),
 		];
 
 	}
@@ -316,7 +316,7 @@ class MaskTable extends WP_List_Table {
 			: '';
 
 		if ( ! empty( $nonce ) && ! wp_verify_nonce( $nonce, $this->options_prefix . 'delete_mask' ) ) {
-			wp_die( esc_html__( 'Are you sure you want to do this?' ) );
+			wp_die( esc_html__( 'Are you sure you want to do this?', $this->plugin_name ) );
 		}
 
 		if ( 'delete' === $this->current_action() ) {
