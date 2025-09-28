@@ -98,7 +98,7 @@ class LogTable extends WP_List_Table {
 				$actions = [
 					'delete' => sprintf(
 						'<a href="?page=%s&action=%s&log=%s&_wpnonce=%s">Delete</a>',
-						isset( $_REQUEST['page'] ) ? sanitize_text_field( $_REQUEST['page'] ) : 1,
+						isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : 1,
 						'delete',
 						absint( $item['id'] ),
 						$delete_nonce
