@@ -3,8 +3,8 @@ Author: mihdan
 Contributors: mihdan, kaggdesign
 Tags: seo, seo-hide, links, posts, comments
 Requires at least: 5.7.4
-Tested up to: 6.5
-Stable tag: 5.1.4
+Tested up to: 6.8
+Stable tag: 5.1.5
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -62,6 +62,9 @@ No External Links **does not** make any changes to your database, it just proces
 4. [Optional] Configure No External Links settings.
 
 == Changelog ==
+
+= 5.1.5 (28.09.2025) =
+* Tested with WordPress 6.4+
 
 = 5.1.4 (02.06.2024) =
 * Fixed error of saving include/exclude sections
