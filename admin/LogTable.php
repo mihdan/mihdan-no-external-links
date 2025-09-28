@@ -98,7 +98,7 @@ class LogTable extends WP_List_Table {
 				$actions = [
 					'delete' => sprintf(
 						'<a href="?page=%s&action=%s&log=%s&_wpnonce=%s">Delete</a>',
-						isset( $_REQUEST['page'] ) ? absint( $_REQUEST['page'] ) : 1,
+						isset( $_REQUEST['page'] ) ? sanitize_text_field( $_REQUEST['page'] ) : 1,
 						'delete',
 						absint( $item['id'] ),
 						$delete_nonce
@@ -293,11 +293,7 @@ class LogTable extends WP_List_Table {
 			? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) )
 			: '';
 
-		if ( ! empty( $nonce ) && ! wp_verify_nonce( $nonce, $this->options_prefix . 'delete_log' ) ) {
-			wp_die( esc_html__( 'Are you sure you want to do this?' ) );
-		}
-
-		if ( 'delete' === $this->current_action() ) {
+		if ( 'delete' === $this->current_action() && wp_verify_nonce( $nonce, $this->options_prefix . 'delete_log' ) ) {
 
 			$delete_count = 0;
 
@@ -311,13 +307,10 @@ class LogTable extends WP_List_Table {
 			exit;
 		}
 
-		if (
-			( isset( $_POST['action'] ) && 'bulk-delete' === $_POST['action'] ) ||
-			( isset( $_POST['action2'] ) && 'bulk-delete' === $_POST['action2'] )
-		) {
+		if ( 'bulk-delete' === $this->current_action() && wp_verify_nonce( $nonce, 'bulk-' . $this->_args['plural'] ) ) {
 
 			$delete_ids = ! empty( $_POST['bulk-delete'] )
-				? array_map( 'sanitize_text_field', wp_unslash( $_POST['bulk-delete'] ) )
+				? array_map( 'intval', wp_unslash( $_POST['bulk-delete'] ) )
 				: [];
 
 			$delete_count = 0;
@@ -334,7 +327,6 @@ class LogTable extends WP_List_Table {
 			wp_safe_redirect( $redirect );
 			exit;
 		}
-
 	}
 
 	/**
