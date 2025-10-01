@@ -311,17 +311,13 @@ class MaskTable extends WP_List_Table {
 
 		$redirect = wp_get_raw_referer();
 
-		$nonce = isset( $_REQUEST['_wpnonce'] )
+		$nonce = ! empty( $_REQUEST['_wpnonce'] )
 			? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) )
 			: '';
 
-		if ( ! empty( $nonce ) && ! wp_verify_nonce( $nonce, $this->options_prefix . 'delete_mask' ) ) {
-			wp_die( esc_html__( 'Are you sure you want to do this?', $this->plugin_name ) );
-		}
+		if ( 'delete' === $this->current_action() && wp_verify_nonce( $nonce, $this->options_prefix . 'delete_mask' ) ) {
 
-		if ( 'delete' === $this->current_action() ) {
-
-			$mask   = isset( $_GET['mask'] ) ? absint( $_GET['mask'] ) : '';
+			$mask   = ! empty( $_GET['mask'] ) ? absint( $_GET['mask'] ) : '';
 			$delete = $this->delete_mask( $mask );
 
 			$delete_count = 0;
@@ -335,10 +331,7 @@ class MaskTable extends WP_List_Table {
 			exit;
 		}
 
-		$action  = isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '';
-		$action2 = isset( $_POST['action2'] ) ? sanitize_text_field( wp_unslash( $_POST['action2'] ) ) : '';
-
-		if ( 'bulk-delete' === $action || 'bulk-delete' === $action2 ) {
+		if ( 'bulk-delete' === $this->current_action() && wp_verify_nonce( $nonce, 'bulk-' . $this->_args['plural'] )  ) {
 
 			$delete_count = 0;
 			$delete_ids   = isset( $_POST['bulk-delete'] ) ?
@@ -356,7 +349,6 @@ class MaskTable extends WP_List_Table {
 			wp_safe_redirect( $redirect );
 			exit;
 		}
-
 	}
 
 	/**
