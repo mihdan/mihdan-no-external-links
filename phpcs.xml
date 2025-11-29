@@ -6,16 +6,8 @@
     <file>.</file>
     <exclude-pattern>*/\.github/*</exclude-pattern>
     <exclude-pattern>*/\.wordpress-org/*</exclude-pattern>
-    <exclude-pattern>*/assets/*</exclude-pattern>
     <exclude-pattern>*/languages/*</exclude-pattern>
-    <exclude-pattern>*/node_modules/*</exclude-pattern>
     <exclude-pattern>*/vendor/*</exclude-pattern>
-    <exclude-pattern>*\.js</exclude-pattern>
-    <exclude-pattern>*\.mo</exclude-pattern>
-    <exclude-pattern>*\.po</exclude-pattern>
-    <exclude-pattern>*\.twig</exclude-pattern>
-    <exclude-pattern>*\.css</exclude-pattern>
-    <exclude-pattern>*\.scss</exclude-pattern>
     <exclude-pattern>src/WPOSA.php</exclude-pattern>
 
     <!-- How to scan -->
@@ -23,9 +15,8 @@
     <arg name="basepath" value="./"/><!-- Strip the file paths down to the relevant bit -->
     <arg name="extensions" value="php"/>
     <arg name="parallel" value="12"/><!-- Enables parallel processing when available for faster results. -->
-    <arg name="cache" value=".phpcs.cache"/>
 
-    <config name="installed_paths" value="vendor/phpcompatibility/php-compatibility,vendor/phpcompatibility/phpcompatibility-paragonie,vendor/phpcompatibility/phpcompatibility-wp,vendor/wp-coding-standards/wpcs"/>
+    <config name="installed_paths" value="vendor/phpcompatibility/php-compatibility,vendor/phpcompatibility/phpcompatibility-paragonie,vendor/phpcompatibility/phpcompatibility-wp,vendor/phpcsstandards/phpcsextra,vendor/phpcsstandards/phpcsutils,vendor/wp-coding-standards/wpcs"/>
     <config name="testVersion" value="7.4-"/>
 
     <!-- Rules: Check PHP version compatibility -->
@@ -36,8 +27,8 @@
     <config name="minimum_supported_wp_version" value="5.7.4"/>
 
     <rule ref="WordPress">
-        <exclude name="Generic.Arrays.DisallowShortArraySyntax.Found"/>
-        <exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax.Found"/>
+        <exclude name="Universal.Operators.DisallowShortTernary.Found"/>
         <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
         <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
         <exclude name="WordPress.WP.I18n.NonSingularStringLiteralDomain" />

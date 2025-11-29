@@ -37,7 +37,6 @@ class I18n {
 	public function __construct( $plugin_name ) {
 
 		$this->plugin_name = $plugin_name;
-
 	}
 
 	/**
@@ -52,7 +51,5 @@ class I18n {
 			false,
 			dirname( plugin_basename( __FILE__ ), 2 ) . '/languages/'
 		);
-
 	}
-
 }

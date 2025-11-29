@@ -52,7 +52,6 @@ class Upgrader {
 
 		$this->plugin_name    = $plugin_name;
 		$this->options_prefix = $options_prefix;
-
 	}
 
 	/**
@@ -340,7 +339,6 @@ class Upgrader {
 			update_option( $this->options_prefix . 'version', $installed_version );
 
 		}
-
 	}
 
 	/**
@@ -363,5 +361,4 @@ class Upgrader {
 		</div>
 		<?php
 	}
-
 }

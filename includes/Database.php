@@ -59,7 +59,5 @@ class Database {
 		}
 
 		return dbDelta( $sql );
-
 	}
-
 }

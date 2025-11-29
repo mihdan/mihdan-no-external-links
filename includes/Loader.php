@@ -106,7 +106,6 @@ class Loader {
 		];
 
 		return $hooks;
-
 	}
 
 	/**
@@ -133,7 +132,5 @@ class Loader {
 				$hook['accepted_args']
 			);
 		}
-
 	}
-
 }

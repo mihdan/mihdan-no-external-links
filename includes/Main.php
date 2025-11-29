@@ -187,7 +187,6 @@ class Main {
 		require_once MIHDAN_NO_EXTERNAL_LINKS_DIR . '/public/Frontend.php';
 
 		$this->loader = new Loader();
-
 	}
 
 	/**
@@ -204,7 +203,6 @@ class Main {
 		$plugin_compatibility = new Compatibility( $this->get_plugin_name(), $this->get_options_prefix() );
 
 		$this->loader->add_action( 'admin_init', $plugin_compatibility, 'check' );
-
 	}
 
 	/**
@@ -226,7 +224,6 @@ class Main {
 
 			$plugin_installer->install();
 		}
-
 	}
 
 	/**
@@ -246,7 +243,6 @@ class Main {
 		);
 
 		$plugin_upgrader->upgrade();
-
 	}
 
 	/**
@@ -263,7 +259,6 @@ class Main {
 		$plugin_i18n = new I18n( $this->get_plugin_name() );
 
 		$this->loader->add_action( 'init', $plugin_i18n, 'load_plugin_textdomain' );
-
 	}
 
 	/**
@@ -463,7 +458,6 @@ class Main {
 		}
 
 		return (object) $options;
-
 	}
 
 	/**
@@ -520,7 +514,6 @@ class Main {
 				update_option( $this->options_prefix . 'last_cleared_logs', current_time( 'timestamp' ) );
 			}
 		}
-
 	}
 
 	/**
@@ -609,7 +602,6 @@ class Main {
 		if ( $this->options->debug_mode ) {
 			$this->loader->add_action( 'wp_footer', $this->public, 'output_debug', 99 );
 		}
-
 	}
 
 	/**
@@ -671,5 +663,4 @@ class Main {
 	public function get_options() {
 		return $this->options;
 	}
-
 }

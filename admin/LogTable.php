@@ -63,7 +63,6 @@ class LogTable extends WP_List_Table {
 		);
 
 		add_action( 'admin_notices', [ $this, 'log_delete_notice' ] );
-
 	}
 
 	/**
@@ -137,7 +136,6 @@ class LogTable extends WP_List_Table {
 			'<input type="checkbox" name="bulk-delete[]" value="%s" />',
 			$item['id']
 		);
-
 	}
 
 	/**
@@ -276,7 +274,6 @@ class LogTable extends WP_List_Table {
 			ARRAY_A
 		);
 		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-
 	}
 
 	/**
@@ -298,7 +295,7 @@ class LogTable extends WP_List_Table {
 			$delete_count = 0;
 
 			if ( $this->delete_log( ! empty( $_GET['log'] ) ? absint( $_GET['log'] ) : 0 ) ) {
-				$delete_count ++;
+				++$delete_count;
 			}
 
 			$redirect = add_query_arg( 'delete_count', $delete_count, $redirect );
@@ -318,7 +315,7 @@ class LogTable extends WP_List_Table {
 				$delete = $this->delete_log( $id );
 
 				if ( $delete ) {
-					++ $delete_count;
+					++$delete_count;
 				}
 			}
 
@@ -351,7 +348,6 @@ class LogTable extends WP_List_Table {
 		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		return $delete_count > 0;
-
 	}
 
 	/**
@@ -391,5 +387,4 @@ class LogTable extends WP_List_Table {
 			<?php
 		}
 	}
-
 }

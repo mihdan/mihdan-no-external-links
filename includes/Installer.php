@@ -40,7 +40,6 @@ class Installer {
 	public function __construct( $plugin_name, $version, $options_prefix ) {
 
 		$this->options_prefix = $options_prefix;
-
 	}
 
 	/**
@@ -61,5 +60,4 @@ class Installer {
 
 		}
 	}
-
 }

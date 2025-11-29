@@ -117,7 +117,6 @@ class Frontend {
 		}
 
 		ob_start( [ $this, 'ob_filter' ] );
-
 	}
 
 	/**
@@ -152,7 +151,6 @@ class Frontend {
 		}
 
 		return $content;
-
 	}
 
 	/**
@@ -227,7 +225,6 @@ class Frontend {
 		$this->debug_info( $count . " replacements done.\nFilter returned: \n" . str_replace( '-->', '--&gt;', $content ) );
 
 		return $content;
-
 	}
 
 	/**
@@ -281,7 +278,6 @@ class Frontend {
 		// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_var_export
 
 		return $matches[0];
-
 	}
 
 	/**
@@ -406,7 +402,6 @@ class Frontend {
 		}
 
 		return $anchor;
-
 	}
 
 	/**
@@ -461,7 +456,6 @@ class Frontend {
 		if ( ! empty( $goto ) ) {
 			$this->redirect( $goto );
 		}
-
 	}
 
 	/**
@@ -519,7 +513,6 @@ class Frontend {
 		}
 
 		$this->show_redirect_page( $url );
-
 	}
 
 	/**
@@ -666,7 +659,6 @@ class Frontend {
 		}
 
 		$this->exclusion_list = array_filter( $exclude_links );
-
 	}
 
 	/**
@@ -772,7 +764,6 @@ class Frontend {
 		// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 
 		return $url;
-
 	}
 
 	/**
@@ -825,7 +816,6 @@ class Frontend {
 		// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 
 		return $url;
-
 	}
 
 	/**
@@ -1035,7 +1025,6 @@ class Frontend {
 			);
 		}
 		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery
-
 	}
 
 	/**
@@ -1046,7 +1035,6 @@ class Frontend {
 		header( 'Refresh: ' . $this->options->redirect_time . '; url=' . get_home_url() );
 
 		include_once 'partials/referrer-warning.php';
-
 	}
 
 	/**
@@ -1116,7 +1104,6 @@ class Frontend {
 	public function output_debug(): void {
 
 		echo "\n<!--wp-noexternallinks debug:\n" . esc_html( implode( "\n\n", $this->debug_log ) ) . "\n-->";
-
 	}
 
 	/**
@@ -1127,23 +1114,22 @@ class Frontend {
 	 * @since      4.0.0
 	 *
 	 * @param string $info Info.
-	 * @param int    $return Whether return the logged info or empty string.
+	 * @param int    $ret  Whether return the logged info or empty string.
 	 *
 	 * @return     string
 	 */
-	public function debug_info( $info, $return = 0 ): string {
+	public function debug_info( $info, $ret = 0 ): string {
 
 		if ( $this->options->debug_mode ) {
 			$t                 = "\n<!--wp-noexternallinks debug:\n" . $info . "\n-->";
 			$this->debug_log[] = $info;
 
-			if ( $return ) {
+			if ( $ret ) {
 				return $t;
 			}
 		}
 
 		return '';
-
 	}
 
 	/**

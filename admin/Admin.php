@@ -14,8 +14,8 @@
 
 namespace Mihdan\No_External_Links\Admin;
 
-use const Mihdan\No_External_Links\MIHDAN_NO_EXTERNAL_LINKS_SLUG;
 use WP_Plugin_Install_List_Table;
+use const Mihdan\No_External_Links\MIHDAN_NO_EXTERNAL_LINKS_SLUG;
 
 /**
  * Class Admin.
@@ -208,7 +208,7 @@ class Admin {
 	 * @return array
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function install_plugins_table_api_args( $args ): array {
+	public function install_plugins_table_api_args( $args ): array { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		global $paged;
 
 		return [
@@ -278,7 +278,6 @@ class Admin {
 	public static function mask_page_set_screen_options( $status, $option, $value ) {
 
 		return $value;
-
 	}
 
 	/**
@@ -300,7 +299,6 @@ class Admin {
 		$this->masks_table = new MaskTable( $this->plugin_name, $this->options_prefix );
 
 		$this->masks_table->process_bulk_action();
-
 	}
 
 	/**
@@ -318,7 +316,6 @@ class Admin {
 	public static function log_page_set_screen_options( $status, $option, $value ) {
 
 		return $value;
-
 	}
 
 	/**
@@ -340,7 +337,6 @@ class Admin {
 		$this->logs_table = new LogTable( $this->plugin_name, $this->options_prefix );
 
 		$this->logs_table->process_bulk_action();
-
 	}
 
 	/**
@@ -2228,7 +2224,6 @@ class Admin {
 			'low',
 			null
 		);
-
 	}
 
 	/**
@@ -2294,7 +2289,6 @@ class Admin {
 				add_action( 'admin_notices', [ $this, 'output_buffer_notice' ] );
 			}
 		}
-
 	}
 
 	/**
@@ -2360,11 +2354,11 @@ class Admin {
 	/**
 	 * Sanitizes an array of strings from user input or from the database.
 	 *
-	 * @param array $array Array to sanitize.
+	 * @param array $arr Array to sanitize.
 	 *
 	 * @return array
 	 */
-	public function sanitize_text_array_deep( array $array ): array {
-		return array_map( 'sanitize_text_field', $array );
+	public function sanitize_text_array_deep( array $arr ): array {
+		return array_map( 'sanitize_text_field', $arr );
 	}
 }

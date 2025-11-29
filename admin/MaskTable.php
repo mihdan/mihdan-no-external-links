@@ -63,7 +63,6 @@ class MaskTable extends WP_List_Table {
 		);
 
 		add_action( 'admin_notices', [ $this, 'mask_delete_notice' ] );
-
 	}
 
 	/**
@@ -109,7 +108,6 @@ class MaskTable extends WP_List_Table {
 			),
 			ARRAY_A
 		);
-
 	}
 
 	/**
@@ -133,7 +131,6 @@ class MaskTable extends WP_List_Table {
 		);
 
 		return $delete_count > 0;
-
 	}
 
 	/**
@@ -154,7 +151,6 @@ class MaskTable extends WP_List_Table {
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 		return (int) $wpdb->get_var( $sql );
-
 	}
 
 	/**
@@ -165,7 +161,6 @@ class MaskTable extends WP_List_Table {
 	public function no_items(): void {
 
 		esc_html_e( 'No masks available.', $this->plugin_name );
-
 	}
 
 	/**
@@ -225,7 +220,6 @@ class MaskTable extends WP_List_Table {
 			'<input type="checkbox" name="bulk-delete[]" value="%s" />',
 			$item['id']
 		);
-
 	}
 
 	/**
@@ -243,7 +237,6 @@ class MaskTable extends WP_List_Table {
 			'mask'    => __( 'Mask', $this->plugin_name ),
 			'numeric' => __( 'Numeric', $this->plugin_name ),
 		];
-
 	}
 
 	/**
@@ -260,7 +253,6 @@ class MaskTable extends WP_List_Table {
 			'mask'    => [ 'mask', true ],
 			'numeric' => [ 'numeric', true ],
 		];
-
 	}
 
 	/**
@@ -273,7 +265,6 @@ class MaskTable extends WP_List_Table {
 	public function get_bulk_actions(): array {
 
 		return [ 'bulk-delete' => 'Delete' ];
-
 	}
 
 	/**
@@ -297,15 +288,12 @@ class MaskTable extends WP_List_Table {
 		);
 
 		$this->items = $this->get_masks( $per_page, $current_page );
-
 	}
 
 	/**
 	 * Processes any bulk actions.
 	 *
 	 * @since        4.2.0
-	 *
-	 * @noinspection ForgottenDebugOutputInspection
 	 */
 	public function process_bulk_action(): void {
 
@@ -322,7 +310,7 @@ class MaskTable extends WP_List_Table {
 
 			$delete_count = 0;
 			if ( $delete ) {
-				++ $delete_count;
+				++$delete_count;
 			}
 
 			$redirect = add_query_arg( 'delete_count', $delete_count, $redirect );
@@ -331,7 +319,7 @@ class MaskTable extends WP_List_Table {
 			exit;
 		}
 
-		if ( 'bulk-delete' === $this->current_action() && wp_verify_nonce( $nonce, 'bulk-' . $this->_args['plural'] )  ) {
+		if ( 'bulk-delete' === $this->current_action() && wp_verify_nonce( $nonce, 'bulk-' . $this->_args['plural'] ) ) {
 
 			$delete_count = 0;
 			$delete_ids   = isset( $_POST['bulk-delete'] ) ?
@@ -340,7 +328,7 @@ class MaskTable extends WP_List_Table {
 
 			foreach ( $delete_ids as $id ) {
 				if ( $this->delete_mask( $id ) ) {
-					$delete_count ++;
+					++$delete_count;
 				}
 			}
 
@@ -390,5 +378,4 @@ class MaskTable extends WP_List_Table {
 			<?php
 		}
 	}
-
 }
