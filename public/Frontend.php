@@ -498,7 +498,7 @@ class Frontend {
 		if ( $this->options->check_referrer ) {
 			$referer = wp_get_referer();
 
-			if ( $referer && stripos( $referer, $this->data->site ) !== 0 ) {
+			if ( $referer && stripos( $referer, $this->data->site ) ) {
 				$this->show_referrer_warning();
 			}
 		}

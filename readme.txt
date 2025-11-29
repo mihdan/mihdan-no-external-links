@@ -3,8 +3,8 @@ Author: mihdan
 Contributors: mihdan, kaggdesign
 Tags: seo, seo-hide, links, posts, comments
 Requires at least: 5.7.4
-Tested up to: 6.8
-Stable tag: 5.1.7
+Tested up to: 6.9
+Stable tag: 5.1.8
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -68,6 +68,9 @@ No External Links **does not** make any changes to your database, it just proces
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/9e5fb8ab-3bfb-4d24-9b50-c3f6c7512f1a)
 
 == Changelog ==
+
+= 5.1.8 (29.11.2025) =
+* Resolved #[42](https://github.com/mihdan/mihdan-no-external-links/issues/42)
 
 = 5.1.7 (01.10.2025) =
 * Resolved #[41](https://github.com/mihdan/mihdan-no-external-links/issues/41)
