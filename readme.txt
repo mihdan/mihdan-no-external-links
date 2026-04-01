@@ -3,8 +3,8 @@ Author: mihdan
 Contributors: mihdan, kaggdesign
 Tags: seo, seo-hide, links, posts, comments
 Requires at least: 5.7.4
-Tested up to: 6.9
-Stable tag: 5.1.8
+Tested up to: 7.0
+Stable tag: 5.2.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -79,6 +79,9 @@ When reporting a vulnerability, please include as much information as possible t
 We will review your report and respond as quickly as possible.
 
 == Changelog ==
+
+= 5.2.0 (02.04.2026) =
+* Tested with WordPress 7.0
 
 = 5.1.8 (29.11.2025) =
 * Resolved #[42](https://github.com/mihdan/mihdan-no-external-links/issues/42)
