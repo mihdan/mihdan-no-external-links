@@ -63,9 +63,20 @@ No External Links **does not** make any changes to your database, it just proces
 
 == Frequently Asked Questions ==
 
-= How can I report security bugs? =
+= Where do I report security bugs found in this plugin? =
 
-You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/9e5fb8ab-3bfb-4d24-9b50-c3f6c7512f1a)
+Please report security vulnerabilities by email to:
+
+**security@kagg.eu**
+
+When reporting a vulnerability, please include as much information as possible to help us reproduce and investigate the issue, such as:
+
+- A clear description of the vulnerability
+- Steps to reproduce
+- Proof-of-concept or exploit code (if available)
+- Affected versions
+
+We will review your report and respond as quickly as possible.
 
 == Changelog ==
 
