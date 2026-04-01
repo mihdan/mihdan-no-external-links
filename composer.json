@@ -22,7 +22,7 @@
   "require": {
     "php": ">=7.4",
     "ext-openssl": "*",
-    "phpseclib/mcrypt_compat": "^2.0",
+    "phpseclib/mcrypt_compat": "^2.0.7",
     "ext-json": "*"
   },
   "require-dev": {
