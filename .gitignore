@@ -20,3 +20,5 @@ wp-content/plugins/hello.php
 
 
 /vendor/
+
+.phpunit.result.cache

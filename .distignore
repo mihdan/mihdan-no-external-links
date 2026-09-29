@@ -12,6 +12,7 @@ composer.json
 composer.lock
 Makefile
 phpcs.xml
+phpunit.xml.dist
 Thumbs.db
 README.md
 
@@ -24,3 +25,4 @@ tests
 assets
 .wordpress-org
 .github
+.phpunit.result.cache
