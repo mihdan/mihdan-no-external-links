@@ -492,18 +492,26 @@ class Frontend {
 		if ( $this->options->check_referrer ) {
 			$referer = wp_get_referer();
 
-			if ( $referer && stripos( $referer, $this->data->site ) ) {
+			if ( $referer && 0 !== stripos( $referer, $this->data->site ) ) {
 				$this->show_referrer_warning();
 			}
 		}
 
 		$url = $this->decode_link( $url );
 
-		$this->add_log( $url );
-
 		if ( ! $wp_rewrite->using_permalinks() ) {
 			$url = urldecode( $url );
 		}
+
+		// Decoded value must be a valid http(s) URL, otherwise it can carry arbitrary HTML.
+		$url = self::sanitize_redirect_url( $url );
+
+		if ( '' === $url ) {
+			wp_safe_redirect( home_url() );
+			exit;
+		}
+
+		$this->add_log( $url );
 
 		// Restore &#038; and &amp; to &.
 		$url = html_entity_decode( $url, ENT_HTML5 | ENT_QUOTES, get_option( 'blog_charset' ) );
@@ -764,6 +772,30 @@ class Frontend {
 		// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 
 		return $url;
+	}
+
+	/**
+	 * Sanitizes a decoded redirect target.
+	 *
+	 * The value comes from user input (e.g. a Base64-encoded `/goto/` segment)
+	 * and is later stored in the logs and shown in wp-admin. Only absolute
+	 * http(s) URLs are allowed; anything else (javascript:, data:, raw HTML,
+	 * schemeless values) is rejected so it can never reach the log sink.
+	 *
+	 * @param string $url Decoded url.
+	 *
+	 * @return string Sanitized http(s) url, or an empty string if invalid.
+	 *
+	 * @since 5.3.0
+	 */
+	public static function sanitize_redirect_url( string $url ): string {
+		$scheme = strtolower( (string) wp_parse_url( $url, PHP_URL_SCHEME ) );
+
+		if ( ! in_array( $scheme, [ 'http', 'https' ], true ) ) {
+			return '';
+		}
+
+		return esc_url_raw( $url, [ 'http', 'https' ] );
 	}
 
 	/**
