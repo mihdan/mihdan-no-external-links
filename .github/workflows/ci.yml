@@ -48,3 +48,6 @@ jobs:
 
       - name: Run code sniffer
         run: composer phpcs
+
+      - name: Run unit tests
+        run: composer test

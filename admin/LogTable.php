@@ -92,7 +92,7 @@ class LogTable extends WP_List_Table {
 			case 'title':
 				$delete_nonce = wp_create_nonce( $this->options_prefix . 'delete_log' );
 
-				$title = '<strong>' . $item['url'] . '</strong>';
+				$title = '<strong>' . esc_html( $item['url'] ) . '</strong>';
 
 				$actions = [
 					'delete' => sprintf(
@@ -106,13 +106,13 @@ class LogTable extends WP_List_Table {
 
 				return $title . $this->row_actions( $actions );
 			case 'referring_url':
-				return $item['referring_url'];
+				return esc_html( $item['referring_url'] );
 			case 'user_agent':
-				return $item['user_agent'];
+				return esc_html( $item['user_agent'] );
 			case 'ip_address':
-				return $item['ip_address'];
+				return esc_html( $item['ip_address'] );
 			case 'datetime':
-				return $item['date'];
+				return esc_html( $item['date'] );
 			default:
 				break;
 		}
