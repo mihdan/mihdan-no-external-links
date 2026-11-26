@@ -370,7 +370,7 @@ class Frontend {
 
 			$this->exclusion_list[] = $url;
 
-			return '<a' . $blank . $nofollow . ' href="' . $url . '" ' . $attributes . '>' . $anchor_text . '</a>';
+			return '<a' . $blank . $nofollow . ' href="' . esc_url( $url ) . '" ' . $attributes . '>' . $anchor_text . '</a>';
 		}
 
 		if ( 'no' !== $this->options->masking_type ) {
@@ -869,8 +869,8 @@ class Frontend {
 		$table_name = $wpdb->prefix . 'external_links_masks';
 		$long_url   = rawurlencode( $url );
 
-		// Restore original URL.
-		$url = html_entity_decode( $url, ENT_HTML5 | ENT_QUOTES, get_option( 'blog_charset' ) );
+		// Restore original URL and strip characters that are not allowed in URLs.
+		$url = esc_url_raw( html_entity_decode( $url, ENT_HTML5 | ENT_QUOTES, get_option( 'blog_charset' ) ) );
 
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 		switch ( $this->options->link_shortening ) {
