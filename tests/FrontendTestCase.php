@@ -14,6 +14,7 @@ declare( strict_types=1 );
 namespace Mihdan\No_External_Links\Tests;
 
 use Brain\Monkey;
+use Brain\Monkey\Functions;
 use Mihdan\No_External_Links\Frontend;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -26,6 +27,9 @@ abstract class FrontendTestCase extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		Monkey\setUp();
+
+		Functions\when( 'esc_url_raw' )->returnArg( 1 );
+		Functions\when( 'esc_url' )->returnArg( 1 );
 	}
 
 	protected function tearDown(): void {

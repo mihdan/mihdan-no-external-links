@@ -39,6 +39,7 @@ if ( ! class_exists( 'WP_Post' ) ) {
 }
 
 require_once dirname( __DIR__ ) . '/admin/LogTable.php';
+require_once dirname( __DIR__ ) . '/admin/MaskTable.php';
 
 // Shared base class for Frontend tests (not a *Test.php file, so require it here).
 require_once __DIR__ . '/FrontendTestCase.php';

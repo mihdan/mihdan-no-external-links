@@ -179,7 +179,7 @@ class MaskTable extends WP_List_Table {
 			case 'title':
 				$delete_nonce = wp_create_nonce( $this->options_prefix . 'delete_mask' );
 
-				$title = '<strong>' . $item['url'] . '</strong>';
+				$title = '<strong>' . esc_html( $item['url'] ) . '</strong>';
 
 				$page    = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : '';
 				$actions = [
@@ -194,7 +194,7 @@ class MaskTable extends WP_List_Table {
 
 				return $title . $this->row_actions( $actions );
 			case 'mask':
-				return (string) $item['mask'];
+				return esc_html( $item['mask'] );
 			case 'numeric':
 				return (string) $item['id'];
 			default:
