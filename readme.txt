@@ -3,8 +3,8 @@ Author: mihdan
 Contributors: mihdan, kaggdesign
 Tags: seo, seo-hide, links, posts, comments
 Requires at least: 5.7.4
-Tested up to: 7.1
-Stable tag: 5.3.0
+Tested up to: 7.2
+Stable tag: 5.3.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -79,6 +79,10 @@ When reporting a vulnerability, please include as much information as possible t
 We will review your report and respond as quickly as possible.
 
 == Changelog ==
+
+= 5.3.1 (26.11.2026) =
+* Added an extra security hardening layer for link shortening and the Masks screen
+* Tested with WordPress 7.2
 
 = 5.3.0 (29.09.2026) =
 * Added an extra security hardening layer for redirect handling and the Logs screen
